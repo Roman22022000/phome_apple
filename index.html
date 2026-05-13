@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<title>Apple Phone 17 Pro</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<style>
+
+/* ================= RESET ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    overflow-x:hidden;
+    width:100%;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:#0d0d12;
+    color:white;
+}
+
+/* ================= REMOVE MOBILE BLUE OUTLINE ================= */
+
+button,
+input,
+textarea,
+select,
+a{
+    outline:none;
+    -webkit-tap-highlight-color:transparent;
+}
+
+button:focus,
+button:active,
+input:focus,
+textarea:focus,
+select:focus{
+    outline:none;
+    box-shadow:none;
+}
+
+/* ================= BACKGROUND ================= */
+
+.bg{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    transition:1s;
+}
+
+.bg.orange{
+    background:
+    radial-gradient(circle at top left,
+    rgba(255,140,0,0.28),
+    transparent 35%),
+
+    linear-gradient(120deg,
+    #140d05,
+    #0d0d12);
+}
+
+.bg.blue{
+    background:
+    radial-gradient(circle at top left,
+    rgba(0,119,255,0.25),
+    transparent 35%),
+
+    linear-gradient(120deg,
+    #06111f,
+    #0d0d12);
+}
+
+.bg.silver{
+    background:
+    radial-gradient(circle at top left,
+    rgba(255,255,255,0.14),
+    transparent 35%),
+
+    linear-gradient(120deg,
+    #171717,
+    #0d0d12);
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:80px;
+    padding:80px 8%;
+    flex-wrap:wrap;
+}
+
+.left{
+    max-width:560px;
+    width:100%;
+}
+
+.logo{
+    font-size:14px;
+    letter-spacing:4px;
+    opacity:0.65;
+    margin-bottom:20px;
+}
+
+.title{
+    font-size:90px;
+    line-height:0.9;
+    font-weight:800;
+    margin-bottom:30px;
+}
+
+.desc{
+    font-size:18px;
+    color:#bcbcc7;
+    line-height:1.8;
+    margin-bottom:35px;
+}
+
+.price{
+    font-size:42px;
+    font-weight:700;
+    margin-bottom:35px;
+}
+
+/* ================= CONTROLS ================= */
+
+.controls{
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+.color-list,
+.memory-list{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+/* ================= BUTTONS ================= */
+
+.color-btn{
+    padding:16px 24px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.05);
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+    font-size:16px;
+}
+
+.color-btn:hover{
+    transform:translateY(-3px);
+}
+
+.color-btn.active{
+    background:#ffd400;
+    color:black;
+    border:1px solid #ffd400;
+    transform:scale(1.03);
+}
+
+.memory-btn{
+    padding:16px 24px;
+    border:none;
+    border-radius:18px;
+    background:#1c1c26;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+    font-size:16px;
+}
+
+.memory-btn.active{
+    background:#ffd400;
+    color:black;
+}
+
+/* ================= BUY BUTTON ================= */
+
+.buy-btn{
+    margin-top:10px;
+    width:280px;
+    height:70px;
+    border:none;
+    border-radius:24px;
+    background:#ffd400;
+    color:black;
+    font-size:22px;
+    font-weight:800;
+    cursor:pointer;
+    transition:0.35s;
+}
+
+.buy-btn:hover{
+    transform:translateY(-5px);
+    box-shadow:0 20px 40px rgba(255,212,0,0.35);
+}
+
+/* ================= PHONE ================= */
+
+.right{
+    position:relative;
+}
+
+.phone-wrap{
+    position:relative;
+    width:420px;
+    height:720px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.phone-glow{
+    position:absolute;
+    width:340px;
+    height:340px;
+    border-radius:50%;
+    filter:blur(90px);
+    opacity:0.5;
+    transition:0.5s;
+}
+
+.phone-glow.orange{
+    background:#ff8c00;
+}
+
+.phone-glow.blue{
+    background:#2f82ff;
+}
+
+.phone-glow.silver{
+    background:#ffffff;
+}
+
+.phone-img{
+    width:100%;
+    max-width:380px;
+    object-fit:contain;
+    animation:float 5s ease-in-out infinite;
+    transition:0.5s;
+    filter:drop-shadow(0 40px 60px rgba(0,0,0,0.7));
+}
+
+@keyframes float{
+
+0%{
+    transform:translateY(0px);
+}
+
+50%{
+    transform:translateY(-18px);
+}
+
+100%{
+    transform:translateY(0px);
+}
+
+}
+
+/* ================= SPECS ================= */
+
+.specs{
+    padding:120px 8%;
+}
+
+.specs-title{
+    font-size:58px;
+    margin-bottom:50px;
+}
+
+.spec-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+}
+
+.card{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:28px;
+    padding:35px;
+    transition:0.35s;
+    backdrop-filter:blur(20px);
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    background:rgba(255,255,255,0.06);
+}
+
+.card h3{
+    font-size:28px;
+    margin-bottom:16px;
+}
+
+.card p{
+    color:#bcbcc7;
+    line-height:1.8;
+}
+
+/* ================= CONTACT ================= */
+
+.contact{
+    padding:100px 8%;
+}
+
+.contact-box{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:30px;
+    padding:50px;
+}
+
+.contact h2{
+    font-size:54px;
+    margin-bottom:25px;
+}
+
+.contact p{
+    font-size:18px;
+    color:#bcbcc7;
+    margin-bottom:14px;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+    padding:20px;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.75);
+    backdrop-filter:blur(10px);
+}
+
+.modal-box{
+    position:relative;
+    width:100%;
+    max-width:520px;
+    padding:45px;
+    border-radius:34px;
+    background:#111118;
+    border:1px solid rgba(255,255,255,0.08);
+    z-index:2;
+    animation:modalShow 0.35s ease;
+}
+
+@keyframes modalShow{
+
+from{
+    opacity:0;
+    transform:translateY(40px) scale(0.96);
+}
+
+to{
+    opacity:1;
+    transform:translateY(0px) scale(1);
+}
+
+}
+
+.close-btn{
+    position:absolute;
+    top:18px;
+    right:18px;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:14px;
+    background:#1c1c26;
+    color:white;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.modal-box h2{
+    font-size:40px;
+    margin-bottom:30px;
+}
+
+.selected-model{
+    margin-bottom:30px;
+    padding:24px;
+    border-radius:24px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.selected-model div{
+    margin-bottom:10px;
+    color:#d4d4de;
+}
+
+.selected-phone{
+    font-size:24px;
+    font-weight:700;
+    color:white !important;
+}
+
+.checkout-form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.checkout-form input{
+    width:100%;
+    height:60px;
+    padding:0 20px;
+    border:none;
+    border-radius:18px;
+    background:#1a1a22;
+    color:white;
+    font-size:16px;
+}
+
+.checkout-form input::placeholder{
+    color:#7f7f8f;
+}
+
+.final-price{
+    margin-top:10px;
+    font-size:32px;
+    font-weight:800;
+}
+
+.confirm-btn{
+    height:64px;
+    border:none;
+    border-radius:20px;
+    background:#ffd400;
+    color:black;
+    font-size:18px;
+    font-weight:800;
+    cursor:pointer;
+    transition:0.35s;
+}
+
+.confirm-btn:hover{
+    transform:translateY(-4px);
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+    padding:40px;
+    text-align:center;
+    color:#6d6d77;
+}
+
+/* ================================================= */
+/* ================= MOBILE VERSION ================= */
+/* ================================================= */
+
+@media(max-width:900px){
+
+.hero{
+    flex-direction:column;
+    gap:20px;
+    padding:30px 20px 70px;
+}
+
+.right{
+    order:1;
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+.left{
+    order:2;
+    max-width:100%;
+}
+
+/* ================= PHONE ================= */
+
+.phone-wrap{
+    width:100%;
+    height:auto;
+    min-height:360px;
+}
+
+.phone-img{
+    max-width:230px;
+}
+
+.phone-glow{
+    width:220px;
+    height:220px;
+    filter:blur(70px);
+}
+
+/* ================= TEXT ================= */
+
+.logo{
+    text-align:center;
+    font-size:11px;
+}
+
+.title{
+    font-size:58px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.desc{
+    text-align:center;
+    font-size:15px;
+    line-height:1.7;
+    margin-bottom:24px;
+}
+
+.price{
+    text-align:center;
+    font-size:36px;
+    margin-bottom:24px;
+}
+
+/* ================= CONTROLS ================= */
+
+.controls{
+    gap:24px;
+}
+
+.controls h3{
+    font-size:18px;
+}
+
+/* ================= BUTTONS ================= */
+
+.color-list,
+.memory-list{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.color-btn,
+.memory-btn{
+    width:100%;
+    min-height:58px;
+    border-radius:18px;
+    font-size:15px;
+    padding:14px 10px;
+}
+
+.buy-btn{
+    width:100%;
+    height:64px;
+    font-size:18px;
+    border-radius:22px;
+}
+
+/* ================= SPECS ================= */
+
+.specs{
+    padding:70px 20px;
+}
+
+.specs-title{
+    font-size:38px;
+    margin-bottom:30px;
+}
+
+.spec-grid{
+    grid-template-columns:1fr;
+    gap:18px;
+}
+
+.card{
+    padding:24px;
+}
+
+.card h3{
+    font-size:22px;
+}
+
+.card p{
+    font-size:15px;
+}
+
+/* ================= CONTACT ================= */
+
+.contact{
+    padding:10px 20px 70px;
+}
+
+.contact-box{
+    padding:28px;
+}
+
+.contact h2{
+    font-size:38px;
+}
+
+.contact p{
+    font-size:15px;
+}
+
+/* ================= MODAL ================= */
+
+.modal-box{
+    padding:26px;
+    border-radius:26px;
+}
+
+.modal-box h2{
+    font-size:28px;
+}
+
+.selected-model{
+    padding:18px;
+}
+
+.selected-phone{
+    font-size:20px;
+}
+
+.checkout-form input{
+    height:56px;
+    font-size:15px;
+}
+
+.final-price{
+    font-size:28px;
+}
+
+.confirm-btn{
+    height:58px;
+    font-size:16px;
+}
+
+.footer{
+    font-size:13px;
+    padding:25px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg orange" id="bg"></div>
+
+<section class="hero">
+
+<div class="left">
+
+<div class="logo">
+APPLE FUTURE SERIES
+</div>
+
+<h1 class="title" id="title">
+Phone 17
+<span style="color:#ff9b00;">
+Pro
+</span>
+</h1>
+
+<p class="desc">
+Новый Apple 17 Pro с мощным процессором A19 Pro,
+ProMotion дисплеем 120Hz,
+улучшенной камерой 48MP
+и премиальным титановым корпусом.
+</p>
+
+<div class="price" id="price">
+$1099
+</div>
+
+<div class="controls">
+
+<div>
+
+<h3 style="margin-bottom:14px;">
+Выберите цвет
+</h3>
+
+<div class="color-list">
+
+<button
+class="color-btn active"
+onclick="changeColor('orange', this)">
+Cosmic Orange
+</button>
+
+<button
+class="color-btn"
+onclick="changeColor('blue', this)">
+Deep Blue
+</button>
+
+<button
+class="color-btn"
+onclick="changeColor('silver', this)">
+Silver
+</button>
+
+</div>
+
+</div>
+
+<div>
+
+<h3 style="margin-bottom:14px;">
+Память
+</h3>
+
+<div class="memory-list">
+
+<button
+class="memory-btn active"
+onclick="changeMemory(1099,this)">
+256 GB
+</button>
+
+<button
+class="memory-btn"
+onclick="changeMemory(1299,this)">
+512 GB
+</button>
+
+<button
+class="memory-btn"
+onclick="changeMemory(1499,this)">
+1 TB
+</button>
+
+</div>
+
+</div>
+
+<button
+class="buy-btn"
+onclick="openModal()">
+КУПИТЬ СЕЙЧАС
+</button>
+
+</div>
+
+</div>
+
+<div class="right">
+
+<div class="phone-wrap">
+
+<div
+class="phone-glow orange"
+id="glow">
+</div>
+
+<img
+id="phone"
+class="phone-img"
+src="orange-phone.png"/>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="specs">
+
+<h2 class="specs-title">
+Технологии нового поколения
+</h2>
+
+<div class="spec-grid">
+
+<div class="card">
+<h3>A19 Pro</h3>
+<p>
+Мощный процессор нового поколения
+для AI вычислений,
+игр и профессионального монтажа.
+</p>
+</div>
+
+<div class="card">
+<h3>48MP Camera</h3>
+<p>
+Профессиональная система камер
+с cinematic режимом,
+ночной съемкой и 8K видео.
+</p>
+</div>
+
+<div class="card">
+<h3>120Hz ProMotion</h3>
+<p>
+Сверхплавный OLED дисплей
+с адаптивной частотой обновления.
+</p>
+</div>
+
+<div class="card">
+<h3>Titanium Body</h3>
+<p>
+Прочный титановый корпус
+с минималистичным футуристичным дизайном.
+</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="contact">
+
+<div class="contact-box">
+
+<h2>
+Контакты
+</h2>
+
+<p>
+Телефон: +371 00000000
+</p>
+
+<p>
+Telegram: @yourshop
+</p>
+
+<p>
+Email: yourmail@gmail.com
+</p>
+
+<p>
+Доставка по всему миру
+</p>
+
+</div>
+
+</section>
+
+<footer class="footer">
+APPLE PHONE 17 PRO © 2026
+</footer>
+
+<!-- ================= MODAL ================= -->
+
+<div class="modal" id="modal">
+
+<div
+class="overlay"
+onclick="closeModal()">
+</div>
+
+<div class="modal-box">
+
+<button
+class="close-btn"
+onclick="closeModal()">
+✕
+</button>
+
+<h2>
+Оформление заказа
+</h2>
+
+<div class="selected-model">
+
+<div class="selected-phone">
+Phone 17 Pro
+</div>
+
+<div id="selectedColor">
+Цвет: Cosmic Orange
+</div>
+
+<div id="selectedMemory">
+Память: 256 GB
+</div>
+
+<div id="selectedPrice">
+Сумма: $1099
+</div>
+
+</div>
+
+<form class="checkout-form">
+
+<input
+type="text"
+placeholder="Ваш адрес"
+required>
+
+<input
+type="tel"
+placeholder="Номер телефона"
+required>
+
+<input
+type="email"
+placeholder="Почта"
+required>
+
+<div
+class="final-price"
+id="finalPrice">
+Итого: $1099
+</div>
+
+<button
+type="submit"
+class="confirm-btn">
+КУПИТЬ
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+const phone = document.getElementById("phone");
+const bg = document.getElementById("bg");
+const glow = document.getElementById("glow");
+const title = document.getElementById("title");
+
+let currentColor = "Cosmic Orange";
+let currentMemory = "256 GB";
+let currentPrice = 1099;
+
+/* ================= COLOR CHANGE ================= */
+
+function changeColor(color,button){
+
+document.querySelectorAll(".color-btn")
+.forEach(btn => btn.classList.remove("active"));
+
+button.classList.add("active");
+
+if(color === "orange"){
+
+phone.src = "orange-phone.png";
+
+bg.className = "bg orange";
+
+glow.className = "phone-glow orange";
+
+title.innerHTML = `
+Phone 17
+<span style="color:#ff9b00;">
+Pro
+</span>
+`;
+
+currentColor = "Cosmic Orange";
+
+}
+
+if(color === "blue"){
+
+phone.src = "blue-phone.png";
+
+bg.className = "bg blue";
+
+glow.className = "phone-glow blue";
+
+title.innerHTML = `
+Phone 17
+<span style="color:#5aa9ff;">
+Pro
+</span>
+`;
+
+currentColor = "Deep Blue";
+
+}
+
+if(color === "silver"){
+
+phone.src = "silver-phone.png";
+
+bg.className = "bg silver";
+
+glow.className = "phone-glow silver";
+
+title.innerHTML = `
+Phone 17
+<span style="color:#ffffff;">
+Pro
+</span>
+`;
+
+currentColor = "Silver";
+
+}
+
+updateModal();
+
+}
+
+/* ================= MEMORY CHANGE ================= */
+
+function changeMemory(price,el){
+
+document.querySelectorAll(".memory-btn")
+.forEach(btn => btn.classList.remove("active"));
+
+el.classList.add("active");
+
+document.getElementById("price").innerHTML =
+"$" + price;
+
+currentPrice = price;
+
+if(price === 1099){
+currentMemory = "256 GB";
+}
+
+if(price === 1299){
+currentMemory = "512 GB";
+}
+
+if(price === 1499){
+currentMemory = "1 TB";
+}
+
+updateModal();
+
+}
+
+/* ================= MODAL ================= */
+
+function openModal(){
+
+updateModal();
+
+document.getElementById("modal")
+.classList.add("active");
+
+}
+
+function closeModal(){
+
+document.getElementById("modal")
+.classList.remove("active");
+
+}
+
+function updateModal(){
+
+document.getElementById("selectedColor")
+.innerHTML =
+"Цвет: " + currentColor;
+
+document.getElementById("selectedMemory")
+.innerHTML =
+"Память: " + currentMemory;
+
+document.getElementById("selectedPrice")
+.innerHTML =
+"Сумма: $" + currentPrice;
+
+document.getElementById("finalPrice")
+.innerHTML =
+"Итого: $" + currentPrice;
+
+}
+
+</script>
+
+</body>
+</html>
