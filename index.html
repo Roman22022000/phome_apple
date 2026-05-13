@@ -611,7 +611,7 @@ ProMotion дисплеем 120Hz,
 </p>
 
 <div class="price" id="price">
-$1099
+96500₽
 </div>
 
 <div class="controls">
@@ -652,17 +652,17 @@ Silver
 <div class="memory-list">
 
 <button class="memory-btn active"
-onclick="changeMemory(96500 ₽,this)">
+onclick="changeMemory(96500,this)">
 256 GB
 </button>
 
 <button class="memory-btn"
-onclick="changeMemory(114000 ₽,this)">
+onclick="changeMemory(114000,this)">
 512 GB
 </button>
 
 <button class="memory-btn"
-onclick="changeMemory(131000 ₽,this)">
+onclick="changeMemory(131000,this)">
 1 TB
 </button>
 
@@ -969,7 +969,7 @@ document.querySelectorAll(".memory-btn")
 el.classList.add("active");
 
 document.getElementById("price").innerHTML =
-"$" + price;
+price.toLocaleString('ru-RU') + " ₽"
 
 currentPrice = price;
 
@@ -1056,11 +1056,11 @@ document.getElementById("selectedQuantity")
 
 document.getElementById("selectedPrice")
 .innerHTML =
-"Цена за шт: $" + currentPrice;
+"Цена за шт: " + currentPrice.toLocaleString('ru-RU') + " ₽";
 
 document.getElementById("finalPrice")
 .innerHTML =
-"Итого: $" + total;
+"Итого: " + total.toLocaleString('ru-RU') + " ₽";
 
 }
 
