@@ -503,172 +503,89 @@ to{
 
 /* ================= MOBILE ================= */
 
+/* ================= MOBILE ================= */
+
 @media(max-width:900px){
-
-.hero{
-    flex-direction:column-reverse;
-    gap:30px;
-    padding:120px 20px 60px;
-    text-align:center;
-}
-
-.left{
-    max-width:100%;
-}
-
-.title{
-    font-size:58px;
-}
-
-.desc{
-    font-size:16px;
-}
-
-.price{
-    font-size:34px;
-}
-
-.controls{
-    align-items:center;
-}
-
-.color-list,
-.memory-list,
-.client-list{
-    justify-content:center;
-}
-
-.phone-wrap{
-    width:100%;
-    height:auto;
-}
-
-.phone-img{
-    max-width:290px;
-}
-
-.phone-glow{
-    width:220px;
-    height:220px;
-}
-
-.mini-specs{
-
-    grid-template-columns:1fr;
-
-    margin-top:10px;
-}
-
-.contact{
-    padding:80px 20px;
-}
-
-.contact h2{
-    font-size:42px;
-}
-
-.contact-box{
-    padding:35px 25px;
-}
-
-.modal-box{
-    padding:30px 20px;
-    border-radius:26px;
-}
-
-.modal-box h2{
-    font-size:30px;
-    padding-right:40px;
-}
-
-.selected-phone{
-    font-size:20px;
-}
-
-.final-price{
-    font-size:28px;
-}
-
-.buy-btn,
-.confirm-btn{
-    width:100%;
-}
-
-}
-
-/* ================= EXTRA MOBILE ADAPTIVE ================= */
-
-@media(max-width:520px){
 
 body{
     overflow-x:hidden;
 }
 
 .hero{
-    padding-top:90px;
-    padding-bottom:40px;
-    gap:20px;
+    flex-direction:column-reverse;
+    align-items:center;
+    justify-content:flex-start;
+    gap:40px;
+    padding:110px 20px 60px;
+    text-align:center;
 }
 
 .left{
     width:100%;
+    max-width:100%;
 }
 
 .logo{
-    font-size:11px;
-    letter-spacing:2px;
-    margin-bottom:16px;
+    font-size:12px;
+    letter-spacing:3px;
+    margin-bottom:18px;
 }
 
 .title{
-    font-size:42px;
-    line-height:0.95;
-    margin-bottom:20px;
+    font-size:64px;
+    line-height:0.92;
+    margin-bottom:24px;
 }
 
 .desc{
-    font-size:15px;
-    line-height:1.6;
-    margin-bottom:24px;
+    font-size:16px;
+    line-height:1.7;
+    margin-bottom:28px;
 }
 
 .price{
-    font-size:30px;
-    margin-bottom:24px;
+    font-size:36px;
+    margin-bottom:28px;
 }
 
 .controls{
     width:100%;
-    gap:22px;
+    align-items:center;
+    gap:24px;
+}
+
+.controls > div{
+    width:100%;
 }
 
 .controls h3{
-    font-size:15px;
+    margin-bottom:14px;
+    font-size:16px;
 }
 
 .color-list,
 .memory-list,
 .client-list{
     width:100%;
-    display:flex;
-    flex-direction:column;
+    justify-content:center;
     gap:12px;
 }
 
 .color-btn,
 .memory-btn,
 .client-btn{
-    width:100%;
-    min-height:54px;
-    border-radius:16px;
+    flex:1 1 calc(50% - 12px);
+    min-height:56px;
     font-size:15px;
+    border-radius:18px;
 }
 
 .buy-btn{
     width:100%;
-    min-height:58px;
-    font-size:16px;
-    border-radius:18px;
+    max-width:100%;
+    height:64px;
+    border-radius:22px;
+    font-size:17px;
 }
 
 .right{
@@ -680,42 +597,38 @@ body{
 
 .phone-wrap{
     width:100%;
-    max-width:320px;
     height:auto;
+    min-height:auto;
 }
 
 .phone-img{
     width:100%;
-    max-width:240px;
+    max-width:320px;
 }
 
 .phone-glow{
-    width:180px;
-    height:180px;
-    filter:blur(70px);
+    width:240px;
+    height:240px;
+    filter:blur(80px);
 }
 
 .mini-specs{
     width:100%;
-    margin-top:20px;
+    margin-top:10px;
     grid-template-columns:1fr;
-    gap:12px;
+    gap:14px;
 }
 
 .mini-card{
-    padding:16px;
-    border-radius:20px;
+    padding:18px;
+    border-radius:22px;
+    text-align:left;
 }
 
 .mini-icon{
-    width:48px;
-    height:48px;
-    min-width:48px;
-}
-
-.mini-icon svg{
-    width:22px;
-    height:22px;
+    width:52px;
+    height:52px;
+    min-width:52px;
 }
 
 .mini-text h3{
@@ -723,7 +636,140 @@ body{
 }
 
 .mini-text p{
-    font-size:12px;
+    font-size:13px;
+}
+
+.contact{
+    padding:70px 20px;
+}
+
+.contact-box{
+    padding:32px 24px;
+    border-radius:26px;
+}
+
+.contact h2{
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+.contact p{
+    font-size:16px;
+    line-height:1.7;
+}
+
+.footer{
+    padding:30px 20px 40px;
+    font-size:13px;
+}
+
+.modal{
+    padding:14px;
+}
+
+.modal-box{
+    width:100%;
+    max-width:100%;
+    padding:28px 20px;
+    border-radius:28px;
+    max-height:92vh;
+}
+
+.modal-box h2{
+    font-size:30px;
+    margin-bottom:24px;
+    padding-right:40px;
+    text-align:left;
+}
+
+.close-btn{
+    top:14px;
+    right:14px;
+    width:40px;
+    height:40px;
+}
+
+.selected-model{
+    padding:20px;
+    border-radius:22px;
+    margin-bottom:24px;
+}
+
+.selected-phone{
+    font-size:22px;
+}
+
+.checkout-form{
+    gap:16px;
+}
+
+.checkout-form input{
+    height:58px;
+    padding:16px;
+    font-size:16px;
+    border-radius:18px;
+}
+
+.final-price{
+    font-size:30px;
+    margin-top:4px;
+}
+
+.confirm-btn{
+    width:100%;
+    height:62px;
+    border-radius:20px;
+    font-size:17px;
+}
+
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media(max-width:520px){
+
+.hero{
+    padding:90px 16px 50px;
+    gap:28px;
+}
+
+.title{
+    font-size:48px;
+}
+
+.desc{
+    font-size:15px;
+}
+
+.price{
+    font-size:30px;
+}
+
+.color-list,
+.memory-list,
+.client-list{
+    flex-direction:column;
+}
+
+.color-btn,
+.memory-btn,
+.client-btn{
+    width:100%;
+    flex:none;
+}
+
+.phone-img{
+    max-width:260px;
+}
+
+.phone-glow{
+    width:190px;
+    height:190px;
+}
+
+.mini-card{
+    padding:16px;
+    border-radius:20px;
 }
 
 .contact{
@@ -731,81 +777,32 @@ body{
 }
 
 .contact-box{
-    padding:28px 20px;
-    border-radius:24px;
+    padding:26px 18px;
 }
 
 .contact h2{
-    font-size:30px;
-    margin-bottom:18px;
+    font-size:32px;
 }
 
 .contact p{
     font-size:15px;
-    line-height:1.5;
-}
-
-.footer{
-    padding:30px 15px;
-    font-size:12px;
-}
-
-.modal{
-    padding:12px;
 }
 
 .modal-box{
-    width:100%;
-    padding:24px 18px;
+    padding:24px 16px;
     border-radius:24px;
-    max-height:92vh;
 }
 
 .modal-box h2{
     font-size:26px;
-    margin-bottom:20px;
-}
-
-.selected-model{
-    padding:18px;
-    border-radius:18px;
 }
 
 .selected-phone{
     font-size:20px;
 }
 
-.selected-model div{
-    font-size:14px;
-}
-
-.checkout-form{
-    gap:14px;
-}
-
-.checkout-form input{
-    padding:16px;
-    font-size:15px;
-    border-radius:14px;
-}
-
 .final-price{
-    font-size:24px;
-}
-
-.confirm-btn{
-    width:100%;
-    min-height:56px;
-    border-radius:18px;
-    font-size:16px;
-}
-
-.close-btn{
-    width:38px;
-    height:38px;
-    border-radius:12px;
-    top:14px;
-    right:14px;
+    font-size:26px;
 }
 
 }
