@@ -500,51 +500,69 @@ to{
     color:#6d6d77;
 }
 
-/* ================= MOBILE ORDER ================= */
+/* ================= MOBILE ================= */
 
 @media(max-width:900px){
 
-.hero{
-    grid-template-columns:1fr;
-    gap:30px;
-    padding:90px 20px 50px;
+body{
+    overflow-x:hidden;
 }
 
-/* ===== LEFT ===== */
+/* ================= HERO ================= */
+
+.hero{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+    padding:90px 20px 50px;
+    min-height:auto;
+}
+
+/* ================= TITLE ================= */
 
 .left{
-    order:1;
     width:100%;
     max-width:100%;
-    text-align:center;
+    display:flex;
+    flex-direction:column;
 }
 
 .logo{
+    order:1;
+    text-align:center;
     font-size:12px;
     margin-bottom:14px;
 }
 
 .title{
+    order:2;
+    text-align:center;
     font-size:54px;
-    line-height:0.95;
-    margin-bottom:22px;
+    line-height:0.92;
+    margin-bottom:20px;
 }
 
 .desc{
+    order:5;
+    text-align:center;
     font-size:15px;
     line-height:1.7;
-    margin-bottom:24px;
+    margin-top:24px;
+    margin-bottom:0;
 }
 
 .price{
+    order:6;
+    text-align:center;
     font-size:34px;
-    margin-bottom:24px;
+    margin-top:20px;
+    margin-bottom:0;
 }
 
-/* ===== PHONE ===== */
+/* ================= PHONE ================= */
 
 .right{
-    order:2;
+    order:3;
     width:100%;
     display:flex;
     flex-direction:column;
@@ -555,12 +573,13 @@ to{
     width:100%;
     height:auto;
     display:flex;
+    align-items:center;
     justify-content:center;
 }
 
 .phone-img{
     width:100%;
-    max-width:300px;
+    max-width:290px;
 }
 
 .phone-glow{
@@ -568,66 +587,129 @@ to{
     height:220px;
 }
 
-/* ===== INFO ===== */
+/* ================= MINI SPECS ================= */
 
 .mini-specs{
-    margin-top:20px;
     width:100%;
-    grid-template-columns:1fr;
-    gap:14px;
+    margin-top:14px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
 }
 
 .mini-card{
-    padding:18px;
+    padding:14px;
+    border-radius:20px;
+    gap:10px;
 }
 
-/* ===== CONTROLS ===== */
+.mini-icon{
+    width:46px;
+    height:46px;
+    min-width:46px;
+    border-radius:14px;
+}
+
+.mini-icon svg{
+    width:22px;
+    height:22px;
+}
+
+.mini-text h3{
+    font-size:14px;
+    margin-bottom:2px;
+}
+
+.mini-text p{
+    font-size:11px;
+    line-height:1.3;
+}
+
+/* ================= CONTROLS ================= */
 
 .controls{
+    order:4;
     width:100%;
-    gap:24px;
-    align-items:center;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:10px;
 }
+
+.controls > div{
+    width:100%;
+}
+
+.controls h3{
+    font-size:15px;
+    margin-bottom:12px;
+    text-align:center;
+}
+
+/* ================= BUTTONS ================= */
 
 .color-list,
 .memory-list,
 .client-list{
-    width:100%;
+    display:flex;
     flex-direction:column;
-    gap:12px;
+    gap:10px;
 }
 
 .color-btn,
 .memory-btn,
 .client-btn{
     width:100%;
-    min-height:56px;
-    font-size:15px;
+    min-height:54px;
+    font-size:14px;
+    border-radius:16px;
 }
 
-/* ===== BUY ===== */
+/* ================= CLIENT TYPE ================= */
+
+.client-list{
+    grid-column:1 / -1;
+}
+
+/* ================= BUY ================= */
 
 .buy-btn{
+    grid-column:1 / -1;
     width:100%;
     height:62px;
-    margin-top:0;
+    border-radius:20px;
+    font-size:17px;
+    margin-top:4px;
 }
 
-/* ===== CONTACT ===== */
+/* ================= CONTACT ================= */
 
 .contact{
-    padding:70px 20px;
+    padding:60px 20px;
 }
 
 .contact-box{
-    padding:30px 22px;
+    padding:28px 20px;
+    border-radius:24px;
 }
 
 .contact h2{
-    font-size:36px;
+    font-size:34px;
+    margin-bottom:18px;
+    text-align:center;
 }
 
-/* ===== MODAL ===== */
+.contact p{
+    font-size:15px;
+    line-height:1.7;
+    text-align:center;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+    padding:12px;
+}
 
 .modal-box{
     padding:28px 18px;
@@ -656,12 +738,8 @@ to{
     font-size:42px;
 }
 
-.price{
-    font-size:28px;
-}
-
 .phone-img{
-    max-width:250px;
+    max-width:240px;
 }
 
 .phone-glow{
@@ -669,92 +747,28 @@ to{
     height:180px;
 }
 
+.mini-specs{
+    gap:10px;
+}
+
+.mini-card{
+    padding:12px;
+}
+
+.controls{
+    grid-template-columns:1fr;
+}
+
+.buy-btn{
+    height:58px;
+}
+
 .contact h2{
-    font-size:30px;
+    font-size:28px;
 }
 
 .modal-box h2{
     font-size:24px;
-}
-/* ================= SMALL MOBILE ================= */
-
-@media(max-width:520px){
-
-.hero{
-    padding:90px 16px 50px;
-    gap:28px;
-}
-
-.title{
-    font-size:48px;
-}
-
-.desc{
-    font-size:15px;
-}
-
-.price{
-    font-size:30px;
-}
-
-.color-list,
-.memory-list,
-.client-list{
-    flex-direction:column;
-}
-
-.color-btn,
-.memory-btn,
-.client-btn{
-    width:100%;
-    flex:none;
-}
-
-.phone-img{
-    max-width:260px;
-}
-
-.phone-glow{
-    width:190px;
-    height:190px;
-}
-
-.mini-card{
-    padding:16px;
-    border-radius:20px;
-}
-
-.contact{
-    padding:60px 16px;
-}
-
-.contact-box{
-    padding:26px 18px;
-}
-
-.contact h2{
-    font-size:32px;
-}
-
-.contact p{
-    font-size:15px;
-}
-
-.modal-box{
-    padding:24px 16px;
-    border-radius:24px;
-}
-
-.modal-box h2{
-    font-size:26px;
-}
-
-.selected-phone{
-    font-size:20px;
-}
-
-.final-price{
-    font-size:26px;
 }
 
 }
