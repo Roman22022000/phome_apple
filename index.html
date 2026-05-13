@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Apple Phone 17 Pro</title>
+<title>Apple iPhone 17 Pro</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,7 +16,6 @@
     padding:0;
     box-sizing:border-box;
 
-    /* УБИРАЕТ СИНИЕ ВЫДЕЛЕНИЯ НА МОБИЛЬНЫХ */
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -243,45 +242,97 @@ body{
 
 }
 
-/* ================= SPECS ================= */
+/* ================= MINI SPECS ================= */
 
-.specs{
-    padding:120px 8%;
-}
+.mini-specs{
 
-.specs-title{
-    font-size:58px;
-    margin-bottom:50px;
-}
+    margin-top:-30px;
 
-.spec-grid{
+    width:100%;
+
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:30px;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:14px;
 }
 
-.card{
+.mini-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:18px;
+
+    border-radius:24px;
+
     background:rgba(255,255,255,0.04);
-    border:1px solid rgba(255,255,255,0.08);
-    border-radius:28px;
-    padding:35px;
-    transition:0.4s;
+
+    border:1px solid rgba(255,255,255,0.06);
+
     backdrop-filter:blur(20px);
+
+    transition:0.35s;
 }
 
-.card:hover{
-    transform:translateY(-8px);
+.mini-card:hover{
+
+    transform:translateY(-4px);
+
     background:rgba(255,255,255,0.06);
 }
 
-.card h3{
-    font-size:28px;
-    margin-bottom:16px;
+.mini-icon{
+
+    width:56px;
+
+    height:56px;
+
+    min-width:56px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(255,140,0,0.08);
+
+    border:1px solid rgba(255,180,80,0.08);
 }
 
-.card p{
-    color:#bcbcc7;
-    line-height:1.8;
+.mini-icon svg{
+
+    width:26px;
+
+    height:26px;
+
+    stroke:#ffb347;
+
+    fill:none;
+
+    stroke-width:1.8;
+}
+
+.mini-text h3{
+
+    font-size:16px;
+
+    margin-bottom:4px;
+}
+
+.mini-text p{
+
+    font-size:13px;
+
+    color:#a9a9b5;
+
+    line-height:1.4;
 }
 
 /* ================= CONTACT ================= */
@@ -501,13 +552,11 @@ to{
     height:220px;
 }
 
-.specs{
-    padding:80px 20px;
-}
+.mini-specs{
 
-.specs-title{
-    font-size:42px;
-    text-align:center;
+    grid-template-columns:1fr;
+
+    margin-top:10px;
 }
 
 .contact{
@@ -567,16 +616,8 @@ to{
     max-width:250px;
 }
 
-.specs-title{
-    font-size:34px;
-}
-
 .contact h2{
     font-size:34px;
-}
-
-.card{
-    padding:28px;
 }
 
 }
@@ -593,7 +634,7 @@ to{
 <div class="left">
 
 <div class="logo">
-APPLE FUTURE SERIES
+THE PATH OF DIGITAL PRODUCTION
 </div>
 
 <h1 class="title" id="title">
@@ -670,8 +711,6 @@ onclick="changeMemory(131000,this)">
 
 </div>
 
-<!-- ================= CLIENT TYPE ================= -->
-
 <div>
 
 <h3 style="margin-bottom:14px;">
@@ -718,50 +757,133 @@ src="orange-phone.png"
 
 </div>
 
+<!-- ================= INFO BAR ================= -->
+
+<div class="mini-specs">
+
+<div class="mini-card">
+
+<div class="mini-icon">
+
+<svg viewBox="0 0 24 24">
+
+<rect
+x="7"
+y="7"
+width="10"
+height="10">
+</rect>
+
+<path d="M4 9V7a3 3 0 0 1 3-3h2"></path>
+
+<path d="M20 9V7a3 3 0 0 0-3-3h-2"></path>
+
+<path d="M4 15v2a3 3 0 0 0 3 3h2"></path>
+
+<path d="M20 15v2a3 3 0 0 1-3 3h-2"></path>
+
+</svg>
+
 </div>
 
-</section>
+<div class="mini-text">
 
-<section class="specs">
-
-<h2 class="specs-title">
-Технологии нового поколения
-</h2>
-
-<div class="spec-grid">
-
-<div class="card">
 <h3>A19 Pro</h3>
+
 <p>
-Мощный процессор нового поколения
-для AI вычислений,
-игр и профессионального монтажа.
+Новый AI процессор
 </p>
+
 </div>
 
-<div class="card">
-<h3>48MP Camera</h3>
-<p>
-Профессиональная система камер
-с cinematic режимом,
-ночной съемкой и 8K видео.
-</p>
 </div>
 
-<div class="card">
-<h3>120Hz ProMotion</h3>
-<p>
-Сверхплавный OLED дисплей
-с адаптивной частотой обновления.
-</p>
+<div class="mini-card">
+
+<div class="mini-icon">
+
+<svg viewBox="0 0 24 24">
+
+<path d="M4 8h3l2-2h6l2 2h3v10H4z"></path>
+
+<circle cx="12" cy="13" r="3"></circle>
+
+</svg>
+
 </div>
 
-<div class="card">
-<h3>Titanium Body</h3>
+<div class="mini-text">
+
+<h3>48MP</h3>
+
 <p>
-Прочный титановый корпус
-с минималистичным футуристичным дизайном.
+Fusion камера
 </p>
+
+</div>
+
+</div>
+
+<div class="mini-card">
+
+<div class="mini-icon">
+
+<svg viewBox="0 0 24 24">
+
+<rect
+x="7"
+y="3"
+width="10"
+height="18"
+rx="2">
+</rect>
+
+<path d="M10 7h4"></path>
+
+<path d="M9 17h6"></path>
+
+</svg>
+
+</div>
+
+<div class="mini-text">
+
+<h3>120Hz</h3>
+
+<p>
+ProMotion OLED
+</p>
+
+</div>
+
+</div>
+
+<div class="mini-card">
+
+<div class="mini-icon">
+
+<svg viewBox="0 0 24 24">
+
+<path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6z"></path>
+
+<path d="M9 12l2 2 4-4"></path>
+
+</svg>
+
+</div>
+
+<div class="mini-text">
+
+<h3>Titanium</h3>
+
+<p>
+Титановый корпус
+</p>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -820,7 +942,7 @@ onclick="closeModal()">
 <div class="selected-model">
 
 <div class="selected-phone">
-Phone 17 Pro
+iPhone 17 Pro
 </div>
 
 <div id="selectedColor">
@@ -907,7 +1029,7 @@ bg.className = "bg orange";
 glow.className = "phone-glow orange";
 
 title.innerHTML = `
-Phone 17
+iPhone 17
 <span style="color:#ff9b00;">
 Pro
 </span>
@@ -926,7 +1048,7 @@ bg.className = "bg blue";
 glow.className = "phone-glow blue";
 
 title.innerHTML = `
-Phone 17
+iPhone 17
 <span style="color:#5aa9ff;">
 Pro
 </span>
@@ -945,7 +1067,7 @@ bg.className = "bg silver";
 glow.className = "phone-glow silver";
 
 title.innerHTML = `
-Phone 17
+iPhone 17
 <span style="color:#ffffff;">
 Pro
 </span>
