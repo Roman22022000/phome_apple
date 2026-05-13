@@ -2,59 +2,33 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8"/>
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>Apple Phone 17 Pro</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
-/* ================= RESET ================= */
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 
-    -webkit-tap-highlight-color:transparent;
+    /* УБИРАЕТ СИНИЕ ВЫДЕЛЕНИЯ НА МОБИЛЬНЫХ */
+    -webkit-tap-highlight-color: transparent;
 }
 
-html,
-body{
-    overflow-x:hidden;
-    width:100%;
+*:focus{
+    outline:none;
 }
 
 body{
     font-family:'Inter',sans-serif;
     background:#0d0d12;
     color:white;
-}
-
-/* ================= REMOVE MOBILE BLUE OUTLINE ================= */
-
-button,
-input,
-textarea,
-select,
-a{
-    outline:none;
-    -webkit-tap-highlight-color:transparent;
-}
-
-button:focus,
-button:active,
-input:focus,
-textarea:focus,
-select:focus{
-    outline:none;
-    box-shadow:none;
+    overflow-x:hidden;
 }
 
 /* ================= BACKGROUND ================= */
@@ -68,35 +42,20 @@ select:focus{
 
 .bg.orange{
     background:
-    radial-gradient(circle at top left,
-    rgba(255,140,0,0.28),
-    transparent 35%),
-
-    linear-gradient(120deg,
-    #140d05,
-    #0d0d12);
+    radial-gradient(circle at top left, rgba(255,140,0,0.28), transparent 35%),
+    linear-gradient(120deg,#140d05,#0d0d12);
 }
 
 .bg.blue{
     background:
-    radial-gradient(circle at top left,
-    rgba(0,119,255,0.25),
-    transparent 35%),
-
-    linear-gradient(120deg,
-    #06111f,
-    #0d0d12);
+    radial-gradient(circle at top left, rgba(0,119,255,0.25), transparent 35%),
+    linear-gradient(120deg,#06111f,#0d0d12);
 }
 
 .bg.silver{
     background:
-    radial-gradient(circle at top left,
-    rgba(255,255,255,0.14),
-    transparent 35%),
-
-    linear-gradient(120deg,
-    #171717,
-    #0d0d12);
+    radial-gradient(circle at top left, rgba(255,255,255,0.14), transparent 35%),
+    linear-gradient(120deg,#171717,#0d0d12);
 }
 
 /* ================= HERO ================= */
@@ -152,24 +111,23 @@ select:focus{
 }
 
 .color-list,
-.memory-list{
+.memory-list,
+.client-list{
     display:flex;
     gap:14px;
     flex-wrap:wrap;
 }
 
-/* ================= BUTTONS ================= */
-
 .color-btn{
-    padding:16px 24px;
-    border-radius:20px;
+    padding:14px 20px;
+    border-radius:18px;
     border:1px solid rgba(255,255,255,0.1);
     background:rgba(255,255,255,0.05);
     color:white;
     font-weight:600;
     cursor:pointer;
-    transition:0.3s;
-    font-size:16px;
+    transition:0.35s;
+    user-select:none;
 }
 
 .color-btn:hover{
@@ -180,22 +138,24 @@ select:focus{
     background:#ffd400;
     color:black;
     border:1px solid #ffd400;
-    transform:scale(1.03);
+    transform:scale(1.05);
 }
 
-.memory-btn{
-    padding:16px 24px;
+.memory-btn,
+.client-btn{
+    padding:14px 20px;
     border:none;
-    border-radius:18px;
+    border-radius:16px;
     background:#1c1c26;
     color:white;
     font-weight:600;
     cursor:pointer;
-    transition:0.3s;
-    font-size:16px;
+    transition:0.35s;
+    user-select:none;
 }
 
-.memory-btn.active{
+.memory-btn.active,
+.client-btn.active{
     background:#ffd400;
     color:black;
 }
@@ -204,20 +164,20 @@ select:focus{
 
 .buy-btn{
     margin-top:10px;
-    width:280px;
-    height:70px;
+    width:260px;
+    padding:20px;
     border:none;
-    border-radius:24px;
+    border-radius:20px;
     background:#ffd400;
     color:black;
-    font-size:22px;
+    font-size:18px;
     font-weight:800;
     cursor:pointer;
     transition:0.35s;
 }
 
 .buy-btn:hover{
-    transform:translateY(-5px);
+    transform:translateY(-5px) scale(1.03);
     box-shadow:0 20px 40px rgba(255,212,0,0.35);
 }
 
@@ -305,7 +265,7 @@ select:focus{
     border:1px solid rgba(255,255,255,0.08);
     border-radius:28px;
     padding:35px;
-    transition:0.35s;
+    transition:0.4s;
     backdrop-filter:blur(20px);
 }
 
@@ -381,6 +341,8 @@ select:focus{
     border:1px solid rgba(255,255,255,0.08);
     z-index:2;
     animation:modalShow 0.35s ease;
+    max-height:90vh;
+    overflow-y:auto;
 }
 
 @keyframes modalShow{
@@ -443,9 +405,9 @@ to{
 
 .checkout-form input{
     width:100%;
-    height:60px;
-    padding:0 20px;
+    padding:18px;
     border:none;
+    outline:none;
     border-radius:18px;
     background:#1a1a22;
     color:white;
@@ -463,7 +425,8 @@ to{
 }
 
 .confirm-btn{
-    height:64px;
+    margin-top:10px;
+    padding:20px;
     border:none;
     border-radius:20px;
     background:#ffd400;
@@ -476,6 +439,7 @@ to{
 
 .confirm-btn:hover{
     transform:translateY(-4px);
+    box-shadow:0 18px 35px rgba(255,212,0,0.3);
 }
 
 /* ================= FOOTER ================= */
@@ -486,192 +450,133 @@ to{
     color:#6d6d77;
 }
 
-/* ================================================= */
-/* ================= MOBILE VERSION ================= */
-/* ================================================= */
+/* ================= MOBILE ================= */
 
 @media(max-width:900px){
 
 .hero{
-    flex-direction:column;
-    gap:20px;
-    padding:30px 20px 70px;
-}
-
-.right{
-    order:1;
-    width:100%;
-    display:flex;
-    justify-content:center;
+    flex-direction:column-reverse;
+    gap:30px;
+    padding:120px 20px 60px;
+    text-align:center;
 }
 
 .left{
-    order:2;
     max-width:100%;
 }
 
-/* ================= PHONE ================= */
+.title{
+    font-size:58px;
+}
+
+.desc{
+    font-size:16px;
+}
+
+.price{
+    font-size:34px;
+}
+
+.controls{
+    align-items:center;
+}
+
+.color-list,
+.memory-list,
+.client-list{
+    justify-content:center;
+}
 
 .phone-wrap{
     width:100%;
     height:auto;
-    min-height:360px;
 }
 
 .phone-img{
-    max-width:230px;
+    max-width:290px;
 }
 
 .phone-glow{
     width:220px;
     height:220px;
-    filter:blur(70px);
 }
-
-/* ================= TEXT ================= */
-
-.logo{
-    text-align:center;
-    font-size:11px;
-}
-
-.title{
-    font-size:58px;
-    text-align:center;
-    margin-bottom:20px;
-}
-
-.desc{
-    text-align:center;
-    font-size:15px;
-    line-height:1.7;
-    margin-bottom:24px;
-}
-
-.price{
-    text-align:center;
-    font-size:36px;
-    margin-bottom:24px;
-}
-
-/* ================= CONTROLS ================= */
-
-.controls{
-    gap:24px;
-}
-
-.controls h3{
-    font-size:18px;
-}
-
-/* ================= BUTTONS ================= */
-
-.color-list,
-.memory-list{
-    width:100%;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-}
-
-.color-btn,
-.memory-btn{
-    width:100%;
-    min-height:58px;
-    border-radius:18px;
-    font-size:15px;
-    padding:14px 10px;
-}
-
-.buy-btn{
-    width:100%;
-    height:64px;
-    font-size:18px;
-    border-radius:22px;
-}
-
-/* ================= SPECS ================= */
 
 .specs{
-    padding:70px 20px;
+    padding:80px 20px;
 }
 
 .specs-title{
-    font-size:38px;
-    margin-bottom:30px;
+    font-size:42px;
+    text-align:center;
 }
-
-.spec-grid{
-    grid-template-columns:1fr;
-    gap:18px;
-}
-
-.card{
-    padding:24px;
-}
-
-.card h3{
-    font-size:22px;
-}
-
-.card p{
-    font-size:15px;
-}
-
-/* ================= CONTACT ================= */
 
 .contact{
-    padding:10px 20px 70px;
-}
-
-.contact-box{
-    padding:28px;
+    padding:80px 20px;
 }
 
 .contact h2{
-    font-size:38px;
+    font-size:42px;
 }
 
-.contact p{
-    font-size:15px;
+.contact-box{
+    padding:35px 25px;
 }
-
-/* ================= MODAL ================= */
 
 .modal-box{
-    padding:26px;
+    padding:30px 20px;
     border-radius:26px;
 }
 
 .modal-box h2{
-    font-size:28px;
-}
-
-.selected-model{
-    padding:18px;
+    font-size:30px;
+    padding-right:40px;
 }
 
 .selected-phone{
     font-size:20px;
 }
 
-.checkout-form input{
-    height:56px;
-    font-size:15px;
-}
-
 .final-price{
     font-size:28px;
 }
 
+.buy-btn,
 .confirm-btn{
-    height:58px;
-    font-size:16px;
+    width:100%;
 }
 
-.footer{
-    font-size:13px;
-    padding:25px;
+}
+
+@media(max-width:520px){
+
+.title{
+    font-size:48px;
+}
+
+.logo{
+    font-size:12px;
+}
+
+.color-btn,
+.memory-btn,
+.client-btn{
+    width:100%;
+}
+
+.phone-img{
+    max-width:250px;
+}
+
+.specs-title{
+    font-size:34px;
+}
+
+.contact h2{
+    font-size:34px;
+}
+
+.card{
+    padding:28px;
 }
 
 }
@@ -719,20 +624,17 @@ $1099
 
 <div class="color-list">
 
-<button
-class="color-btn active"
+<button class="color-btn active"
 onclick="changeColor('orange', this)">
 Cosmic Orange
 </button>
 
-<button
-class="color-btn"
+<button class="color-btn"
 onclick="changeColor('blue', this)">
 Deep Blue
 </button>
 
-<button
-class="color-btn"
+<button class="color-btn"
 onclick="changeColor('silver', this)">
 Silver
 </button>
@@ -749,20 +651,17 @@ Silver
 
 <div class="memory-list">
 
-<button
-class="memory-btn active"
+<button class="memory-btn active"
 onclick="changeMemory(1099,this)">
 256 GB
 </button>
 
-<button
-class="memory-btn"
+<button class="memory-btn"
 onclick="changeMemory(1299,this)">
 512 GB
 </button>
 
-<button
-class="memory-btn"
+<button class="memory-btn"
 onclick="changeMemory(1499,this)">
 1 TB
 </button>
@@ -771,9 +670,31 @@ onclick="changeMemory(1499,this)">
 
 </div>
 
-<button
-class="buy-btn"
-onclick="openModal()">
+<!-- ================= CLIENT TYPE ================= -->
+
+<div>
+
+<h3 style="margin-bottom:14px;">
+Тип заказа
+</h3>
+
+<div class="client-list">
+
+<button class="client-btn active"
+onclick="changeClientType('retail', this)">
+Клиент от 1 шт.
+</button>
+
+<button class="client-btn"
+onclick="changeClientType('wholesale', this)">
+Оптом от 10 шт.
+</button>
+
+</div>
+
+</div>
+
+<button class="buy-btn" onclick="openModal()">
 КУПИТЬ СЕЙЧАС
 </button>
 
@@ -785,15 +706,15 @@ onclick="openModal()">
 
 <div class="phone-wrap">
 
-<div
-class="phone-glow orange"
+<div class="phone-glow orange"
 id="glow">
 </div>
 
 <img
 id="phone"
 class="phone-img"
-src="orange-phone.png"/>
+src="orange-phone.png"
+/>
 
 </div>
 
@@ -883,15 +804,11 @@ APPLE PHONE 17 PRO © 2026
 
 <div class="modal" id="modal">
 
-<div
-class="overlay"
-onclick="closeModal()">
-</div>
+<div class="overlay" onclick="closeModal()"></div>
 
 <div class="modal-box">
 
-<button
-class="close-btn"
+<button class="close-btn"
 onclick="closeModal()">
 ✕
 </button>
@@ -914,37 +831,40 @@ Phone 17 Pro
 Память: 256 GB
 </div>
 
+<div id="selectedClient">
+Тип: Клиент от 1 шт.
+</div>
+
+<div id="selectedQuantity">
+Количество: 1 шт.
+</div>
+
 <div id="selectedPrice">
-Сумма: $1099
+Цена за шт: $1099
 </div>
 
 </div>
 
 <form class="checkout-form">
 
-<input
-type="text"
+<input type="text"
 placeholder="Ваш адрес"
 required>
 
-<input
-type="tel"
+<input type="tel"
 placeholder="Номер телефона"
 required>
 
-<input
-type="email"
+<input type="email"
 placeholder="Почта"
 required>
 
-<div
-class="final-price"
+<div class="final-price"
 id="finalPrice">
 Итого: $1099
 </div>
 
-<button
-type="submit"
+<button type="submit"
 class="confirm-btn">
 КУПИТЬ
 </button>
@@ -965,6 +885,9 @@ const title = document.getElementById("title");
 let currentColor = "Cosmic Orange";
 let currentMemory = "256 GB";
 let currentPrice = 1099;
+
+let currentClientType = "Клиент от 1 шт.";
+let currentQuantity = 1;
 
 /* ================= COLOR CHANGE ================= */
 
@@ -1066,6 +989,33 @@ updateModal();
 
 }
 
+/* ================= CLIENT TYPE ================= */
+
+function changeClientType(type,el){
+
+document.querySelectorAll(".client-btn")
+.forEach(btn => btn.classList.remove("active"));
+
+el.classList.add("active");
+
+if(type === "retail"){
+
+currentClientType = "Клиент от 1 шт.";
+currentQuantity = 1;
+
+}
+
+if(type === "wholesale"){
+
+currentClientType = "Оптом от 10 шт.";
+currentQuantity = 10;
+
+}
+
+updateModal();
+
+}
+
 /* ================= MODAL ================= */
 
 function openModal(){
@@ -1086,6 +1036,8 @@ document.getElementById("modal")
 
 function updateModal(){
 
+const total = currentPrice * currentQuantity;
+
 document.getElementById("selectedColor")
 .innerHTML =
 "Цвет: " + currentColor;
@@ -1094,13 +1046,21 @@ document.getElementById("selectedMemory")
 .innerHTML =
 "Память: " + currentMemory;
 
+document.getElementById("selectedClient")
+.innerHTML =
+"Тип: " + currentClientType;
+
+document.getElementById("selectedQuantity")
+.innerHTML =
+"Количество: " + currentQuantity + " шт.";
+
 document.getElementById("selectedPrice")
 .innerHTML =
-"Сумма: $" + currentPrice;
+"Цена за шт: $" + currentPrice;
 
 document.getElementById("finalPrice")
 .innerHTML =
-"Итого: $" + currentPrice;
+"Итого: $" + total;
 
 }
 
