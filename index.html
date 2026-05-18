@@ -1006,10 +1006,22 @@ const title = document.getElementById("title");
 
 let currentColor = "Cosmic Orange";
 let currentMemory = "256 GB";
-let currentPrice = 1099;
+let currentPrice = 96500;
 
 let currentClientType = "Клиент от 1 шт.";
 let currentQuantity = 1;
+
+const retailPrices = {
+    "256 GB": 96500,
+    "512 GB": 114000,
+    "1 TB": 131000
+};
+
+const wholesalePrices = {
+    "256 GB": 127000,
+    "512 GB": 145000,
+    "1 TB": 162000
+};
 
 /* ================= COLOR CHANGE ================= */
 
@@ -1090,11 +1102,6 @@ document.querySelectorAll(".memory-btn")
 
 el.classList.add("active");
 
-document.getElementById("price").innerHTML =
-price.toLocaleString('ru-RU') + " ₽";
-
-currentPrice = price;
-
 if(price === 96500){
 currentMemory = "256 GB";
 }
@@ -1106,6 +1113,19 @@ currentMemory = "512 GB";
 if(price === 131000){
 currentMemory = "1 TB";
 }
+
+if(currentClientType === "Клиент от 1 шт."){
+
+currentPrice = retailPrices[currentMemory];
+
+}else{
+
+currentPrice = wholesalePrices[currentMemory];
+
+}
+
+document.getElementById("price").innerHTML =
+currentPrice.toLocaleString('ru-RU') + " ₽";
 
 updateModal();
 
@@ -1125,6 +1145,8 @@ if(type === "retail"){
 currentClientType = "Клиент от 1 шт.";
 currentQuantity = 1;
 
+currentPrice = retailPrices[currentMemory];
+
 }
 
 if(type === "wholesale"){
@@ -1132,7 +1154,12 @@ if(type === "wholesale"){
 currentClientType = "Оптом от 10 шт.";
 currentQuantity = 10;
 
+currentPrice = wholesalePrices[currentMemory];
+
 }
+
+document.getElementById("price").innerHTML =
+currentPrice.toLocaleString('ru-RU') + " ₽";
 
 updateModal();
 
