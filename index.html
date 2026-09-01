@@ -1,1215 +1,2371 @@
-<!DOCTYPE html> 
+```html
+<!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Apple iPhone 17 Pro</title>
+<meta charset="UTF-8">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta
+    name="viewport"
+    content="
+        width=device-width,
+        initial-scale=1,
+        maximum-scale=1,
+        user-scalable=no,
+        viewport-fit=cover
+    "
+>
+
+<title>Romeros</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+}
+</script>
 
 <style>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-
+* {
+    box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
 }
 
-*:focus{
-    outline:none;
+html,
+body {
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    background: #000;
+    color: #fff;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 }
 
-body{
-    font-family:'Inter',sans-serif;
-    background:#0d0d12;
-    color:white;
-    overflow-x:hidden;
+body {
+    touch-action: manipulation;
 }
 
-/* ================= BACKGROUND ================= */
+button {
 
-.bg{
-    position:fixed;
-    inset:0;
-    z-index:-2;
-    transition:1s;
+    border: 0;
+    outline: 0;
+
+    font: inherit;
+
+    cursor: pointer;
 }
 
-.bg.orange{
+/* =====================================================
+   SCREENS
+===================================================== */
+
+.screen {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: none;
+
+    background: #000;
+}
+
+.screen.active {
+
+    display: flex;
+}
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+#loginScreen {
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        max(20px, env(safe-area-inset-top))
+        20px
+        max(20px, env(safe-area-inset-bottom))
+        20px;
+}
+
+.loginContent {
+
+    width: min(420px, 100%);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 22px;
+
+    text-align: center;
+}
+
+.logo {
+
+    width: 100px;
+    height: 100px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #333;
+
     background:
-    radial-gradient(circle at top left, rgba(255,140,0,0.28), transparent 35%),
-    linear-gradient(120deg,#140d05,#0d0d12);
+        radial-gradient(
+            circle,
+            #292929,
+            #050505
+        );
+
+    font-size: 40px;
 }
 
-.bg.blue{
+.title {
+
+    font-size:
+        clamp(32px, 9vw, 52px);
+
+    font-weight: 600;
+
+    letter-spacing: -1px;
+}
+
+.subtitle {
+
+    max-width: 340px;
+
+    color: #888;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+.walletBox {
+
+    width: 100%;
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+    background: #111;
+
+    border: 1px solid #292929;
+}
+
+.walletTitle {
+
+    margin-bottom: 14px;
+
+    font-size: 14px;
+
+    color: #999;
+}
+
+#ton-connect {
+
+    display: flex;
+
+    justify-content: center;
+}
+
+.walletAddress {
+
+    margin-top: 14px;
+
+    color: #777;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+
+    word-break: break-all;
+}
+
+.loginStatus {
+
+    min-height: 22px;
+
+    color: #999;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.collectionLink {
+
+    color: #fff;
+
+    text-decoration: underline;
+}
+
+/* =====================================================
+   MENU
+===================================================== */
+
+#menuScreen {
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.menuContent {
+
+    width: min(520px, 100%);
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.menuHeader {
+
+    text-align: center;
+
+    margin-bottom: 18px;
+}
+
+.menuTitle {
+
+    font-size: 28px;
+
+    font-weight: 600;
+}
+
+.menuWallet {
+
+    margin-top: 7px;
+
+    color: #666;
+
+    font-size: 11px;
+
+    word-break: break-all;
+}
+
+.menuButton {
+
+    width: 100%;
+
+    min-height: 62px;
+
+    padding: 0 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-radius: 16px;
+
+    background: #111;
+
+    border: 1px solid #292929;
+
+    color: #fff;
+
+    text-align: left;
+
+    transition:
+        background .15s ease,
+        transform .15s ease;
+}
+
+.menuButton:hover {
+
+    background: #181818;
+}
+
+.menuButton:active {
+
+    transform: scale(.98);
+}
+
+.menuName {
+
+    font-size: 16px;
+
+    font-weight: 500;
+}
+
+.menuArrow {
+
+    color: #666;
+
+    font-size: 22px;
+}
+
+/* =====================================================
+   INTERNAL PAGE
+===================================================== */
+
+.internalScreen {
+
+    flex-direction: column;
+
+    padding:
+        max(12px, env(safe-area-inset-top))
+        20px
+        max(20px, env(safe-area-inset-bottom))
+        20px;
+}
+
+.internalHeader {
+
+    width: 100%;
+
+    height: 60px;
+
+    display: flex;
+
+    align-items: center;
+}
+
+.backButton {
+
+    width: 44px;
+    height: 44px;
+
+    border-radius: 14px;
+
+    background: #181818;
+
+    color: #fff;
+
+    font-size: 28px;
+}
+
+.internalTitle {
+
+    flex: 1;
+
+    text-align: center;
+
+    font-size: 21px;
+
+    font-weight: 600;
+
+    margin-right: 44px;
+}
+
+.placeholder {
+
+    flex: 1;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: #555;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+}
+
+/* =====================================================
+   GALLERY
+===================================================== */
+
+#galleryScreen {
+
+    flex-direction: column;
+
+    padding:
+        max(12px, env(safe-area-inset-top))
+        20px
+        max(20px, env(safe-area-inset-bottom))
+        20px;
+}
+
+.galleryHeader {
+
+    width: 100%;
+
+    height: 60px;
+
+    display: flex;
+
+    align-items: center;
+}
+
+.galleryTitle {
+
+    flex: 1;
+
+    text-align: center;
+
+    font-size: 21px;
+
+    font-weight: 600;
+
+    margin-right: 44px;
+}
+
+.galleryGrid {
+
+    width: 100%;
+
+    max-width: 600px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(100px, 1fr)
+        );
+
+    gap: 14px;
+
+    align-content: center;
+}
+
+.numberButton {
+
+    aspect-ratio: 1;
+
+    border-radius: 24px;
+
+    background: #151515;
+
+    border: 1px solid #2b2b2b;
+
+    color: #fff;
+
+    font-size:
+        clamp(30px, 9vw, 52px);
+
+    font-weight: 500;
+}
+
+.numberButton:active {
+
+    transform: scale(.94);
+}
+
+/* =====================================================
+   VIEWER
+===================================================== */
+
+#viewerScreen {
+
+    background: #000;
+}
+
+#canvasContainer {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+canvas {
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+}
+
+.viewerTop {
+
+    position: absolute;
+
+    z-index: 20;
+
+    top:
+        max(12px, env(safe-area-inset-top));
+
+    left: 12px;
+    right: 12px;
+
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+}
+
+.viewerBack {
+
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    border-radius: 14px;
+
     background:
-    radial-gradient(circle at top left, rgba(0,119,255,0.25), transparent 35%),
-    linear-gradient(120deg,#06111f,#0d0d12);
+        rgba(20,20,20,.75);
+
+    color: #fff;
+
+    font-size: 28px;
+
+    backdrop-filter: blur(12px);
 }
 
-.bg.silver{
+.galleryNavigation {
+
+    position: absolute;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 4px;
+
+    border-radius: 16px;
+
     background:
-    radial-gradient(circle at top left, rgba(255,255,255,0.14), transparent 35%),
-    linear-gradient(120deg,#171717,#0d0d12);
-}
-
-/* ================= HERO ================= */
-
-.hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:80px;
-    padding:80px 8%;
-    flex-wrap:wrap;
-}
-
-.left{
-    max-width:560px;
-    width:100%;
-}
-
-.logo{
-    font-size:14px;
-    letter-spacing:4px;
-    opacity:0.65;
-    margin-bottom:20px;
-}
-
-.title{
-    font-size:90px;
-    line-height:0.9;
-    font-weight:800;
-    margin-bottom:30px;
-}
-
-.desc{
-    font-size:18px;
-    color:#bcbcc7;
-    line-height:1.8;
-    margin-bottom:35px;
-}
-
-.price{
-    font-size:42px;
-    font-weight:700;
-    margin-bottom:35px;
-}
-
-/* ================= CONTROLS ================= */
-
-.controls{
-    display:flex;
-    flex-direction:column;
-    gap:30px;
-}
-
-.color-list,
-.memory-list,
-.client-list{
-    display:flex;
-    gap:14px;
-    flex-wrap:wrap;
-}
-
-.color-btn{
-    padding:14px 20px;
-    border-radius:18px;
-    border:1px solid rgba(255,255,255,0.1);
-    background:rgba(255,255,255,0.05);
-    color:white;
-    font-weight:600;
-    cursor:pointer;
-    transition:0.35s;
-    user-select:none;
-}
-
-.color-btn:hover{
-    transform:translateY(-3px);
-}
-
-.color-btn.active{
-    background:#ffd400;
-    color:black;
-    border:1px solid #ffd400;
-    transform:scale(1.05);
-}
-
-.memory-btn,
-.client-btn{
-    padding:14px 20px;
-    border:none;
-    border-radius:16px;
-    background:#1c1c26;
-    color:white;
-    font-weight:600;
-    cursor:pointer;
-    transition:0.35s;
-    user-select:none;
-}
-
-.memory-btn.active,
-.client-btn.active{
-    background:#ffd400;
-    color:black;
-}
-
-/* ================= BUY BUTTON ================= */
-
-.buy-btn{
-    margin-top:10px;
-    width:260px;
-    padding:20px;
-    border:none;
-    border-radius:20px;
-    background:#ffd400;
-    color:black;
-    font-size:18px;
-    font-weight:800;
-    cursor:pointer;
-    transition:0.35s;
-}
-
-.buy-btn:hover{
-    transform:translateY(-5px) scale(1.03);
-    box-shadow:0 20px 40px rgba(255,212,0,0.35);
-}
-
-/* ================= PHONE ================= */
-
-.right{
-    position:relative;
-}
-
-.phone-wrap{
-    position:relative;
-    width:420px;
-    height:720px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.phone-glow{
-    position:absolute;
-    width:340px;
-    height:340px;
-    border-radius:50%;
-    filter:blur(90px);
-    opacity:0.5;
-    transition:0.5s;
-}
-
-.phone-glow.orange{
-    background:#ff8c00;
-}
-
-.phone-glow.blue{
-    background:#2f82ff;
-}
-
-.phone-glow.silver{
-    background:#ffffff;
-}
-
-.phone-img{
-    width:100%;
-    max-width:380px;
-    object-fit:contain;
-    animation:float 5s ease-in-out infinite;
-    transition:0.5s;
-    filter:drop-shadow(0 40px 60px rgba(0,0,0,0.7));
-}
-
-@keyframes float{
-
-0%{
-    transform:translateY(0px);
-}
-
-50%{
-    transform:translateY(-18px);
-}
-
-100%{
-    transform:translateY(0px);
-}
-
-}
-
-/* ================= MINI SPECS ================= */
-
-.mini-specs{
-
-    margin-top:-30px;
-
-    width:100%;
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:14px;
-}
-
-.mini-card{
-
-    display:flex;
+        rgba(20,20,20,.72);
 
-    align-items:center;
-
-    gap:14px;
-
-    padding:18px;
-
-    border-radius:24px;
-
-    background:rgba(255,255,255,0.04);
-
-    border:1px solid rgba(255,255,255,0.06);
-
-    backdrop-filter:blur(20px);
-
-    transition:0.35s;
-}
-
-.mini-card:hover{
-
-    transform:translateY(-4px);
-
-    background:rgba(255,255,255,0.06);
-}
-
-.mini-icon{
-
-    width:56px;
-
-    height:56px;
-
-    min-width:56px;
-
-    border-radius:18px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:rgba(255,140,0,0.08);
-
-    border:1px solid rgba(255,180,80,0.08);
+    backdrop-filter: blur(12px);
 }
-
-.mini-icon svg{
-
-    width:26px;
 
-    height:26px;
+.galleryArrow {
 
-    stroke:#ffb347;
+    width: 42px;
+    height: 42px;
 
-    fill:none;
+    border-radius: 12px;
 
-    stroke-width:1.8;
-}
-
-.mini-text h3{
+    background:
+        rgba(255,255,255,.08);
 
-    font-size:16px;
+    color: #fff;
 
-    margin-bottom:4px;
+    font-size: 28px;
 }
 
-.mini-text p{
+.currentGallery {
 
-    font-size:13px;
+    min-width: 42px;
 
-    color:#a9a9b5;
+    text-align: center;
 
-    line-height:1.4;
-}
+    color: #fff;
 
-/* ================= CONTACT ================= */
+    font-size: 16px;
 
-.contact{
-    padding:100px 8%;
+    font-weight: 600;
 }
 
-.contact-box{
-    background:rgba(255,255,255,0.04);
-    border:1px solid rgba(255,255,255,0.08);
-    border-radius:30px;
-    padding:50px;
-}
+.descriptionPanel {
 
-.contact h2{
-    font-size:54px;
-    margin-bottom:25px;
-}
+    position: absolute;
 
-.contact p{
-    font-size:18px;
-    color:#bcbcc7;
-    margin-bottom:14px;
-}
+    z-index: 25;
 
-/* ================= MODAL ================= */
-
-.modal{
-    position:fixed;
-    inset:0;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:999;
-    padding:20px;
-}
+    top: 58px;
 
-.modal.active{
-    display:flex;
-}
+    left: 50%;
 
-.overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.75);
-    backdrop-filter:blur(10px);
-}
+    transform: translateX(-50%);
 
-.modal-box{
-    position:relative;
-    width:100%;
-    max-width:520px;
-    padding:45px;
-    border-radius:34px;
-    background:#111118;
-    border:1px solid rgba(255,255,255,0.08);
-    z-index:2;
-    animation:modalShow 0.35s ease;
-    max-height:90vh;
-    overflow-y:auto;
-}
+    width: min(92vw, 520px);
 
-@keyframes modalShow{
+    border-radius: 16px;
 
-from{
-    opacity:0;
-    transform:translateY(40px) scale(0.96);
-}
+    background:
+        rgba(18,18,18,.82);
 
-to{
-    opacity:1;
-    transform:translateY(0px) scale(1);
-}
+    border:
+        1px solid
+        rgba(255,255,255,.08);
 
-}
+    backdrop-filter: blur(14px);
 
-.close-btn{
-    position:absolute;
-    top:18px;
-    right:18px;
-    width:42px;
-    height:42px;
-    border:none;
-    border-radius:14px;
-    background:#1c1c26;
-    color:white;
-    cursor:pointer;
-    font-size:18px;
+    overflow: hidden;
 }
 
-.modal-box h2{
-    font-size:40px;
-    margin-bottom:30px;
-}
+.descriptionHeader {
 
-.selected-model{
-    margin-bottom:30px;
-    padding:24px;
-    border-radius:24px;
-    background:rgba(255,255,255,0.04);
-    border:1px solid rgba(255,255,255,0.06);
-}
+    width: 100%;
 
-.selected-model div{
-    margin-bottom:10px;
-    color:#d4d4de;
-}
+    min-height: 44px;
 
-.selected-phone{
-    font-size:24px;
-    font-weight:700;
-    color:white !important;
-}
+    display: flex;
 
-.checkout-form{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-}
+    align-items: center;
 
-.checkout-form input{
-    width:100%;
-    padding:18px;
-    border:none;
-    outline:none;
-    border-radius:18px;
-    background:#1a1a22;
-    color:white;
-    font-size:16px;
-}
+    justify-content: space-between;
 
-.checkout-form input::placeholder{
-    color:#7f7f8f;
-}
+    padding: 0 14px;
 
-.final-price{
-    margin-top:10px;
-    font-size:32px;
-    font-weight:800;
-}
+    background: transparent;
 
-.confirm-btn{
-    margin-top:10px;
-    padding:20px;
-    border:none;
-    border-radius:20px;
-    background:#ffd400;
-    color:black;
-    font-size:18px;
-    font-weight:800;
-    cursor:pointer;
-    transition:0.35s;
-}
+    color: #fff;
 
-.confirm-btn:hover{
-    transform:translateY(-4px);
-    box-shadow:0 18px 35px rgba(255,212,0,0.3);
-}
+    font-size: 14px;
 
-/* ================= FOOTER ================= */
+    font-weight: 600;
 
-.footer{
-    padding:40px;
-    text-align:center;
-    color:#6d6d77;
+    text-align: left;
 }
 
-/* ================= MOBILE ================= */
+.descriptionBody {
 
-@media(max-width:900px){
+    max-height: 0;
 
-.hero{
-    flex-direction:column-reverse;
-    gap:30px;
-    padding:120px 20px 60px;
-    text-align:center;
-}
+    overflow: hidden;
 
-.left{
-    max-width:100%;
-}
+    padding: 0 14px;
 
-.title{
-    font-size:58px;
-}
+    color:
+        rgba(255,255,255,.72);
 
-.desc{
-    font-size:16px;
-}
+    font-size: 13px;
 
-.price{
-    font-size:34px;
-}
+    line-height: 1.55;
 
-.controls{
-    align-items:center;
+    transition:
+        max-height .25s ease,
+        padding .25s ease;
 }
 
-.color-list,
-.memory-list,
-.client-list{
-    justify-content:center;
-}
+.descriptionPanel.expanded
+.descriptionBody {
 
-.phone-wrap{
-    width:100%;
-    height:auto;
-}
+    max-height: 42vh;
 
-.phone-img{
-    max-width:290px;
-}
+    overflow-y: auto;
 
-.phone-glow{
-    width:220px;
-    height:220px;
+    padding:
+        0 14px 14px;
 }
 
-.mini-specs{
+/* =====================================================
+   LOADER
+===================================================== */
 
-    grid-template-columns:1fr;
+.loader {
 
-    margin-top:10px;
-}
+    position: absolute;
 
-.contact{
-    padding:80px 20px;
-}
+    z-index: 50;
 
-.contact h2{
-    font-size:42px;
-}
+    inset: 0;
 
-.contact-box{
-    padding:35px 25px;
-}
+    display: flex;
 
-.modal-box{
-    padding:30px 20px;
-    border-radius:26px;
-}
+    align-items: center;
 
-.modal-box h2{
-    font-size:30px;
-    padding-right:40px;
-}
+    justify-content: center;
 
-.selected-phone{
-    font-size:20px;
+    background: #000;
 }
 
-.final-price{
-    font-size:28px;
-}
+.loader.hidden {
 
-.buy-btn,
-.confirm-btn{
-    width:100%;
+    display: none;
 }
 
-}
+.loaderText {
 
-@media(max-width:520px){
+    color: #aaa;
 
-.title{
-    font-size:48px;
+    font-size: 14px;
 }
 
-.logo{
-    font-size:12px;
-}
+@media (orientation: landscape) {
 
-.color-btn,
-.memory-btn,
-.client-btn{
-    width:100%;
-}
+    .galleryGrid {
 
-.phone-img{
-    max-width:250px;
-}
+        grid-template-columns:
+            repeat(3, 130px);
 
-.contact h2{
-    font-size:34px;
-}
+        justify-content: center;
+    }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="bg orange" id="bg"></div>
-
-<section class="hero">
-
-<div class="left">
-
-<div class="logo">
-THE PATH OF DIGITAL PRODUCTION
-</div>
-
-<h1 class="title" id="title">
-iPhone 17
-<span style="color:#ff9b00;">
-Pro
-</span>
-</h1>
-
-<p class="desc">
-Новый Apple 17 Pro с мощным процессором A19 Pro,
-ProMotion дисплеем 120Hz,
-улучшенной камерой 48MP
-и премиальным титановым корпусом.
-</p>
-
-<div class="price" id="price">
-96500₽
-</div>
-
-<div class="controls">
-
-<div>
-
-<h3 style="margin-bottom:14px;">
-Выберите цвет
-</h3>
-
-<div class="color-list">
-
-<button class="color-btn active"
-onclick="changeColor('orange', this)">
-Cosmic Orange
-</button>
-
-<button class="color-btn"
-onclick="changeColor('blue', this)">
-Deep Blue
-</button>
-
-<button class="color-btn"
-onclick="changeColor('silver', this)">
-Silver
-</button>
-
-</div>
-
-</div>
-
-<div>
-
-<h3 style="margin-bottom:14px;">
-Память
-</h3>
-
-<div class="memory-list">
-
-<button class="memory-btn active"
-onclick="changeMemory(96500,this)">
-256 GB
-</button>
-
-<button class="memory-btn"
-onclick="changeMemory(114000,this)">
-512 GB
-</button>
-
-<button class="memory-btn"
-onclick="changeMemory(131000,this)">
-1 TB
-</button>
-
-</div>
-
-</div>
-
-<div>
-
-<h3 style="margin-bottom:14px;">
-Тип заказа
-</h3>
-
-<div class="client-list">
-
-<button class="client-btn active"
-onclick="changeClientType('retail', this)">
-Клиент от 1 шт.
-</button>
-
-<button class="client-btn"
-onclick="changeClientType('wholesale', this)">
-Оптом от 10 шт.
-</button>
-
-</div>
-
-</div>
-
-<button class="buy-btn" onclick="openModal()">
-КУПИТЬ СЕЙЧАС
-</button>
-
-</div>
-
-</div>
-
-<div class="right">
-
-<div class="phone-wrap">
-
-<div class="phone-glow orange"
-id="glow">
-</div>
-
-<img
-id="phone"
-class="phone-img"
-src="orange-phone.png"
-/>
-
-</div>
-
-<!-- ================= INFO BAR ================= -->
-
-<div class="mini-specs">
-
-<div class="mini-card">
-
-<div class="mini-icon">
-
-<svg viewBox="0 0 24 24">
-
-<rect
-x="7"
-y="7"
-width="10"
-height="10">
-</rect>
-
-<path d="M4 9V7a3 3 0 0 1 3-3h2"></path>
-
-<path d="M20 9V7a3 3 0 0 0-3-3h-2"></path>
-
-<path d="M4 15v2a3 3 0 0 0 3 3h2"></path>
-
-<path d="M20 15v2a3 3 0 0 1-3 3h-2"></path>
-
-</svg>
-
-</div>
-
-<div class="mini-text">
-
-<h3>A19 Pro</h3>
-
-<p>
-Новый AI процессор
-</p>
-
-</div>
-
-</div>
-
-<div class="mini-card">
-
-<div class="mini-icon">
-
-<svg viewBox="0 0 24 24">
-
-<path d="M4 8h3l2-2h6l2 2h3v10H4z"></path>
-
-<circle cx="12" cy="13" r="3"></circle>
-
-</svg>
-
-</div>
-
-<div class="mini-text">
-
-<h3>48MP</h3>
-
-<p>
-Fusion камера
-</p>
-
-</div>
-
-</div>
-
-<div class="mini-card">
-
-<div class="mini-icon">
-
-<svg viewBox="0 0 24 24">
-
-<rect
-x="7"
-y="3"
-width="10"
-height="18"
-rx="2">
-</rect>
-
-<path d="M10 7h4"></path>
-
-<path d="M9 17h6"></path>
-
-</svg>
-
-</div>
-
-<div class="mini-text">
-
-<h3>120Hz</h3>
-
-<p>
-ProMotion OLED
-</p>
-
-</div>
-
-</div>
-
-<div class="mini-card">
-
-<div class="mini-icon">
-
-<svg viewBox="0 0 24 24">
-
-<path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6z"></path>
-
-<path d="M9 12l2 2 4-4"></path>
-
-</svg>
-
-</div>
-
-<div class="mini-text">
-
-<h3>Titanium</h3>
-
-<p>
-Титановый корпус
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
+<section
+    id="loginScreen"
+    class="screen active"
+>
+
+    <div class="loginContent">
+
+        <div class="logo">
+            ◇
+        </div>
+
+        <div class="title">
+            ROMEROS
+        </div>
+
+        <div class="subtitle">
+            Доступ к цифровому пространству
+            через TON NFT
+        </div>
+
+        <div class="walletBox">
+
+            <div class="walletTitle">
+                Вход владельца NFT
+            </div>
+
+            <div id="ton-connect"></div>
+
+            <div
+                id="walletAddress"
+                class="walletAddress"
+            >
+                Кошелек не подключен
+            </div>
+
+        </div>
+
+        <div
+            id="loginStatus"
+            class="loginStatus"
+        >
+            Подключите TON-кошелек
+        </div>
+
+    </div>
 
 </section>
 
-<section class="contact">
 
-<div class="contact-box">
+<!-- =====================================================
+     MAIN MENU
+===================================================== -->
 
-<h2>
-Контакты
-</h2>
+<section
+    id="menuScreen"
+    class="screen"
+>
 
-<p>
-Телефон: +66 9 5761 9583
-</p>
+    <div class="menuContent">
 
-<p>
-Telegram: @iPhone_17_Pro_shop_bot
-</p>
+        <div class="menuHeader">
 
-<p>
-Email: Room_shop_iPhone@yandex.ru
-</p>
+            <div class="menuTitle">
+                Меню
+            </div>
 
-<p>
-Доставка по всей России
-</p>
+            <div
+                id="menuWallet"
+                class="menuWallet"
+            ></div>
 
-</div>
+        </div>
+
+        <button
+            class="menuButton"
+            id="menuGallery"
+        >
+            <span class="menuName">
+                Галерея
+            </span>
+
+            <span class="menuArrow">
+                ›
+            </span>
+        </button>
+
+        <button
+            class="menuButton"
+            id="menuGeneration"
+        >
+            <span class="menuName">
+                Генерация
+            </span>
+
+            <span class="menuArrow">
+                ›
+            </span>
+        </button>
+
+        <button
+            class="menuButton"
+            id="menuCombine"
+        >
+            <span class="menuName">
+                Объединить
+            </span>
+
+            <span class="menuArrow">
+                ›
+            </span>
+        </button>
+
+        <button
+            class="menuButton"
+            id="menuTree"
+        >
+            <span class="menuName">
+                Дерево
+            </span>
+
+            <span class="menuArrow">
+                ›
+            </span>
+        </button>
+
+        <button
+            class="menuButton"
+            id="menuMarket"
+        >
+            <span class="menuName">
+                Маркет
+            </span>
+
+            <span class="menuArrow">
+                ›
+            </span>
+        </button>
+
+    </div>
 
 </section>
 
-<footer class="footer">
-APPLE iPHONE 17 PRO © 2026
-</footer>
 
-<!-- ================= MODAL ================= -->
+<!-- =====================================================
+     GALLERY
+===================================================== -->
 
-<div class="modal" id="modal">
+<section
+    id="galleryScreen"
+    class="screen"
+>
 
-<div class="overlay" onclick="closeModal()"></div>
+    <div class="galleryHeader">
 
-<div class="modal-box">
+        <button
+            id="galleryBack"
+            class="backButton"
+        >
+            ‹
+        </button>
 
-<button class="close-btn"
-onclick="closeModal()">
-✕
-</button>
+        <div class="galleryTitle">
+            Галерея
+        </div>
 
-<h2>
-Оформление заказа
-</h2>
+    </div>
 
-<div class="selected-model">
+    <div class="galleryGrid">
 
-<div class="selected-phone">
-iPhone 17 Pro
-</div>
+        <button
+            class="numberButton"
+            data-model="creature.glb"
+        >
+            1
+        </button>
 
-<div id="selectedColor">
-Цвет: Cosmic Orange
-</div>
+        <button
+            class="numberButton"
+            data-model="creature.glb"
+        >
+            2
+        </button>
 
-<div id="selectedMemory">
-Память: 256 GB
-</div>
+        <button
+            class="numberButton"
+            data-model="creature.glb"
+        >
+            3
+        </button>
 
-<div id="selectedClient">
-Тип: Клиент от 1 шт.
-</div>
+    </div>
 
-<div id="selectedQuantity">
-Количество: 1 шт.
-</div>
+</section>
 
-<div id="selectedPrice">
-Цена за шт: $1099
-</div>
 
-</div>
+<!-- =====================================================
+     GENERATION
+===================================================== -->
 
-<form class="checkout-form">
+<section
+    id="generationScreen"
+    class="screen internalScreen"
+>
 
-<input type="text"
-placeholder="Ваш адрес"
-required>
+    <div class="internalHeader">
 
-<input type="tel"
-placeholder="Номер телефона"
-required>
+        <button
+            id="generationBack"
+            class="backButton"
+        >
+            ‹
+        </button>
 
-<input type="email"
-placeholder="Почта"
-required>
+        <div class="internalTitle">
+            Генерация
+        </div>
 
-<div class="final-price"
-id="finalPrice">
-Итого: $1099
-</div>
+    </div>
 
-<button type="submit"
-class="confirm-btn">
-КУПИТЬ
-</button>
+    <div class="placeholder">
 
-</form>
+        Здесь будет раздел генерации
 
-</div>
+    </div>
 
-</div>
+</section>
 
-<script>
 
-const phone = document.getElementById("phone");
-const bg = document.getElementById("bg");
-const glow = document.getElementById("glow");
-const title = document.getElementById("title");
+<!-- =====================================================
+     COMBINE
+===================================================== -->
 
-let currentColor = "Cosmic Orange";
-let currentMemory = "256 GB";
-let currentPrice = 96500;
+<section
+    id="combineScreen"
+    class="screen internalScreen"
+>
 
-let currentClientType = "Клиент от 1 шт.";
-let currentQuantity = 1;
+    <div class="internalHeader">
 
-const retailPrices = {
-    "256 GB": 96500,
-    "512 GB": 114000,
-    "1 TB": 131000
-};
+        <button
+            class="backButton"
+            id="combineBack"
+        >
+            ‹
+        </button>
 
-const wholesalePrices = {
-    "256 GB": 94500,
-    "512 GB": 112000,
-    "1 TB": 129000
-};
+        <div class="internalTitle">
+            Объединить
+        </div>
 
-/* ================= COLOR CHANGE ================= */
+    </div>
 
-function changeColor(color,button){
+    <div class="placeholder">
 
-document.querySelectorAll(".color-btn")
-.forEach(btn => btn.classList.remove("active"));
+        Здесь будет раздел объединения
 
-button.classList.add("active");
+    </div>
 
-if(color === "orange"){
+</section>
 
-phone.src = "orange-phone.png";
 
-bg.className = "bg orange";
+<!-- =====================================================
+     TREE
+===================================================== -->
 
-glow.className = "phone-glow orange";
+<section
+    id="treeScreen"
+    class="screen internalScreen"
+>
 
-title.innerHTML = `
-iPhone 17
-<span style="color:#ff9b00;">
-Pro
-</span>
-`;
+    <div class="internalHeader">
 
-currentColor = "Cosmic Orange";
+        <button
+            class="backButton"
+            id="treeBack"
+        >
+            ‹
+        </button>
+
+        <div class="internalTitle">
+            Дерево
+        </div>
+
+    </div>
+
+    <div class="placeholder">
+
+        Здесь будет дерево существ
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MARKET
+===================================================== -->
+
+<section
+    id="marketScreen"
+    class="screen internalScreen"
+>
+
+    <div class="internalHeader">
+
+        <button
+            class="backButton"
+            id="marketBack"
+        >
+            ‹
+        </button>
+
+        <div class="internalTitle">
+            Маркет
+        </div>
+
+    </div>
+
+    <div class="placeholder">
+
+        Здесь будет маркет
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     VIEWER
+===================================================== -->
+
+<section
+    id="viewerScreen"
+    class="screen"
+>
+
+    <div id="canvasContainer"></div>
+
+    <div class="viewerTop">
+
+        <button
+            id="viewerBack"
+            class="viewerBack"
+        >
+            ‹
+        </button>
+
+        <div class="galleryNavigation">
+
+            <button
+                id="prevGallery"
+                class="galleryArrow"
+            >
+                ‹
+            </button>
+
+            <div
+                id="currentGallery"
+                class="currentGallery"
+            >
+                1
+            </div>
+
+            <button
+                id="nextGallery"
+                class="galleryArrow"
+            >
+                ›
+            </button>
+
+        </div>
+
+        <div
+            id="descriptionPanel"
+            class="descriptionPanel"
+        >
+
+            <button
+                id="descriptionHeader"
+                class="descriptionHeader"
+            >
+
+                <span>
+                    Описание
+                </span>
+
+                <span>
+                    ⌄
+                </span>
+
+            </button>
+
+            <div
+                id="descriptionBody"
+                class="descriptionBody"
+            ></div>
+
+        </div>
+
+    </div>
+
+    <div
+        id="loader"
+        class="loader hidden"
+    >
+
+        <div
+            id="loaderText"
+            class="loaderText"
+        >
+            Загрузка 3D модели...
+        </div>
+
+    </div>
+
+</section>
+
+
+<script type="module">
+
+import * as THREE
+    from "three";
+
+import {
+    GLTFLoader
+}
+from "three/addons/loaders/GLTFLoader.js";
+
+import {
+    OrbitControls
+}
+from "three/addons/controls/OrbitControls.js";
+
+
+/* =====================================================
+   TELEGRAM
+===================================================== */
+
+const tg =
+    window.Telegram?.WebApp || null;
+
+if (tg) {
+
+    tg.ready();
+
+    tg.expand();
+
+    if (tg.setHeaderColor) {
+
+        tg.setHeaderColor("#000000");
+
+    }
+
+    if (tg.setBackgroundColor) {
+
+        tg.setBackgroundColor("#000000");
+
+    }
 
 }
 
-if(color === "blue"){
 
-phone.src = "blue-phone.png";
+/* =====================================================
+   NFT CONFIG
+===================================================== */
 
-bg.className = "bg blue";
+const REQUIRED_COLLECTION =
+    "0:fd9a6de1c7e42f1f2346d7c80369a26d4934d04d555856327ace1a275e8723d9";
 
-glow.className = "phone-glow blue";
+const COLLECTION_LINK =
+    "https://getgems.io/collection/EQD9mm3hx-QvHyNG18gDaaJtSTTQTVVYVjJ6zhonXocj2eyI";
 
-title.innerHTML = `
-iPhone 17
-<span style="color:#5aa9ff;">
-Pro
-</span>
-`;
 
-currentColor = "Deep Blue";
+/* =====================================================
+   SCREENS
+===================================================== */
 
-}
+const loginScreen =
+    document.getElementById(
+        "loginScreen"
+    );
 
-if(color === "silver"){
+const menuScreen =
+    document.getElementById(
+        "menuScreen"
+    );
 
-phone.src = "silver-phone.png";
+const galleryScreen =
+    document.getElementById(
+        "galleryScreen"
+    );
 
-bg.className = "bg silver";
+const viewerScreen =
+    document.getElementById(
+        "viewerScreen"
+    );
 
-glow.className = "phone-glow silver";
+const generationScreen =
+    document.getElementById(
+        "generationScreen"
+    );
 
-title.innerHTML = `
-iPhone 17
-<span style="color:#ffffff;">
-Pro
-</span>
-`;
+const combineScreen =
+    document.getElementById(
+        "combineScreen"
+    );
 
-currentColor = "Silver";
+const treeScreen =
+    document.getElementById(
+        "treeScreen"
+    );
 
-}
+const marketScreen =
+    document.getElementById(
+        "marketScreen"
+    );
 
-updateModal();
 
-}
+function showScreen(screen) {
 
-/* ================= MEMORY CHANGE ================= */
+    document
+        .querySelectorAll(".screen")
+        .forEach(
+            element => {
 
-function changeMemory(price,el){
+                element.classList.remove(
+                    "active"
+                );
 
-document.querySelectorAll(".memory-btn")
-.forEach(btn => btn.classList.remove("active"));
+            }
+        );
 
-el.classList.add("active");
-
-if(price === 96500){
-currentMemory = "256 GB";
-}
-
-if(price === 114000){
-currentMemory = "512 GB";
-}
-
-if(price === 131000){
-currentMemory = "1 TB";
-}
-
-if(currentClientType === "Клиент от 1 шт."){
-
-currentPrice = retailPrices[currentMemory];
-
-}else{
-
-currentPrice = wholesalePrices[currentMemory];
-
-}
-
-document.getElementById("price").innerHTML =
-currentPrice.toLocaleString('ru-RU') + " ₽";
-
-updateModal();
+    screen.classList.add(
+        "active"
+    );
 
 }
 
-/* ================= CLIENT TYPE ================= */
 
-function changeClientType(type,el){
+/* =====================================================
+   TON CONNECT
+===================================================== */
 
-document.querySelectorAll(".client-btn")
-.forEach(btn => btn.classList.remove("active"));
+const tonConnectUI =
+    new TON_CONNECT_UI.TonConnectUI({
 
-el.classList.add("active");
+        manifestUrl:
+            "https://roman22022000.github.io/Ton_site/tonconnect-manifest.json",
 
-if(type === "retail"){
+        buttonRootId:
+            "ton-connect"
 
-currentClientType = "Клиент от 1 шт.";
-currentQuantity = 1;
+    });
 
-currentPrice = retailPrices[currentMemory];
+
+let walletAddress = null;
+
+let nftAccess = false;
+
+
+/* =====================================================
+   CHECK NFT
+===================================================== */
+
+async function checkNFT(address) {
+
+    const status =
+        document.getElementById(
+            "loginStatus"
+        );
+
+    status.textContent =
+        "Проверка NFT...";
+
+    try {
+
+        const response =
+            await fetch(
+                `https://tonapi.io/v2/accounts/${address}/nfts?limit=1000`
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "TonAPI error"
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        let hasNFT = false;
+
+        for (
+            const item
+            of (data.nft_items || [])
+        ) {
+
+            const collectionAddress =
+                item.collection?.address || "";
+
+            if (
+                collectionAddress ===
+                REQUIRED_COLLECTION
+            ) {
+
+                hasNFT = true;
+
+                break;
+
+            }
+
+        }
+
+        nftAccess = hasNFT;
+
+        if (hasNFT) {
+
+            status.innerHTML =
+                "NFT найден. Доступ разрешён.";
+
+            openMenu();
+
+        }
+        else {
+
+            status.innerHTML = `
+                NFT из требуемой коллекции
+                не найден.
+                <br><br>
+                <a
+                    class="collectionLink"
+                    href="${COLLECTION_LINK}"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    Открыть коллекцию
+                </a>
+            `;
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(
+            "NFT CHECK ERROR:",
+            error
+        );
+
+        nftAccess = false;
+
+        status.textContent =
+            "Ошибка проверки NFT.";
+
+    }
 
 }
 
-if(type === "wholesale"){
 
-currentClientType = "Оптом от 10 шт.";
-currentQuantity = 10;
+/* =====================================================
+   OPEN MENU
+===================================================== */
 
-currentPrice = wholesalePrices[currentMemory];
+function openMenu() {
 
-}
+    if (!nftAccess) {
 
-document.getElementById("price").innerHTML =
-currentPrice.toLocaleString('ru-RU') + " ₽";
+        return;
 
-updateModal();
+    }
 
-}
+    const menuWallet =
+        document.getElementById(
+            "menuWallet"
+        );
 
-/* ================= MODAL ================= */
+    menuWallet.textContent =
+        shortenAddress(
+            walletAddress
+        );
 
-function openModal(){
-
-updateModal();
-
-document.getElementById("modal")
-.classList.add("active");
-
-}
-
-function closeModal(){
-
-document.getElementById("modal")
-.classList.remove("active");
+    showScreen(
+        menuScreen
+    );
 
 }
 
-function updateModal(){
 
-const total = currentPrice * currentQuantity;
+/* =====================================================
+   SHORT ADDRESS
+===================================================== */
 
-document.getElementById("selectedColor")
-.innerHTML =
-"Цвет: " + currentColor;
+function shortenAddress(address) {
 
-document.getElementById("selectedMemory")
-.innerHTML =
-"Память: " + currentMemory;
+    if (!address) {
 
-document.getElementById("selectedClient")
-.innerHTML =
-"Тип: " + currentClientType;
+        return "";
 
-document.getElementById("selectedQuantity")
-.innerHTML =
-"Количество: " + currentQuantity + " шт.";
+    }
 
-document.getElementById("selectedPrice")
-.innerHTML =
-"Цена за шт: " + currentPrice.toLocaleString('ru-RU') + " ₽";
+    if (address.length <= 18) {
 
-document.getElementById("finalPrice")
-.innerHTML =
-"Итого: " + total.toLocaleString('ru-RU') + " ₽";
+        return address;
+
+    }
+
+    return (
+        address.slice(0, 8) +
+        "..." +
+        address.slice(-8)
+    );
+
+}
+
+
+/* =====================================================
+   WALLET STATUS
+===================================================== */
+
+tonConnectUI.onStatusChange(
+    async wallet => {
+
+        const addressElement =
+            document.getElementById(
+                "walletAddress"
+            );
+
+        const status =
+            document.getElementById(
+                "loginStatus"
+            );
+
+        if (wallet) {
+
+            walletAddress =
+                wallet.account.address;
+
+            addressElement.innerHTML =
+                "Подключен:<br>" +
+                walletAddress;
+
+            status.textContent =
+                "Проверка доступа...";
+
+            await checkNFT(
+                walletAddress
+            );
+
+        }
+        else {
+
+            walletAddress = null;
+
+            nftAccess = false;
+
+            addressElement.textContent =
+                "Кошелек не подключен";
+
+            status.textContent =
+                "Подключите TON-кошелек";
+
+            showScreen(
+                loginScreen
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   MENU NAVIGATION
+===================================================== */
+
+document
+    .getElementById("menuGallery")
+    .addEventListener(
+        "click",
+        () => {
+
+            showScreen(
+                galleryScreen
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("menuGeneration")
+    .addEventListener(
+        "click",
+        () => {
+
+            showScreen(
+                generationScreen
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("menuCombine")
+    .addEventListener(
+        "click",
+        () => {
+
+            showScreen(
+                combineScreen
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("menuTree")
+    .addEventListener(
+        "click",
+        () => {
+
+            showScreen(
+                treeScreen
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("menuMarket")
+    .addEventListener(
+        "click",
+        () => {
+
+            showScreen(
+                marketScreen
+            );
+
+        }
+    );
+
+
+/* =====================================================
+   BACK BUTTONS
+===================================================== */
+
+document
+    .getElementById("generationBack")
+    .onclick = () => {
+
+        showScreen(
+            menuScreen
+        );
+
+    };
+
+
+document
+    .getElementById("combineBack")
+    .onclick = () => {
+
+        showScreen(
+            menuScreen
+        );
+
+    };
+
+
+document
+    .getElementById("treeBack")
+    .onclick = () => {
+
+        showScreen(
+            menuScreen
+        );
+
+    };
+
+
+document
+    .getElementById("marketBack")
+    .onclick = () => {
+
+        showScreen(
+            menuScreen
+        );
+
+    };
+
+
+document
+    .getElementById("galleryBack")
+    .onclick = () => {
+
+        stopSensors();
+
+        showScreen(
+            menuScreen
+        );
+
+    };
+
+
+document
+    .getElementById("viewerBack")
+    .onclick = () => {
+
+        stopSensors();
+
+        document
+            .getElementById(
+                "descriptionPanel"
+            )
+            .classList.remove(
+                "expanded"
+            );
+
+        showScreen(
+            galleryScreen
+        );
+
+    };
+
+
+/* =====================================================
+   THREE
+===================================================== */
+
+let scene = null;
+
+let camera = null;
+
+let renderer = null;
+
+let controls = null;
+
+let model = null;
+
+const MODEL_CENTER =
+    new THREE.Vector3(
+        0,
+        0,
+        0
+    );
+
+const MODEL_BASE =
+    "https://raw.githubusercontent.com/" +
+    "Roman22022000/ArGameCam/main/models/";
+
+const gltfLoader =
+    new GLTFLoader();
+
+const CAMERA_RADIUS = 3;
+
+const CAMERA_Y = 0.35;
+
+
+/* =====================================================
+   GALLERY DATA
+===================================================== */
+
+const galleryItems = [
+
+    {
+        number: 1,
+
+        filename:
+            "creature.glb",
+
+        description:
+            "Первая цифровая экспозиция."
+    },
+
+    {
+        number: 2,
+
+        filename:
+            "creature.glb",
+
+        description:
+            "Вторая цифровая экспозиция."
+    },
+
+    {
+        number: 3,
+
+        filename:
+            "creature.glb",
+
+        description:
+            "Третья цифровая экспозиция."
+    }
+
+];
+
+let currentGalleryIndex = 0;
+
+
+/* =====================================================
+   THREE INIT
+===================================================== */
+
+function initThree() {
+
+    const container =
+        document.getElementById(
+            "canvasContainer"
+        );
+
+    scene =
+        new THREE.Scene();
+
+    scene.background =
+        new THREE.Color(
+            0x000000
+        );
+
+
+    camera =
+        new THREE.PerspectiveCamera(
+            45,
+
+            window.innerWidth /
+            window.innerHeight,
+
+            0.01,
+
+            1000
+        );
+
+    camera.position.set(
+        0,
+        CAMERA_Y,
+        CAMERA_RADIUS
+    );
+
+    camera.lookAt(
+        MODEL_CENTER
+    );
+
+
+    const hemisphere =
+        new THREE.HemisphereLight(
+            0xffffff,
+            0x222222,
+            2.2
+        );
+
+    scene.add(
+        hemisphere
+    );
+
+
+    const keyLight =
+        new THREE.DirectionalLight(
+            0xffffff,
+            3
+        );
+
+    keyLight.position.set(
+        3,
+        5,
+        4
+    );
+
+    scene.add(
+        keyLight
+    );
+
+
+    const fillLight =
+        new THREE.DirectionalLight(
+            0xffffff,
+            1
+        );
+
+    fillLight.position.set(
+        -4,
+        2,
+        -4
+    );
+
+    scene.add(
+        fillLight
+    );
+
+
+    renderer =
+        new THREE.WebGLRenderer({
+
+            antialias: true,
+
+            powerPreference:
+                "high-performance"
+
+        });
+
+
+    renderer.setPixelRatio(
+        Math.min(
+            window.devicePixelRatio,
+            2
+        )
+    );
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+    renderer.outputColorSpace =
+        THREE.SRGBColorSpace;
+
+    container.appendChild(
+        renderer.domElement
+    );
+
+
+    controls =
+        new OrbitControls(
+            camera,
+            renderer.domElement
+        );
+
+    controls.enableDamping =
+        true;
+
+    controls.dampingFactor =
+        0.08;
+
+    controls.enablePan =
+        false;
+
+    controls.minDistance =
+        1.2;
+
+    controls.maxDistance =
+        7;
+
+    controls.target.copy(
+        MODEL_CENTER
+    );
+
+    controls.update();
+
+
+    window.addEventListener(
+        "resize",
+        onResize
+    );
+
+    animate();
+
+}
+
+
+/* =====================================================
+   LOAD MODEL
+===================================================== */
+
+function loadModel(filename) {
+
+    const loader =
+        document.getElementById(
+            "loader"
+        );
+
+    const loaderText =
+        document.getElementById(
+            "loaderText"
+        );
+
+    loader.classList.remove(
+        "hidden"
+    );
+
+    loaderText.textContent =
+        "Загрузка 3D модели...";
+
+
+    if (model) {
+
+        scene.remove(
+            model
+        );
+
+        model.traverse(
+            object => {
+
+                if (
+                    object.isMesh
+                ) {
+
+                    if (
+                        object.geometry
+                    ) {
+
+                        object.geometry.dispose();
+
+                    }
+
+                    if (
+                        Array.isArray(
+                            object.material
+                        )
+                    ) {
+
+                        object.material
+                            .forEach(
+                                material => {
+
+                                    material.dispose();
+
+                                }
+                            );
+
+                    }
+                    else if (
+                        object.material
+                    ) {
+
+                        object.material.dispose();
+
+                    }
+
+                }
+
+            }
+        );
+
+        model = null;
+
+    }
+
+
+    const url =
+        MODEL_BASE +
+        filename;
+
+
+    gltfLoader.load(
+
+        url,
+
+        gltf => {
+
+            model =
+                gltf.scene;
+
+            const box =
+                new THREE.Box3()
+                    .setFromObject(
+                        model
+                    );
+
+            const center =
+                box.getCenter(
+                    new THREE.Vector3()
+                );
+
+            const size =
+                box.getSize(
+                    new THREE.Vector3()
+                );
+
+            model.position.sub(
+                center
+            );
+
+            const maxSize =
+                Math.max(
+                    size.x,
+                    size.y,
+                    size.z
+                );
+
+            if (
+                maxSize > 0
+            ) {
+
+                model.scale.setScalar(
+                    2 / maxSize
+                );
+
+            }
+
+            scene.add(
+                model
+            );
+
+            resetCamera();
+
+            loader.classList.add(
+                "hidden"
+            );
+
+        },
+
+        xhr => {
+
+            if (
+                xhr.total > 0
+            ) {
+
+                const percent =
+                    Math.round(
+                        xhr.loaded /
+                        xhr.total *
+                        100
+                    );
+
+                loaderText.textContent =
+                    `Загрузка ${percent}%`;
+
+            }
+
+        },
+
+        error => {
+
+            console.error(
+                "GLB ERROR:",
+                error
+            );
+
+            loaderText.textContent =
+                "Ошибка загрузки модели";
+
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+function resetCamera() {
+
+    if (!camera) {
+
+        return;
+
+    }
+
+    camera.position.set(
+        0,
+        CAMERA_Y,
+        CAMERA_RADIUS
+    );
+
+    camera.lookAt(
+        MODEL_CENTER
+    );
+
+    if (controls) {
+
+        controls.target.copy(
+            MODEL_CENTER
+        );
+
+        controls.update();
+
+    }
+
+}
+
+
+/* =====================================================
+   GALLERY
+===================================================== */
+
+const galleryButtons =
+    document.querySelectorAll(
+        ".numberButton"
+    );
+
+const currentGallery =
+    document.getElementById(
+        "currentGallery"
+    );
+
+const prevGallery =
+    document.getElementById(
+        "prevGallery"
+    );
+
+const nextGallery =
+    document.getElementById(
+        "nextGallery"
+    );
+
+const descriptionPanel =
+    document.getElementById(
+        "descriptionPanel"
+    );
+
+const descriptionHeader =
+    document.getElementById(
+        "descriptionHeader"
+    );
+
+const descriptionBody =
+    document.getElementById(
+        "descriptionBody"
+    );
+
+
+function updateGalleryNavigation() {
+
+    const item =
+        galleryItems[
+            currentGalleryIndex
+        ];
+
+    currentGallery.textContent =
+        item.number;
+
+    descriptionBody.textContent =
+        item.description;
+
+    prevGallery.style.opacity =
+        currentGalleryIndex === 0
+            ? "0.35"
+            : "1";
+
+    nextGallery.style.opacity =
+        currentGalleryIndex ===
+        galleryItems.length - 1
+            ? "0.35"
+            : "1";
+
+}
+
+
+function openGalleryItem(index) {
+
+    if (
+        index < 0 ||
+        index >= galleryItems.length
+    ) {
+
+        return;
+
+    }
+
+    currentGalleryIndex =
+        index;
+
+    const item =
+        galleryItems[
+            currentGalleryIndex
+        ];
+
+    updateGalleryNavigation();
+
+    showScreen(
+        viewerScreen
+    );
+
+    if (!renderer) {
+
+        initThree();
+
+    }
+
+    loadModel(
+        item.filename
+    );
+
+}
+
+
+galleryButtons.forEach(
+    (button, index) => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                openGalleryItem(
+                    index
+                );
+
+            }
+        );
+
+    }
+);
+
+
+prevGallery.addEventListener(
+    "click",
+    () => {
+
+        openGalleryItem(
+            currentGalleryIndex - 1
+        );
+
+    }
+);
+
+
+nextGallery.addEventListener(
+    "click",
+    () => {
+
+        openGalleryItem(
+            currentGalleryIndex + 1
+        );
+
+    }
+);
+
+
+descriptionHeader.addEventListener(
+    "click",
+    () => {
+
+        descriptionPanel.classList.toggle(
+            "expanded"
+        );
+
+    }
+);
+
+
+updateGalleryNavigation();
+
+
+/* =====================================================
+   SENSORS
+===================================================== */
+
+let orientationActive =
+    false;
+
+
+async function startSensors() {
+
+    orientationActive =
+        true;
+
+}
+
+
+function stopSensors() {
+
+    orientationActive =
+        false;
+
+}
+
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
+function onResize() {
+
+    if (
+        !camera ||
+        !renderer
+    ) {
+
+        return;
+
+    }
+
+    camera.aspect =
+        window.innerWidth /
+        window.innerHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+}
+
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+    if (
+        controls &&
+        controls.enabled
+    ) {
+
+        controls.update();
+
+    }
+
+    if (
+        renderer &&
+        scene &&
+        camera
+    ) {
+
+        renderer.render(
+            scene,
+            camera
+        );
+
+    }
 
 }
 
@@ -1217,3 +2373,4 @@ document.getElementById("finalPrice")
 
 </body>
 </html>
+```
