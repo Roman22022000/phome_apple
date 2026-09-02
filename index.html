@@ -1,309 +1,349 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ru">
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+    <meta
+        name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 maximum-scale=1.0,
+                 user-scalable=no"
+    >
 
-<title>Creature AR</title>
+    <title>Creature 3D AR</title>
 
-<style>
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <style>
 
-html,
-body {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    width: 100%;
-    height: 100%;
 
-    overflow: hidden;
+        html,
+        body {
 
-    background: #050505;
+            width: 100%;
+            height: 100%;
 
-    color: #ffffff;
+            overflow: hidden;
 
-    font-family: Arial, sans-serif;
+            background: #050505;
 
-}
+            font-family: Arial, sans-serif;
 
-#canvas {
+        }
 
-    position: fixed;
 
-    left: 0;
-    top: 0;
+        body {
+            color: white;
+        }
 
-    width: 100%;
-    height: 100%;
 
-    display: block;
+        /* =================================================
+           CANVAS
+        ================================================= */
 
-}
+        #canvas {
 
+            position: fixed;
 
-/* =========================================
-   МЕНЮ
-========================================= */
+            inset: 0;
 
-#menu {
+            width: 100%;
+            height: 100%;
 
-    position: fixed;
+            display: block;
 
-    left: 50%;
-    top: 50%;
+            touch-action: none;
 
-    transform: translate(-50%, -50%);
+        }
 
-    z-index: 20;
 
-    width: 300px;
+        /* =================================================
+           ГЛАВНОЕ МЕНЮ
+        ================================================= */
 
-    background: rgba(10,10,10,0.9);
+        #menu {
 
-    border: 1px solid #333;
+            position: fixed;
 
-    border-radius: 8px;
+            left: 50%;
+            top: 50%;
 
-    padding: 20px;
+            transform:
+                translate(-50%, -50%);
 
-    backdrop-filter: blur(15px);
+            z-index: 10;
 
-}
+            width: 300px;
 
-#menu h1 {
+            padding: 22px;
 
-    font-size: 20px;
+            background:
+                rgba(10, 10, 10, 0.92);
 
-    font-weight: 400;
+            border:
+                1px solid #303030;
 
-    text-align: center;
+            border-radius: 8px;
 
-    margin-bottom: 20px;
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.5);
 
-}
+        }
 
-.menu-button {
 
-    width: 100%;
+        #menuTitle {
 
-    height: 48px;
+            text-align: center;
 
-    margin-top: 10px;
+            font-size: 19px;
 
-    border: 1px solid #333;
+            font-weight: 400;
 
-    background: #151515;
+            margin-bottom: 6px;
 
-    color: white;
+        }
 
-    border-radius: 5px;
 
-    cursor: pointer;
+        #menuModel {
 
-    font-size: 14px;
+            text-align: center;
 
-}
+            color: #666;
 
-.menu-button:hover {
+            font-size: 11px;
 
-    background: #222;
+            margin-bottom: 20px;
 
-}
+        }
 
 
-/* =========================================
-   СТАТУС
-========================================= */
+        .button {
 
-#status {
+            width: 100%;
 
-    position: fixed;
+            height: 46px;
 
-    left: 50%;
-    bottom: 25px;
+            margin-top: 9px;
 
-    transform: translateX(-50%);
+            border:
+                1px solid #333;
 
-    z-index: 30;
+            border-radius: 5px;
 
-    padding: 10px 16px;
+            background: #151515;
 
-    background: rgba(0,0,0,0.75);
+            color: #ddd;
 
-    border: 1px solid #333;
+            font-size: 13px;
 
-    border-radius: 5px;
+            cursor: pointer;
 
-    color: #aaa;
+        }
 
-    font-size: 12px;
 
-    text-align: center;
+        .button:hover {
 
-}
+            background: #202020;
 
+            color: white;
 
-/* =========================================
-   AR ИНТЕРФЕЙС
-========================================= */
+        }
 
-#arPanel {
 
-    position: fixed;
+        .button:disabled {
 
-    left: 15px;
-    top: 15px;
+            opacity: 0.4;
 
-    z-index: 30;
+            cursor: default;
 
-    display: none;
+        }
 
-    width: 250px;
 
-    padding: 14px;
+        /* =================================================
+           STATUS
+        ================================================= */
 
-    background: rgba(0,0,0,0.75);
+        #status {
 
-    border: 1px solid #333;
+            position: fixed;
 
-    border-radius: 7px;
+            left: 50%;
 
-    backdrop-filter: blur(10px);
+            bottom: 20px;
 
-}
+            transform:
+                translateX(-50%);
 
-#arTitle {
+            z-index: 20;
 
-    font-size: 15px;
+            padding:
+                9px 14px;
 
-    margin-bottom: 10px;
+            background:
+                rgba(0, 0, 0, 0.75);
 
-}
+            border:
+                1px solid #292929;
 
-#coordinates {
+            border-radius: 5px;
 
-    font-family: monospace;
+            color: #888;
 
-    font-size: 11px;
+            font-size: 11px;
 
-    color: #888;
+            white-space: nowrap;
 
-    line-height: 1.6;
+        }
 
-}
 
-#exitAR {
+        /* =================================================
+           AR PANEL
+        ================================================= */
 
-    width: 100%;
+        #arPanel {
 
-    margin-top: 12px;
+            position: fixed;
 
-    padding: 9px;
+            left: 15px;
+            top: 15px;
 
-    border: none;
+            z-index: 30;
 
-    border-radius: 4px;
+            width: 230px;
 
-    background: white;
+            padding: 13px;
 
-    color: black;
+            display: none;
 
-    cursor: pointer;
+            background:
+                rgba(0, 0, 0, 0.75);
 
-}
+            border:
+                1px solid #333;
 
+            border-radius: 7px;
 
-/* =========================================
-   LOADING
-========================================= */
+            backdrop-filter:
+                blur(10px);
 
-#loading {
+        }
 
-    position: fixed;
 
-    inset: 0;
+        #arTitle {
 
-    z-index: 100;
+            font-size: 14px;
 
-    display: none;
+            margin-bottom: 10px;
 
-    align-items: center;
+        }
 
-    justify-content: center;
 
-    background: #050505;
+        #position {
 
-    color: white;
+            font-family: monospace;
 
-    font-size: 14px;
+            font-size: 11px;
 
-}
+            line-height: 1.7;
 
-#loading.active {
+            color: #888;
 
-    display: flex;
+        }
 
-}
 
+        #exitAR {
 
-/* =========================================
-   DESKTOP
-========================================= */
+            width: 100%;
 
-#desktopViewer {
+            height: 35px;
 
-    position: fixed;
+            margin-top: 10px;
 
-    inset: 0;
+            border: none;
 
-    z-index: 10;
+            border-radius: 4px;
 
-    display: none;
+            background: white;
 
-}
+            color: black;
 
-#desktopViewer.active {
+            cursor: pointer;
 
-    display: block;
+        }
 
-}
 
-#desktopInfo {
+        /* =================================================
+           LOADING
+        ================================================= */
 
-    position: fixed;
+        #loading {
 
-    top: 15px;
-    left: 15px;
+            position: fixed;
 
-    z-index: 20;
+            inset: 0;
 
-    padding: 12px;
+            z-index: 100;
 
-    background: rgba(0,0,0,0.75);
+            display: flex;
 
-    border: 1px solid #333;
+            align-items: center;
 
-    border-radius: 6px;
+            justify-content: center;
 
-    font-size: 12px;
+            background: #050505;
 
-    color: #aaa;
+            color: white;
 
-}
+            font-size: 13px;
 
-</style>
+        }
+
+
+        #loading.hidden {
+
+            display: none;
+
+        }
+
+
+        /* =================================================
+           MOBILE
+        ================================================= */
+
+        @media (max-width: 600px) {
+
+            #menu {
+
+                width:
+                    calc(100% - 40px);
+
+                max-width: 300px;
+
+            }
+
+
+            #arPanel {
+
+                left: 10px;
+                right: 10px;
+
+                width: auto;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -311,100 +351,16 @@ body {
 <body>
 
 
-<!-- =========================================
-     THREE.JS CANVAS
-========================================= -->
+<!-- =====================================================
+     CANVAS
+===================================================== -->
 
 <canvas id="canvas"></canvas>
 
 
-<!-- =========================================
-     ГЛАВНОЕ МЕНЮ
-========================================= -->
-
-<div id="menu">
-
-    <h1>
-        CREATURE 3D
-    </h1>
-
-    <button
-        class="menu-button"
-        id="startAR">
-
-        Запустить AR
-
-    </button>
-
-    <button
-        class="menu-button"
-        id="startDesktop">
-
-        Открыть 3D сцену
-
-    </button>
-
-</div>
-
-
-<!-- =========================================
-     AR PANEL
-========================================= -->
-
-<div id="arPanel">
-
-    <div id="arTitle">
-        CREATURE.GLB
-    </div>
-
-    <div id="coordinates">
-
-        X: 0.000<br>
-        Y: 0.000<br>
-        Z: 0.000<br>
-        RX: 0.000<br>
-        RY: 0.000<br>
-        RZ: 0.000
-
-    </div>
-
-    <button id="exitAR">
-        Завершить AR
-    </button>
-
-</div>
-
-
-<!-- =========================================
-     DESKTOP
-========================================= -->
-
-<div id="desktopViewer">
-
-    <div id="desktopInfo">
-
-        Вращение: мышь<br>
-        Приближение: колесо
-
-    </div>
-
-</div>
-
-
-<!-- =========================================
-     STATUS
-========================================= -->
-
-<div id="status">
-
-    Загрузка модели...
-
-</div>
-
-
-<!-- =========================================
+<!-- =====================================================
      LOADING
-========================================= -->
+===================================================== -->
 
 <div id="loading">
 
@@ -413,19 +369,119 @@ body {
 </div>
 
 
-<!-- =========================================
+<!-- =====================================================
+     ГЛАВНОЕ МЕНЮ
+===================================================== -->
+
+<div id="menu">
+
+    <div id="menuTitle">
+        3D SCENE
+    </div>
+
+    <div id="menuModel">
+        creature.glb
+    </div>
+
+
+    <button
+        id="startAR"
+        class="button">
+
+        Запустить AR
+
+    </button>
+
+
+    <button
+        id="start3D"
+        class="button">
+
+        Открыть 3D сцену
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     AR PANEL
+===================================================== -->
+
+<div id="arPanel">
+
+    <div id="arTitle">
+        CREATURE.GLB
+    </div>
+
+
+    <div id="position">
+
+        X: 0.000<br>
+        Y: 0.000<br>
+        Z: 0.000<br>
+
+        RX: 0.000<br>
+        RY: 0.000<br>
+        RZ: 0.000
+
+    </div>
+
+
+    <button id="exitAR">
+
+        Завершить AR
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     STATUS
+===================================================== -->
+
+<div id="status">
+
+    Загрузка модели...
+
+</div>
+
+
+<!-- =====================================================
      THREE.JS
-========================================= -->
+===================================================== -->
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.min.js"></script>
+<script type="importmap">
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.180.0/examples/js/loaders/GLTFLoader.js"></script>
+{
+    "imports": {
+
+        "three":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+
+        "three/addons/":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+
+    }
+}
+
+</script>
 
 
-<script>
+<script type="module">
+
+import * as THREE
+    from "three";
+
+import {
+    GLTFLoader
+} from
+    "three/addons/loaders/GLTFLoader.js";
+
 
 ////////////////////////////////////////////////////////////
-// ПУТЬ К МОДЕЛИ
+// НАСТРОЙКИ
 ////////////////////////////////////////////////////////////
 
 const MODEL_URL =
@@ -442,29 +498,26 @@ const canvas =
 const menu =
     document.getElementById("menu");
 
-const status =
-    document.getElementById("status");
-
 const loading =
     document.getElementById("loading");
 
-const arPanel =
-    document.getElementById("arPanel");
-
-const coordinates =
-    document.getElementById("coordinates");
+const status =
+    document.getElementById("status");
 
 const startAR =
     document.getElementById("startAR");
 
-const startDesktop =
-    document.getElementById("startDesktop");
+const start3D =
+    document.getElementById("start3D");
+
+const arPanel =
+    document.getElementById("arPanel");
 
 const exitAR =
     document.getElementById("exitAR");
 
-const desktopViewer =
-    document.getElementById("desktopViewer");
+const positionElement =
+    document.getElementById("position");
 
 
 ////////////////////////////////////////////////////////////
@@ -478,9 +531,7 @@ const renderer =
 
         antialias: true,
 
-        alpha: true,
-
-        preserveDrawingBuffer: false
+        alpha: true
 
     });
 
@@ -525,7 +576,7 @@ const scene =
 const camera =
     new THREE.PerspectiveCamera(
 
-        70,
+        60,
 
         window.innerWidth /
         window.innerHeight,
@@ -538,7 +589,7 @@ const camera =
 
 
 ////////////////////////////////////////////////////////////
-// СВЕТ
+// LIGHT
 ////////////////////////////////////////////////////////////
 
 const ambientLight =
@@ -546,9 +597,9 @@ const ambientLight =
 
         0xffffff,
 
-        0x444444,
+        0x222222,
 
-        3
+        2.5
 
     );
 
@@ -563,17 +614,15 @@ const directionalLight =
 
         0xffffff,
 
-        4
+        3
 
     );
 
 
 directionalLight.position.set(
-
     5,
     10,
     5
-
 );
 
 
@@ -596,14 +645,18 @@ scene.add(
 
 
 ////////////////////////////////////////////////////////////
-// МОДЕЛЬ
+// MODEL
 ////////////////////////////////////////////////////////////
 
 let model = null;
 
 
+////////////////////////////////////////////////////////////
+// LOADER
+////////////////////////////////////////////////////////////
+
 const loader =
-    new THREE.GLTFLoader();
+    new GLTFLoader();
 
 
 ////////////////////////////////////////////////////////////
@@ -622,31 +675,27 @@ loader.load(
 
 
         ////////////////////////////////////////////////////
-        // РАЗМЕР
+        // ПОЛУЧАЕМ РАЗМЕР
         ////////////////////////////////////////////////////
 
-        const originalBox =
+        const box =
             new THREE.Box3()
-                .setFromObject(
-                    model
-                );
+                .setFromObject(model);
 
 
-        const originalSize =
+        const size =
             new THREE.Vector3();
 
 
-        originalBox.getSize(
-            originalSize
-        );
+        box.getSize(size);
 
 
         const maxSize =
             Math.max(
 
-                originalSize.x,
-                originalSize.y,
-                originalSize.z
+                size.x,
+                size.y,
+                size.z
 
             );
 
@@ -657,47 +706,51 @@ loader.load(
 
         if (maxSize > 0) {
 
+            const targetSize = 2;
+
             model.scale.setScalar(
-                2 / maxSize
+
+                targetSize /
+                maxSize
+
             );
 
         }
 
 
         ////////////////////////////////////////////////////
-        // ЦЕНТР
+        // ЦЕНТРИРОВАНИЕ ПО X/Z
         ////////////////////////////////////////////////////
 
-        const box =
+        const scaledBox =
             new THREE.Box3()
-                .setFromObject(
-                    model
-                );
+                .setFromObject(model);
 
 
         const center =
             new THREE.Vector3();
 
 
-        box.getCenter(
+        scaledBox.getCenter(
             center
         );
 
 
-        model.position.sub(
-            center
-        );
+        model.position.x -=
+            center.x;
+
+
+        model.position.z -=
+            center.z;
 
 
         ////////////////////////////////////////////////////
-        // НИЗ МОДЕЛИ
+        // НИЗ МОДЕЛИ = Y 0
         ////////////////////////////////////////////////////
 
         const finalBox =
             new THREE.Box3()
-                .setFromObject(
-                    model
-                );
+                .setFromObject(model);
 
 
         model.position.y -=
@@ -705,7 +758,7 @@ loader.load(
 
 
         ////////////////////////////////////////////////////
-        // МЕШИ
+        // МАТЕРИАЛЫ И МЕШИ
         ////////////////////////////////////////////////////
 
         model.traverse(
@@ -730,7 +783,7 @@ loader.load(
 
 
         ////////////////////////////////////////////////////
-        // ДОБАВЛЯЕМ
+        // ДОБАВЛЯЕМ В WORLD
         ////////////////////////////////////////////////////
 
         world.add(
@@ -738,16 +791,24 @@ loader.load(
         );
 
 
+        ////////////////////////////////////////////////////
+        // ЗАГРУЗКА ЗАВЕРШЕНА
+        ////////////////////////////////////////////////////
+
+        loading.classList.add(
+            "hidden"
+        );
+
+
         status.innerText =
             "CREATURE.GLB загружена";
-
 
     },
 
 
     function(xhr) {
 
-        if (xhr.total) {
+        if (xhr.total > 0) {
 
             const percent =
                 Math.round(
@@ -760,7 +821,7 @@ loader.load(
 
 
             status.innerText =
-                "Загрузка модели: " +
+                "Загрузка: " +
                 percent +
                 "%";
 
@@ -772,12 +833,17 @@ loader.load(
     function(error) {
 
         console.error(
+            "GLB ERROR:",
             error
         );
 
 
-        status.innerText =
+        loading.innerText =
             "Ошибка загрузки creature.glb";
+
+
+        status.innerText =
+            "Не удалось загрузить модель";
 
     }
 
@@ -785,10 +851,10 @@ loader.load(
 
 
 ////////////////////////////////////////////////////////////
-// WEBXR ПРОВЕРКА
+// ПРОВЕРКА AR
 ////////////////////////////////////////////////////////////
 
-async function checkARSupport() {
+async function checkAR() {
 
     if (
         !navigator.xr
@@ -798,7 +864,7 @@ async function checkARSupport() {
             true;
 
         startAR.innerText =
-            "AR не поддерживается";
+            "WebXR недоступен";
 
         return;
 
@@ -819,7 +885,7 @@ async function checkARSupport() {
                 true;
 
             startAR.innerText =
-                "AR недоступен";
+                "AR не поддерживается";
 
         }
 
@@ -827,16 +893,17 @@ async function checkARSupport() {
 
     catch(error) {
 
-        console.error(
-            error
-        );
+        console.error(error);
+
+        startAR.disabled =
+            true;
 
     }
 
 }
 
 
-checkARSupport();
+checkAR();
 
 
 ////////////////////////////////////////////////////////////
@@ -849,17 +916,10 @@ startAR.addEventListener(
 
     async function() {
 
-        if (!navigator.xr) {
-
-            return;
-
-        }
-
-
         if (!model) {
 
             status.innerText =
-                "Модель ещё загружается";
+                "Подождите, модель ещё загружается.";
 
             return;
 
@@ -869,7 +929,7 @@ startAR.addEventListener(
         try {
 
             //////////////////////////////////////////////////
-            // AR SESSION
+            // СОЗДАЁМ AR SESSION
             //////////////////////////////////////////////////
 
             const session =
@@ -887,8 +947,7 @@ startAR.addEventListener(
 
                         optionalFeatures: [
 
-                            "hit-test",
-                            "dom-overlay"
+                            "hit-test"
 
                         ]
 
@@ -907,7 +966,7 @@ startAR.addEventListener(
 
 
             //////////////////////////////////////////////////
-            // SESSION
+            // ПОДКЛЮЧАЕМ SESSION
             //////////////////////////////////////////////////
 
             await renderer.xr.setSession(
@@ -916,7 +975,14 @@ startAR.addEventListener(
 
 
             //////////////////////////////////////////////////
-            // ПЕРВОНАЧАЛЬНОЕ ПОЛОЖЕНИЕ
+            // МОДЕЛЬ ПЕРЕД ПОЛЬЗОВАТЕЛЕМ
+            //
+            // В XR координатах:
+            //
+            // X = вправо
+            // Y = вверх
+            // Z = назад
+            //
             //////////////////////////////////////////////////
 
             model.position.set(
@@ -929,7 +995,7 @@ startAR.addEventListener(
 
 
             //////////////////////////////////////////////////
-            // UI
+            // МЕНЮ СКРЫВАЕМ
             //////////////////////////////////////////////////
 
             menu.style.display =
@@ -941,11 +1007,11 @@ startAR.addEventListener(
 
 
             status.innerText =
-                "AR запущен. Ходите вокруг модели.";
+                "AR активен. Ходите вокруг модели.";
 
 
             //////////////////////////////////////////////////
-            // ЗАВЕРШЕНИЕ AR
+            // AR END
             //////////////////////////////////////////////////
 
             session.addEventListener(
@@ -954,15 +1020,13 @@ startAR.addEventListener(
 
                 function() {
 
-                    renderer.xr.setSession(
-                        null
-                    );
-
                     arPanel.style.display =
                         "none";
 
+
                     menu.style.display =
                         "block";
+
 
                     status.innerText =
                         "AR завершён";
@@ -976,6 +1040,7 @@ startAR.addEventListener(
         catch(error) {
 
             console.error(
+                "AR ERROR:",
                 error
             );
 
@@ -1017,10 +1082,10 @@ exitAR.addEventListener(
 
 
 ////////////////////////////////////////////////////////////
-// ПОЗИЦИЯ ТЕЛЕФОНА
+// ПОЛУЧЕНИЕ ПОЗИЦИИ ТЕЛЕФОНА
 ////////////////////////////////////////////////////////////
 
-function updateXRData() {
+function updateXRPosition() {
 
     if (
         !renderer.xr.isPresenting
@@ -1031,6 +1096,10 @@ function updateXRData() {
     }
 
 
+    ////////////////////////////////////////////////////////
+    // XR CAMERA
+    ////////////////////////////////////////////////////////
+
     const xrCamera =
         renderer.xr.getCamera();
 
@@ -1039,109 +1108,133 @@ function updateXRData() {
     // ПОЗИЦИЯ
     ////////////////////////////////////////////////////////
 
-    const position =
-        xrCamera.position;
+    const x =
+        xrCamera.position.x;
+
+
+    const y =
+        xrCamera.position.y;
+
+
+    const z =
+        xrCamera.position.z;
 
 
     ////////////////////////////////////////////////////////
     // ОРИЕНТАЦИЯ
     ////////////////////////////////////////////////////////
 
-    const rotation =
-        xrCamera.rotation;
+    const rx =
+        xrCamera.rotation.x;
+
+
+    const ry =
+        xrCamera.rotation.y;
+
+
+    const rz =
+        xrCamera.rotation.z;
 
 
     ////////////////////////////////////////////////////////
-    // ПОКАЗЫВАЕМ ДАННЫЕ
+    // ПОКАЗЫВАЕМ
     ////////////////////////////////////////////////////////
 
-    coordinates.innerHTML =
+    positionElement.innerHTML =
 
         "X: " +
-        position.x.toFixed(3) +
+        x.toFixed(3) +
 
         "<br>" +
 
         "Y: " +
-        position.y.toFixed(3) +
+        y.toFixed(3) +
 
         "<br>" +
 
         "Z: " +
-        position.z.toFixed(3) +
+        z.toFixed(3) +
 
         "<br>" +
 
         "RX: " +
-        rotation.x.toFixed(3) +
+        rx.toFixed(3) +
 
         "<br>" +
 
         "RY: " +
-        rotation.y.toFixed(3) +
+        ry.toFixed(3) +
 
         "<br>" +
 
         "RZ: " +
-        rotation.z.toFixed(3);
+        rz.toFixed(3);
 
 }
 
 
 ////////////////////////////////////////////////////////////
-// DESKTOP РЕЖИМ
+// DESKTOP CAMERA
 ////////////////////////////////////////////////////////////
+
+let desktopMode =
+    false;
+
 
 let mouseDown =
     false;
 
-let mouseX =
+
+let lastMouseX =
     0;
 
-let mouseY =
+
+let lastMouseY =
     0;
 
-let rotationY =
+
+let angleX =
     0;
 
-let rotationX =
+
+let angleY =
     0;
 
-let distance =
+
+let cameraDistance =
     5;
 
 
-startDesktop.addEventListener(
+////////////////////////////////////////////////////////////
+// ОТКРЫТЬ ОБЫЧНУЮ 3D СЦЕНУ
+////////////////////////////////////////////////////////////
+
+start3D.addEventListener(
 
     "click",
 
     function() {
 
+        if (!model) {
+
+            status.innerText =
+                "Модель ещё загружается.";
+
+            return;
+
+        }
+
+
+        desktopMode =
+            true;
+
+
         menu.style.display =
             "none";
 
-        desktopViewer.classList.add(
-            "active"
-        );
 
         status.innerText =
-            "3D сцена открыта";
-
-        camera.position.set(
-
-            0,
-            1.5,
-            distance
-
-        );
-
-        camera.lookAt(
-
-            0,
-            1,
-            0
-
-        );
+            "3D сцена. Мышь — вращение.";
 
     }
 
@@ -1158,13 +1251,25 @@ canvas.addEventListener(
 
     function(event) {
 
+        if (
+            !desktopMode ||
+            renderer.xr.isPresenting
+        ) {
+
+            return;
+
+        }
+
+
         mouseDown =
             true;
 
-        mouseX =
+
+        lastMouseX =
             event.clientX;
 
-        mouseY =
+
+        lastMouseY =
             event.clientY;
 
     }
@@ -1200,7 +1305,10 @@ window.addEventListener(
 
     function(event) {
 
-        if (!mouseDown) {
+        if (
+            !mouseDown ||
+            renderer.xr.isPresenting
+        ) {
 
             return;
 
@@ -1209,40 +1317,40 @@ window.addEventListener(
 
         const dx =
             event.clientX -
-            mouseX;
+            lastMouseX;
 
 
         const dy =
             event.clientY -
-            mouseY;
+            lastMouseY;
 
 
-        rotationY -=
+        angleY -=
             dx * 0.005;
 
 
-        rotationX -=
+        angleX -=
             dy * 0.005;
 
 
-        rotationX =
+        angleX =
             Math.max(
 
                 -1.4,
 
                 Math.min(
                     1.4,
-                    rotationX
+                    angleX
                 )
 
             );
 
 
-        mouseX =
+        lastMouseX =
             event.clientX;
 
 
-        mouseY =
+        lastMouseY =
             event.clientY;
 
 
@@ -1254,7 +1362,7 @@ window.addEventListener(
 
 
 ////////////////////////////////////////////////////////////
-// MOUSE WHEEL
+// WHEEL
 ////////////////////////////////////////////////////////////
 
 canvas.addEventListener(
@@ -1263,18 +1371,28 @@ canvas.addEventListener(
 
     function(event) {
 
-        distance +=
+        if (
+            !desktopMode ||
+            renderer.xr.isPresenting
+        ) {
+
+            return;
+
+        }
+
+
+        cameraDistance +=
             event.deltaY * 0.01;
 
 
-        distance =
+        cameraDistance =
             Math.max(
 
                 1,
 
                 Math.min(
                     20,
-                    distance
+                    cameraDistance
                 )
 
             );
@@ -1294,22 +1412,18 @@ canvas.addEventListener(
 function updateDesktopCamera() {
 
     camera.position.x =
-        Math.sin(
-            rotationY
-        ) *
-        distance;
+        Math.sin(angleY) *
+        cameraDistance;
 
 
     camera.position.z =
-        Math.cos(
-            rotationY
-        ) *
-        distance;
+        Math.cos(angleY) *
+        cameraDistance;
 
 
     camera.position.y =
         1.5 +
-        rotationX * 2;
+        angleX * 2;
 
 
     camera.lookAt(
@@ -1331,7 +1445,7 @@ renderer.setAnimationLoop(
 
     function() {
 
-        updateXRData();
+        updateXRPosition();
 
 
         renderer.render(
@@ -1380,3 +1494,4 @@ window.addEventListener(
 </body>
 
 </html>
+```
