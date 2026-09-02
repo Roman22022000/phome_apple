@@ -1,411 +1,597 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-    <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>3D Gallery</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
 
-    <style>
+<title>3D Scene</title>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<style>
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #050505;
-            color: #fff;
-            font-family: Arial, sans-serif;
-        }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        #app {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
+html,
+body {
 
-        /* =========================
-           МЕНЮ
-        ========================= */
+    width: 100%;
+    height: 100%;
 
-        #menu {
-            position: fixed;
+    overflow: hidden;
 
-            left: 0;
-            top: 0;
+    background: #050505;
 
-            width: 220px;
-            height: 100%;
+    color: white;
 
-            background: #0b0b0b;
+    font-family: Arial, sans-serif;
+}
 
-            border-right: 1px solid #222;
 
-            z-index: 100;
-        }
+/* =====================================================
+   ОСНОВНОЙ ЭКРАН
+===================================================== */
 
-        #menuTitle {
-            height: 70px;
+#home {
 
-            display: flex;
-            align-items: center;
+    position: fixed;
 
-            padding-left: 22px;
+    inset: 0;
 
-            font-size: 18px;
+    display: flex;
 
-            border-bottom: 1px solid #222;
-        }
+    align-items: center;
 
-        .menuButton {
-            width: 100%;
+    justify-content: center;
 
-            height: 50px;
+    background: #050505;
+}
 
-            background: transparent;
 
-            border: none;
+/* =====================================================
+   ЦЕНТРАЛЬНОЕ МЕНЮ
+===================================================== */
 
-            border-bottom: 1px solid #1c1c1c;
+#mainMenu {
 
-            color: #aaa;
+    width: 300px;
 
-            text-align: left;
+    background: #0c0c0c;
 
-            padding-left: 22px;
+    border: 1px solid #292929;
 
-            cursor: pointer;
+    border-radius: 8px;
 
-            font-size: 14px;
-        }
+    overflow: hidden;
 
-        .menuButton:hover {
-            background: #151515;
-            color: #fff;
-        }
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.5);
+}
 
-        .menuButton.active {
-            background: #1b1b1b;
-            color: #fff;
-        }
 
-        /* =========================
-           ОСНОВНАЯ ОБЛАСТЬ
-        ========================= */
+#menuTitle {
 
-        #content {
-            position: absolute;
+    height: 65px;
 
-            left: 220px;
-            top: 0;
+    display: flex;
 
-            right: 0;
-            bottom: 0;
-        }
+    align-items: center;
 
-        .page {
-            width: 100%;
-            height: 100%;
+    justify-content: center;
 
-            display: none;
-        }
+    border-bottom: 1px solid #222;
 
-        .page.active {
-            display: block;
-        }
+    font-size: 18px;
 
-        /* =========================
-           ГАЛЕРЕЯ
-        ========================= */
+    letter-spacing: 1px;
+}
 
-        #gallery {
-            padding: 35px;
 
-            overflow-y: auto;
-        }
+.menuButton {
 
-        #galleryTitle {
-            font-size: 24px;
+    width: 100%;
 
-            margin-bottom: 25px;
-        }
+    height: 55px;
 
-        #sceneList {
-            display: grid;
+    border: none;
 
-            grid-template-columns:
-                repeat(auto-fill, minmax(220px, 1fr));
+    border-bottom: 1px solid #1e1e1e;
 
-            gap: 15px;
-        }
+    background: #0c0c0c;
 
-        .sceneCard {
-            min-height: 120px;
+    color: #aaa;
 
-            padding: 20px;
+    cursor: pointer;
 
-            background: #101010;
+    font-size: 14px;
 
-            border: 1px solid #252525;
+    transition: background 0.15s,
+                color 0.15s;
+}
 
-            cursor: pointer;
 
-            transition: 0.15s;
-        }
+.menuButton:last-child {
 
-        .sceneCard:hover {
-            background: #181818;
+    border-bottom: none;
 
-            border-color: #555;
-        }
+}
 
-        .sceneNumber {
-            font-size: 11px;
 
-            color: #666;
+.menuButton:hover {
 
-            margin-bottom: 12px;
-        }
+    background: #181818;
 
-        .sceneName {
-            font-size: 15px;
+    color: white;
 
-            color: #ddd;
-        }
+}
 
-        /* =========================
-           3D VIEWER
-        ========================= */
 
-        #viewer {
-            position: relative;
+/* =====================================================
+   ГАЛЕРЕЯ
+===================================================== */
 
-            width: 100%;
-            height: 100%;
-        }
+#gallery {
 
-        #canvas {
-            width: 100%;
-            height: 100%;
+    position: fixed;
 
-            display: block;
-        }
+    inset: 0;
 
-        #viewerPanel {
-            position: absolute;
+    display: none;
 
-            top: 20px;
-            left: 20px;
+    background: #050505;
 
-            padding: 15px;
+    overflow-y: auto;
 
-            background: rgba(0,0,0,0.75);
+    padding: 40px;
+}
 
-            border: 1px solid #333;
 
-            z-index: 10;
+#gallery.active {
 
-            min-width: 220px;
-        }
+    display: block;
 
-        #viewerName {
-            font-size: 15px;
+}
 
-            margin-bottom: 12px;
-        }
 
-        #backButton {
-            width: 100%;
+#galleryHeader {
 
-            padding: 9px;
+    display: flex;
 
-            background: #fff;
+    align-items: center;
 
-            color: #000;
+    justify-content: space-between;
 
-            border: none;
+    margin-bottom: 30px;
+}
 
-            cursor: pointer;
-        }
 
-        #status {
-            margin-top: 10px;
+#galleryTitle {
 
-            font-size: 11px;
+    font-size: 24px;
 
-            color: #777;
-        }
+    font-weight: 400;
+}
 
-        /* =========================
-           HOME
-        ========================= */
 
-        #home {
-            display: none;
+.backButton {
 
-            align-items: center;
-            justify-content: center;
+    padding: 10px 18px;
 
-            font-size: 24px;
-        }
+    border: 1px solid #333;
 
-        #home.active {
-            display: flex;
-        }
+    background: #101010;
 
-        /* =========================
-           MOBILE
-        ========================= */
+    color: #aaa;
 
-        @media (max-width: 700px) {
+    border-radius: 5px;
 
-            #menu {
-                width: 70px;
-            }
+    cursor: pointer;
+}
 
-            #menuTitle {
-                justify-content: center;
-                padding: 0;
 
-                font-size: 0;
-            }
+.backButton:hover {
 
-            #menuTitle::after {
-                content: "3D";
-                font-size: 16px;
-            }
+    color: white;
 
-            .menuButton {
-                padding: 0;
+    background: #181818;
 
-                text-align: center;
+}
 
-                font-size: 11px;
-            }
 
-            #content {
-                left: 70px;
-            }
+/* =====================================================
+   КАРТОЧКА СЦЕНЫ
+===================================================== */
 
-            #gallery {
-                padding: 20px;
-            }
+#sceneList {
 
-            #sceneList {
-                grid-template-columns:
-                    repeat(auto-fill, minmax(150px, 1fr));
-            }
+    display: grid;
 
-        }
+    grid-template-columns:
+        repeat(auto-fill, minmax(220px, 1fr));
 
-    </style>
+    gap: 18px;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+}
+
+
+.sceneCard {
+
+    min-height: 150px;
+
+    padding: 22px;
+
+    background: #101010;
+
+    border: 1px solid #272727;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s,
+        border 0.15s,
+        transform 0.15s;
+}
+
+
+.sceneCard:hover {
+
+    background: #181818;
+
+    border-color: #555;
+
+    transform: translateY(-2px);
+
+}
+
+
+.sceneNumber {
+
+    color: #666;
+
+    font-size: 11px;
+
+    margin-bottom: 20px;
+}
+
+
+.sceneName {
+
+    font-size: 17px;
+
+    color: #ddd;
+}
+
+
+/* =====================================================
+   ОТДЕЛЬНОЕ ОКНО 3D СЦЕНЫ
+===================================================== */
+
+#viewer {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    background: #050505;
+
+    z-index: 100;
+}
+
+
+#viewer.active {
+
+    display: block;
+
+}
+
+
+#canvas {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+}
+
+
+/* =====================================================
+   ПАНЕЛЬ СЦЕНЫ
+===================================================== */
+
+#viewerPanel {
+
+    position: absolute;
+
+    left: 20px;
+
+    top: 20px;
+
+    z-index: 10;
+
+    min-width: 230px;
+
+    padding: 15px;
+
+    background: rgba(0,0,0,0.78);
+
+    border: 1px solid #333;
+
+    border-radius: 7px;
+
+    backdrop-filter: blur(10px);
+}
+
+
+#viewerName {
+
+    font-size: 16px;
+
+    margin-bottom: 12px;
+}
+
+
+#viewerStatus {
+
+    color: #777;
+
+    font-size: 11px;
+
+    margin-top: 10px;
+}
+
+
+#closeViewer {
+
+    width: 100%;
+
+    padding: 9px;
+
+    border: none;
+
+    border-radius: 4px;
+
+    background: white;
+
+    color: black;
+
+    cursor: pointer;
+}
+
+
+#closeViewer:hover {
+
+    background: #ddd;
+}
+
+
+/* =====================================================
+   ЗАГРУЗКА
+===================================================== */
+
+#loading {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 500;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #050505;
+
+    color: white;
+
+    font-size: 14px;
+}
+
+
+#loading.active {
+
+    display: flex;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px) {
+
+    #mainMenu {
+
+        width: calc(100% - 40px);
+
+        max-width: 300px;
+
+    }
+
+    #gallery {
+
+        padding: 20px;
+
+    }
+
+    #galleryHeader {
+
+        align-items: flex-start;
+
+        gap: 15px;
+
+        flex-direction: column;
+
+    }
+
+    #sceneList {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    #viewerPanel {
+
+        left: 10px;
+
+        top: 10px;
+
+        right: 10px;
+
+        min-width: 0;
+
+    }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-<div id="app">
 
-    <!-- =========================
-         МЕНЮ
-    ========================= -->
+<!-- =====================================================
+     ГЛАВНОЕ МЕНЮ
+===================================================== -->
 
-    <aside id="menu">
+<div id="home">
+
+    <div id="mainMenu">
 
         <div id="menuTitle">
             3D VIEWER
         </div>
 
         <button
-            class="menuButton active"
-            data-page="home">
-            Главная
-        </button>
-
-        <button
             class="menuButton"
-            data-page="gallery">
+            id="openGallery">
+
             Галерея
+
         </button>
 
-    </aside>
-
-
-    <!-- =========================
-         CONTENT
-    ========================= -->
-
-    <main id="content">
-
-        <!-- ГЛАВНАЯ -->
-
-        <section
-            id="home"
-            class="page active">
-
-            3D Scene Viewer
-
-        </section>
-
-
-        <!-- ГАЛЕРЕЯ -->
-
-        <section
-            id="gallery"
-            class="page">
-
-            <div id="galleryTitle">
-                Галерея 3D сцен
-            </div>
-
-            <div id="sceneList">
-
-                <!-- Сюда автоматически добавляются сцены -->
-
-            </div>
-
-        </section>
-
-
-        <!-- VIEWER -->
-
-        <section
-            id="viewer"
-            class="page">
-
-            <canvas id="canvas"></canvas>
-
-            <div id="viewerPanel">
-
-                <div id="viewerName">
-                    3D Scene
-                </div>
-
-                <button id="backButton">
-                    ← Назад в галерею
-                </button>
-
-                <div id="status">
-                    Готово
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
+    </div>
 
 </div>
 
 
-<!-- THREE.JS -->
+<!-- =====================================================
+     ГАЛЕРЕЯ
+===================================================== -->
+
+<div id="gallery">
+
+    <div id="galleryHeader">
+
+        <div id="galleryTitle">
+            Галерея 3D сцен
+        </div>
+
+        <button
+            class="backButton"
+            id="backHome">
+
+            ← Меню
+
+        </button>
+
+    </div>
+
+
+    <div id="sceneList">
+
+        <!-- CREATURE -->
+
+        <div
+            class="sceneCard"
+            id="creatureCard">
+
+            <div class="sceneNumber">
+                SCENE 01
+            </div>
+
+            <div class="sceneName">
+                Creature
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ОТДЕЛЬНОЕ ОКНО 3D
+===================================================== -->
+
+<div id="viewer">
+
+    <canvas id="canvas"></canvas>
+
+
+    <div id="viewerPanel">
+
+        <div id="viewerName">
+            Creature
+        </div>
+
+        <button id="closeViewer">
+
+            ← Назад в галерею
+
+        </button>
+
+        <div id="viewerStatus">
+
+            Загрузка...
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div id="loading">
+
+    Загрузка 3D сцены...
+
+</div>
+
+
+<!-- =====================================================
+     THREE.JS
+===================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.min.js"></script>
 
@@ -415,208 +601,92 @@
 <script>
 
 ////////////////////////////////////////////////////////////
-// НАСТРОЙКИ
+// ПУТЬ К CREATURE.GLB
 ////////////////////////////////////////////////////////////
 
-const SCENES_PATH = "./scenes/";
-
-
-////////////////////////////////////////////////////////////
-// ДОСТУПНЫЕ 3D СЦЕНЫ
-////////////////////////////////////////////////////////////
-//
-// Добавляй сюда новые файлы:
-//
-// "./scenes/scene4.glb"
-// "./scenes/scene5.glb"
-//
-//
-
-const scenes = [
-
-    {
-        name: "Сцена 01",
-        file: "scene1.glb"
-    },
-
-    {
-        name: "Сцена 02",
-        file: "scene2.glb"
-    },
-
-    {
-        name: "Сцена 03",
-        file: "scene3.glb"
-    }
-
-];
+const CREATURE_URL =
+    "https://raw.githubusercontent.com/Roman22022000/phome_apple/main/creature.glb";
 
 
 ////////////////////////////////////////////////////////////
-// ЭЛЕМЕНТЫ
+// HTML
 ////////////////////////////////////////////////////////////
 
-const pages =
-    document.querySelectorAll(".page");
+const home =
+    document.getElementById("home");
 
+const gallery =
+    document.getElementById("gallery");
 
-const menuButtons =
-    document.querySelectorAll(".menuButton");
+const viewer =
+    document.getElementById("viewer");
 
+const openGallery =
+    document.getElementById("openGallery");
 
-const sceneList =
-    document.getElementById("sceneList");
+const backHome =
+    document.getElementById("backHome");
 
+const creatureCard =
+    document.getElementById("creatureCard");
 
-const viewerName =
-    document.getElementById("viewerName");
+const closeViewer =
+    document.getElementById("closeViewer");
 
+const viewerStatus =
+    document.getElementById("viewerStatus");
 
-const status =
-    document.getElementById("status");
+const loading =
+    document.getElementById("loading");
 
-
-const backButton =
-    document.getElementById("backButton");
-
-
-////////////////////////////////////////////////////////////
-// ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
-////////////////////////////////////////////////////////////
-
-function showPage(id) {
-
-    pages.forEach(
-        page => {
-
-            page.classList.remove("active");
-
-        }
-    );
-
-
-    const target =
-        document.getElementById(id);
-
-
-    if (target) {
-
-        target.classList.add("active");
-
-    }
-
-
-    menuButtons.forEach(
-        button => {
-
-            button.classList.remove("active");
-
-            if (
-                button.dataset.page === id
-            ) {
-
-                button.classList.add("active");
-
-            }
-
-        }
-    );
-
-}
+const canvas =
+    document.getElementById("canvas");
 
 
 ////////////////////////////////////////////////////////////
-// МЕНЮ
+// ОТКРЫТЬ ГАЛЕРЕЮ
 ////////////////////////////////////////////////////////////
 
-menuButtons.forEach(
-    button => {
+openGallery.addEventListener(
+    "click",
+    function() {
 
-        button.addEventListener(
-            "click",
-            function() {
+        home.style.display = "none";
 
-                showPage(
-                    button.dataset.page
-                );
-
-            }
-        );
+        gallery.classList.add("active");
 
     }
 );
 
 
 ////////////////////////////////////////////////////////////
-// СОЗДАНИЕ КАРТОЧЕК ГАЛЕРЕИ
+// НАЗАД В МЕНЮ
 ////////////////////////////////////////////////////////////
 
-function createGallery() {
+backHome.addEventListener(
+    "click",
+    function() {
 
-    sceneList.innerHTML = "";
+        gallery.classList.remove("active");
 
+        home.style.display = "flex";
 
-    scenes.forEach(
-        function(scene, index) {
-
-            const card =
-                document.createElement("div");
-
-
-            card.className =
-                "sceneCard";
-
-
-            card.innerHTML = `
-
-                <div class="sceneNumber">
-                    SCENE ${String(index + 1).padStart(2, "0")}
-                </div>
-
-                <div class="sceneName">
-                    ${scene.name}
-                </div>
-
-            `;
-
-
-            card.addEventListener(
-                "click",
-                function() {
-
-                    loadScene(scene);
-
-                }
-            );
-
-
-            sceneList.appendChild(
-                card
-            );
-
-        }
-    );
-
-}
-
-
-createGallery();
+    }
+);
 
 
 ////////////////////////////////////////////////////////////
 // THREE.JS
 ////////////////////////////////////////////////////////////
 
-const canvas =
-    document.getElementById("canvas");
-
-
 const renderer =
     new THREE.WebGLRenderer({
 
         canvas: canvas,
 
-        antialias: true
+        antialias: true,
+
+        alpha: false
 
     });
 
@@ -640,19 +710,19 @@ renderer.outputColorSpace =
 
 
 ////////////////////////////////////////////////////////////
-// СЦЕНА
+// SCENE
 ////////////////////////////////////////////////////////////
 
-const threeScene =
+const scene =
     new THREE.Scene();
 
 
-threeScene.background =
+scene.background =
     new THREE.Color(0x050505);
 
 
 ////////////////////////////////////////////////////////////
-// КАМЕРА
+// CAMERA
 ////////////////////////////////////////////////////////////
 
 const camera =
@@ -678,20 +748,22 @@ camera.position.set(
 
 
 ////////////////////////////////////////////////////////////
-// СВЕТ
+// LIGHT
 ////////////////////////////////////////////////////////////
 
 const ambient =
     new THREE.HemisphereLight(
 
         0xffffff,
+
         0x222222,
-        2
+
+        2.5
 
     );
 
 
-threeScene.add(
+scene.add(
     ambient
 );
 
@@ -700,6 +772,7 @@ const directional =
     new THREE.DirectionalLight(
 
         0xffffff,
+
         3
 
     );
@@ -712,26 +785,26 @@ directional.position.set(
 );
 
 
-threeScene.add(
+scene.add(
     directional
 );
 
 
 ////////////////////////////////////////////////////////////
-// 3D WORLD
+// WORLD
 ////////////////////////////////////////////////////////////
 
 const world =
     new THREE.Group();
 
 
-threeScene.add(
+scene.add(
     world
 );
 
 
 ////////////////////////////////////////////////////////////
-// ЗАГРУЗЧИК
+// LOADER
 ////////////////////////////////////////////////////////////
 
 const loader =
@@ -742,24 +815,44 @@ let currentModel = null;
 
 
 ////////////////////////////////////////////////////////////
-// ЗАГРУЗКА СЦЕНЫ
+// ОТКРЫТИЕ CREATURE
 ////////////////////////////////////////////////////////////
 
-function loadScene(sceneData) {
+creatureCard.addEventListener(
+    "click",
+    function() {
 
-    showPage("viewer");
+        openCreature();
+
+    }
+);
 
 
-    viewerName.innerText =
-        sceneData.name;
+////////////////////////////////////////////////////////////
+// ЗАГРУЗКА CREATURE
+////////////////////////////////////////////////////////////
+
+function openCreature() {
+
+    ////////////////////////////////////////////////////////
+    // ОТКРЫВАЕМ ОТДЕЛЬНОЕ ОКНО
+    ////////////////////////////////////////////////////////
+
+    gallery.classList.remove(
+        "active"
+    );
+
+    viewer.classList.add(
+        "active"
+    );
 
 
-    status.innerText =
-        "Загрузка...";
+    viewerStatus.innerText =
+        "Загрузка creature.glb...";
 
 
     ////////////////////////////////////////////////////////
-    // УДАЛЯЕМ ПРЕДЫДУЩУЮ
+    // УДАЛЯЕМ ПРЕДЫДУЩУЮ МОДЕЛЬ
     ////////////////////////////////////////////////////////
 
     if (currentModel) {
@@ -774,19 +867,61 @@ function loadScene(sceneData) {
 
 
     ////////////////////////////////////////////////////////
-    // ЗАГРУЖАЕМ GLB
+    // ЗАГРУЗКА
     ////////////////////////////////////////////////////////
 
     loader.load(
 
-        SCENES_PATH +
-        sceneData.file,
+        CREATURE_URL,
 
 
         function(gltf) {
 
             currentModel =
                 gltf.scene;
+
+
+            //////////////////////////////////////////////////
+            // РАЗМЕР
+            //////////////////////////////////////////////////
+
+            const initialBox =
+                new THREE.Box3()
+                    .setFromObject(
+                        currentModel
+                    );
+
+
+            const initialSize =
+                new THREE.Vector3();
+
+
+            initialBox.getSize(
+                initialSize
+            );
+
+
+            const maxSize =
+                Math.max(
+
+                    initialSize.x,
+                    initialSize.y,
+                    initialSize.z
+
+                );
+
+
+            //////////////////////////////////////////////////
+            // МАСШТАБ
+            //////////////////////////////////////////////////
+
+            if (maxSize > 0) {
+
+                currentModel.scale.setScalar(
+                    3 / maxSize
+                );
+
+            }
 
 
             //////////////////////////////////////////////////
@@ -815,45 +950,28 @@ function loadScene(sceneData) {
 
 
             //////////////////////////////////////////////////
-            // РАЗМЕР
+            // НИЗ МОДЕЛИ = 0
             //////////////////////////////////////////////////
 
-            const size =
-                new THREE.Vector3();
+            const finalBox =
+                new THREE.Box3()
+                    .setFromObject(
+                        currentModel
+                    );
 
 
-            box.getSize(
-                size
-            );
-
-
-            const maxSize =
-                Math.max(
-                    size.x,
-                    size.y,
-                    size.z
-                );
-
-
-            if (maxSize > 0) {
-
-                currentModel.scale.setScalar(
-                    3 / maxSize
-                );
-
-            }
+            currentModel.position.y -=
+                finalBox.min.y;
 
 
             //////////////////////////////////////////////////
-            // ОБРАБОТКА МАТЕРИАЛОВ
+            // МАТЕРИАЛЫ / МЕШИ
             //////////////////////////////////////////////////
 
             currentModel.traverse(
                 function(object) {
 
-                    if (
-                        object.isMesh
-                    ) {
+                    if (object.isMesh) {
 
                         object.castShadow =
                             true;
@@ -894,7 +1012,11 @@ function loadScene(sceneData) {
             );
 
 
-            status.innerText =
+            //////////////////////////////////////////////////
+            // ГОТОВО
+            //////////////////////////////////////////////////
+
+            viewerStatus.innerText =
                 "Сцена загружена";
 
         },
@@ -906,13 +1028,15 @@ function loadScene(sceneData) {
 
                 const percent =
                     Math.round(
+
                         xhr.loaded /
                         xhr.total *
                         100
+
                     );
 
 
-                status.innerText =
+                viewerStatus.innerText =
                     "Загрузка: " +
                     percent +
                     "%";
@@ -929,8 +1053,8 @@ function loadScene(sceneData) {
             );
 
 
-            status.innerText =
-                "Ошибка загрузки сцены";
+            viewerStatus.innerText =
+                "Ошибка загрузки creature.glb";
 
         }
 
@@ -940,15 +1064,19 @@ function loadScene(sceneData) {
 
 
 ////////////////////////////////////////////////////////////
-// НАЗАД
+// ЗАКРЫТЬ VIEWER
 ////////////////////////////////////////////////////////////
 
-backButton.addEventListener(
+closeViewer.addEventListener(
     "click",
     function() {
 
-        showPage(
-            "gallery"
+        viewer.classList.remove(
+            "active"
+        );
+
+        gallery.classList.add(
+            "active"
         );
 
     }
@@ -962,10 +1090,12 @@ backButton.addEventListener(
 let mouseDown = false;
 
 let previousX = 0;
+
 let previousY = 0;
 
-let cameraRotationY = 0;
-let cameraRotationX = 0;
+let rotationY = 0;
+
+let rotationX = 0;
 
 
 canvas.addEventListener(
@@ -999,7 +1129,9 @@ window.addEventListener(
     function(event) {
 
         if (!mouseDown) {
+
             return;
+
         }
 
 
@@ -1013,20 +1145,20 @@ window.addEventListener(
             previousY;
 
 
-        cameraRotationY -=
+        rotationY -=
             dx * 0.005;
 
 
-        cameraRotationX -=
+        rotationX -=
             dy * 0.005;
 
 
-        cameraRotationX =
+        rotationX =
             Math.max(
-                -1.5,
+                -1.4,
                 Math.min(
-                    1.5,
-                    cameraRotationX
+                    1.4,
+                    rotationX
                 )
             );
 
@@ -1056,22 +1188,21 @@ function updateCamera() {
 
     camera.position.x =
         Math.sin(
-            cameraRotationY
+            rotationY
         ) *
         distance;
 
 
     camera.position.z =
         Math.cos(
-            cameraRotationY
+            rotationY
         ) *
         distance;
 
 
     camera.position.y =
         1.5 +
-        cameraRotationX *
-        2;
+        rotationX * 2;
 
 
     camera.lookAt(
@@ -1081,6 +1212,98 @@ function updateCamera() {
     );
 
 }
+
+
+////////////////////////////////////////////////////////////
+// TOUCH
+////////////////////////////////////////////////////////////
+
+let touchX = 0;
+
+let touchY = 0;
+
+
+canvas.addEventListener(
+    "touchstart",
+    function(event) {
+
+        if (
+            event.touches.length !== 1
+        ) {
+
+            return;
+
+        }
+
+
+        touchX =
+            event.touches[0].clientX;
+
+        touchY =
+            event.touches[0].clientY;
+
+    },
+    { passive: true }
+);
+
+
+canvas.addEventListener(
+    "touchmove",
+    function(event) {
+
+        if (
+            event.touches.length !== 1
+        ) {
+
+            return;
+
+        }
+
+
+        const x =
+            event.touches[0].clientX;
+
+
+        const y =
+            event.touches[0].clientY;
+
+
+        const dx =
+            x - touchX;
+
+
+        const dy =
+            y - touchY;
+
+
+        rotationY -=
+            dx * 0.005;
+
+
+        rotationX -=
+            dy * 0.005;
+
+
+        rotationX =
+            Math.max(
+                -1.4,
+                Math.min(
+                    1.4,
+                    rotationX
+                )
+            );
+
+
+        touchX = x;
+
+        touchY = y;
+
+
+        updateCamera();
+
+    },
+    { passive: true }
+);
 
 
 ////////////////////////////////////////////////////////////
@@ -1120,7 +1343,7 @@ function animate() {
 
 
     renderer.render(
-        threeScene,
+        scene,
         camera
     );
 
@@ -1133,3 +1356,4 @@ animate();
 
 </body>
 </html>
+```
