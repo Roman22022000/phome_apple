@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>3D AR Viewer</title>
+    <title>3D Gallery</title>
 
     <style>
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         html,
@@ -23,130 +21,287 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: #000;
+            background: #050505;
+            color: #fff;
             font-family: Arial, sans-serif;
         }
 
-        #canvas {
+        #app {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* =========================
+           МЕНЮ
+        ========================= */
+
+        #menu {
             position: fixed;
+
             left: 0;
             top: 0;
 
-            width: 100%;
+            width: 220px;
             height: 100%;
 
-            display: block;
-        }
+            background: #0b0b0b;
 
-        #ui {
-            position: fixed;
-
-            left: 20px;
-            top: 20px;
+            border-right: 1px solid #222;
 
             z-index: 100;
-
-            width: 300px;
-
-            padding: 18px;
-
-            background: rgba(0,0,0,0.75);
-
-            border: 1px solid rgba(255,255,255,0.2);
-
-            border-radius: 8px;
-
-            color: white;
-
-            backdrop-filter: blur(10px);
         }
 
-        #ui h1 {
+        #menuTitle {
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+
+            padding-left: 22px;
+
             font-size: 18px;
-            font-weight: 400;
 
-            margin-bottom: 12px;
+            border-bottom: 1px solid #222;
         }
 
-        #status {
-            color: #aaa;
-
-            font-size: 13px;
-
-            line-height: 1.5;
-
-            margin-bottom: 15px;
-        }
-
-        #startAR {
+        .menuButton {
             width: 100%;
 
-            padding: 12px;
+            height: 50px;
 
-            background: white;
-
-            color: black;
+            background: transparent;
 
             border: none;
 
-            border-radius: 5px;
+            border-bottom: 1px solid #1c1c1c;
+
+            color: #aaa;
+
+            text-align: left;
+
+            padding-left: 22px;
 
             cursor: pointer;
 
             font-size: 14px;
         }
 
-        #startAR:disabled {
-            opacity: 0.5;
-
-            cursor: default;
+        .menuButton:hover {
+            background: #151515;
+            color: #fff;
         }
 
-        #coordinates {
-            margin-top: 15px;
+        .menuButton.active {
+            background: #1b1b1b;
+            color: #fff;
+        }
 
-            font-family: monospace;
+        /* =========================
+           ОСНОВНАЯ ОБЛАСТЬ
+        ========================= */
+
+        #content {
+            position: absolute;
+
+            left: 220px;
+            top: 0;
+
+            right: 0;
+            bottom: 0;
+        }
+
+        .page {
+            width: 100%;
+            height: 100%;
+
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* =========================
+           ГАЛЕРЕЯ
+        ========================= */
+
+        #gallery {
+            padding: 35px;
+
+            overflow-y: auto;
+        }
+
+        #galleryTitle {
+            font-size: 24px;
+
+            margin-bottom: 25px;
+        }
+
+        #sceneList {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fill, minmax(220px, 1fr));
+
+            gap: 15px;
+        }
+
+        .sceneCard {
+            min-height: 120px;
+
+            padding: 20px;
+
+            background: #101010;
+
+            border: 1px solid #252525;
+
+            cursor: pointer;
+
+            transition: 0.15s;
+        }
+
+        .sceneCard:hover {
+            background: #181818;
+
+            border-color: #555;
+        }
+
+        .sceneNumber {
+            font-size: 11px;
+
+            color: #666;
+
+            margin-bottom: 12px;
+        }
+
+        .sceneName {
+            font-size: 15px;
+
+            color: #ddd;
+        }
+
+        /* =========================
+           3D VIEWER
+        ========================= */
+
+        #viewer {
+            position: relative;
+
+            width: 100%;
+            height: 100%;
+        }
+
+        #canvas {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+        }
+
+        #viewerPanel {
+            position: absolute;
+
+            top: 20px;
+            left: 20px;
+
+            padding: 15px;
+
+            background: rgba(0,0,0,0.75);
+
+            border: 1px solid #333;
+
+            z-index: 10;
+
+            min-width: 220px;
+        }
+
+        #viewerName {
+            font-size: 15px;
+
+            margin-bottom: 12px;
+        }
+
+        #backButton {
+            width: 100%;
+
+            padding: 9px;
+
+            background: #fff;
+
+            color: #000;
+
+            border: none;
+
+            cursor: pointer;
+        }
+
+        #status {
+            margin-top: 10px;
 
             font-size: 11px;
 
             color: #777;
-
-            line-height: 1.6;
         }
 
-        #loading {
-            position: fixed;
+        /* =========================
+           HOME
+        ========================= */
 
-            inset: 0;
-
-            z-index: 200;
-
-            display: flex;
+        #home {
+            display: none;
 
             align-items: center;
-
             justify-content: center;
 
-            background: #000;
-
-            color: white;
-
-            font-size: 14px;
+            font-size: 24px;
         }
 
-        .hidden {
-            display: none !important;
+        #home.active {
+            display: flex;
         }
 
-        @media(max-width:600px) {
+        /* =========================
+           MOBILE
+        ========================= */
 
-            #ui {
-                left: 10px;
-                right: 10px;
+        @media (max-width: 700px) {
 
-                top: 10px;
+            #menu {
+                width: 70px;
+            }
 
-                width: auto;
+            #menuTitle {
+                justify-content: center;
+                padding: 0;
+
+                font-size: 0;
+            }
+
+            #menuTitle::after {
+                content: "3D";
+                font-size: 16px;
+            }
+
+            .menuButton {
+                padding: 0;
+
+                text-align: center;
+
+                font-size: 11px;
+            }
+
+            #content {
+                left: 70px;
+            }
+
+            #gallery {
+                padding: 20px;
+            }
+
+            #sceneList {
+                grid-template-columns:
+                    repeat(auto-fill, minmax(150px, 1fr));
             }
 
         }
@@ -156,37 +311,98 @@
 
 <body>
 
-<div id="loading">
-    Загрузка 3D модели...
+<div id="app">
+
+    <!-- =========================
+         МЕНЮ
+    ========================= -->
+
+    <aside id="menu">
+
+        <div id="menuTitle">
+            3D VIEWER
+        </div>
+
+        <button
+            class="menuButton active"
+            data-page="home">
+            Главная
+        </button>
+
+        <button
+            class="menuButton"
+            data-page="gallery">
+            Галерея
+        </button>
+
+    </aside>
+
+
+    <!-- =========================
+         CONTENT
+    ========================= -->
+
+    <main id="content">
+
+        <!-- ГЛАВНАЯ -->
+
+        <section
+            id="home"
+            class="page active">
+
+            3D Scene Viewer
+
+        </section>
+
+
+        <!-- ГАЛЕРЕЯ -->
+
+        <section
+            id="gallery"
+            class="page">
+
+            <div id="galleryTitle">
+                Галерея 3D сцен
+            </div>
+
+            <div id="sceneList">
+
+                <!-- Сюда автоматически добавляются сцены -->
+
+            </div>
+
+        </section>
+
+
+        <!-- VIEWER -->
+
+        <section
+            id="viewer"
+            class="page">
+
+            <canvas id="canvas"></canvas>
+
+            <div id="viewerPanel">
+
+                <div id="viewerName">
+                    3D Scene
+                </div>
+
+                <button id="backButton">
+                    ← Назад в галерею
+                </button>
+
+                <div id="status">
+                    Готово
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
 </div>
-
-<div id="ui">
-
-    <h1>3D AR Viewer</h1>
-
-    <div id="status">
-        Загрузка модели...
-    </div>
-
-    <button id="startAR">
-        Запустить AR
-    </button>
-
-    <div id="coordinates">
-
-        X: 0.000<br>
-        Y: 0.000<br>
-        Z: 0.000<br>
-
-        RX: 0.000<br>
-        RY: 0.000<br>
-        RZ: 0.000
-
-    </div>
-
-</div>
-
-<canvas id="canvas"></canvas>
 
 
 <!-- THREE.JS -->
@@ -202,51 +418,214 @@
 // НАСТРОЙКИ
 ////////////////////////////////////////////////////////////
 
-const MODEL_PATH = "./model.glb";
-
-const MODEL_SIZE = 2.0;
+const SCENES_PATH = "./scenes/";
 
 
 ////////////////////////////////////////////////////////////
-// HTML
+// ДОСТУПНЫЕ 3D СЦЕНЫ
+////////////////////////////////////////////////////////////
+//
+// Добавляй сюда новые файлы:
+//
+// "./scenes/scene4.glb"
+// "./scenes/scene5.glb"
+//
+//
+
+const scenes = [
+
+    {
+        name: "Сцена 01",
+        file: "scene1.glb"
+    },
+
+    {
+        name: "Сцена 02",
+        file: "scene2.glb"
+    },
+
+    {
+        name: "Сцена 03",
+        file: "scene3.glb"
+    }
+
+];
+
+
+////////////////////////////////////////////////////////////
+// ЭЛЕМЕНТЫ
+////////////////////////////////////////////////////////////
+
+const pages =
+    document.querySelectorAll(".page");
+
+
+const menuButtons =
+    document.querySelectorAll(".menuButton");
+
+
+const sceneList =
+    document.getElementById("sceneList");
+
+
+const viewerName =
+    document.getElementById("viewerName");
+
+
+const status =
+    document.getElementById("status");
+
+
+const backButton =
+    document.getElementById("backButton");
+
+
+////////////////////////////////////////////////////////////
+// ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
+////////////////////////////////////////////////////////////
+
+function showPage(id) {
+
+    pages.forEach(
+        page => {
+
+            page.classList.remove("active");
+
+        }
+    );
+
+
+    const target =
+        document.getElementById(id);
+
+
+    if (target) {
+
+        target.classList.add("active");
+
+    }
+
+
+    menuButtons.forEach(
+        button => {
+
+            button.classList.remove("active");
+
+            if (
+                button.dataset.page === id
+            ) {
+
+                button.classList.add("active");
+
+            }
+
+        }
+    );
+
+}
+
+
+////////////////////////////////////////////////////////////
+// МЕНЮ
+////////////////////////////////////////////////////////////
+
+menuButtons.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                showPage(
+                    button.dataset.page
+                );
+
+            }
+        );
+
+    }
+);
+
+
+////////////////////////////////////////////////////////////
+// СОЗДАНИЕ КАРТОЧЕК ГАЛЕРЕИ
+////////////////////////////////////////////////////////////
+
+function createGallery() {
+
+    sceneList.innerHTML = "";
+
+
+    scenes.forEach(
+        function(scene, index) {
+
+            const card =
+                document.createElement("div");
+
+
+            card.className =
+                "sceneCard";
+
+
+            card.innerHTML = `
+
+                <div class="sceneNumber">
+                    SCENE ${String(index + 1).padStart(2, "0")}
+                </div>
+
+                <div class="sceneName">
+                    ${scene.name}
+                </div>
+
+            `;
+
+
+            card.addEventListener(
+                "click",
+                function() {
+
+                    loadScene(scene);
+
+                }
+            );
+
+
+            sceneList.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+createGallery();
+
+
+////////////////////////////////////////////////////////////
+// THREE.JS
 ////////////////////////////////////////////////////////////
 
 const canvas =
     document.getElementById("canvas");
 
-const loading =
-    document.getElementById("loading");
-
-const status =
-    document.getElementById("status");
-
-const startAR =
-    document.getElementById("startAR");
-
-const coordinates =
-    document.getElementById("coordinates");
-
-
-////////////////////////////////////////////////////////////
-// RENDERER
-////////////////////////////////////////////////////////////
 
 const renderer =
     new THREE.WebGLRenderer({
 
         canvas: canvas,
 
-        antialias: true,
-
-        alpha: true,
-
-        preserveDrawingBuffer: false
+        antialias: true
 
     });
 
 
 renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio, 2)
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
 );
 
 
@@ -260,15 +639,16 @@ renderer.outputColorSpace =
     THREE.SRGBColorSpace;
 
 
-renderer.xr.enabled = true;
-
-
 ////////////////////////////////////////////////////////////
 // СЦЕНА
 ////////////////////////////////////////////////////////////
 
-const scene =
+const threeScene =
     new THREE.Scene();
+
+
+threeScene.background =
+    new THREE.Color(0x050505);
 
 
 ////////////////////////////////////////////////////////////
@@ -278,7 +658,7 @@ const scene =
 const camera =
     new THREE.PerspectiveCamera(
 
-        70,
+        60,
 
         window.innerWidth /
         window.innerHeight,
@@ -290,456 +670,417 @@ const camera =
     );
 
 
+camera.position.set(
+    0,
+    1.5,
+    5
+);
+
+
 ////////////////////////////////////////////////////////////
 // СВЕТ
 ////////////////////////////////////////////////////////////
 
-const hemisphereLight =
+const ambient =
     new THREE.HemisphereLight(
 
         0xffffff,
+        0x222222,
+        2
 
-        0x444444,
+    );
 
+
+threeScene.add(
+    ambient
+);
+
+
+const directional =
+    new THREE.DirectionalLight(
+
+        0xffffff,
         3
 
     );
 
-scene.add(
-    hemisphereLight
-);
 
-
-const directionalLight =
-    new THREE.DirectionalLight(
-
-        0xffffff,
-
-        4
-
-    );
-
-
-directionalLight.position.set(
+directional.position.set(
     5,
     10,
     5
 );
 
 
-scene.add(
-    directionalLight
+threeScene.add(
+    directional
 );
 
 
 ////////////////////////////////////////////////////////////
-// 3D СЦЕНА
+// 3D WORLD
 ////////////////////////////////////////////////////////////
 
 const world =
     new THREE.Group();
 
 
-scene.add(
+threeScene.add(
     world
 );
 
 
 ////////////////////////////////////////////////////////////
-// МОДЕЛЬ
+// ЗАГРУЗЧИК
 ////////////////////////////////////////////////////////////
-
-let model = null;
-
 
 const loader =
     new THREE.GLTFLoader();
 
 
-loader.load(
-
-    MODEL_PATH,
+let currentModel = null;
 
 
-    function(gltf) {
+////////////////////////////////////////////////////////////
+// ЗАГРУЗКА СЦЕНЫ
+////////////////////////////////////////////////////////////
 
-        model =
-            gltf.scene;
+function loadScene(sceneData) {
+
+    showPage("viewer");
 
 
-        ////////////////////////////////////////////////////
-        // ОБРАБОТКА МЕШЕЙ
-        ////////////////////////////////////////////////////
+    viewerName.innerText =
+        sceneData.name;
 
-        model.traverse(
-            function(object) {
 
-                if (object.isMesh) {
+    status.innerText =
+        "Загрузка...";
 
-                    object.castShadow = true;
 
-                    object.receiveShadow = true;
+    ////////////////////////////////////////////////////////
+    // УДАЛЯЕМ ПРЕДЫДУЩУЮ
+    ////////////////////////////////////////////////////////
 
-                }
+    if (currentModel) {
 
-            }
+        world.remove(
+            currentModel
         );
 
+        currentModel = null;
 
-        ////////////////////////////////////////////////////
-        // ПОЛУЧАЕМ РАЗМЕР
-        ////////////////////////////////////////////////////
-
-        const box =
-            new THREE.Box3()
-                .setFromObject(model);
+    }
 
 
-        const size =
-            new THREE.Vector3();
+    ////////////////////////////////////////////////////////
+    // ЗАГРУЖАЕМ GLB
+    ////////////////////////////////////////////////////////
+
+    loader.load(
+
+        SCENES_PATH +
+        sceneData.file,
 
 
-        box.getSize(size);
+        function(gltf) {
+
+            currentModel =
+                gltf.scene;
 
 
-        const maxSize =
-            Math.max(
+            //////////////////////////////////////////////////
+            // ЦЕНТРИРОВАНИЕ
+            //////////////////////////////////////////////////
 
-                size.x,
-                size.y,
-                size.z
+            const box =
+                new THREE.Box3()
+                    .setFromObject(
+                        currentModel
+                    );
 
+
+            const center =
+                new THREE.Vector3();
+
+
+            box.getCenter(
+                center
             );
 
 
-        ////////////////////////////////////////////////////
-        // МАСШТАБ
-        ////////////////////////////////////////////////////
-
-        if (maxSize > 0) {
-
-            model.scale.setScalar(
-
-                MODEL_SIZE /
-                maxSize
-
+            currentModel.position.sub(
+                center
             );
 
-        }
+
+            //////////////////////////////////////////////////
+            // РАЗМЕР
+            //////////////////////////////////////////////////
+
+            const size =
+                new THREE.Vector3();
 
 
-        ////////////////////////////////////////////////////
-        // ЦЕНТР МОДЕЛИ
-        ////////////////////////////////////////////////////
-
-        const center =
-            new THREE.Vector3();
+            box.getSize(
+                size
+            );
 
 
-        new THREE.Box3()
-            .setFromObject(model)
-            .getCenter(center);
-
-
-        model.position.sub(center);
-
-
-        ////////////////////////////////////////////////////
-        // ПОСТАВИТЬ НИЗ МОДЕЛИ НА Y = 0
-        ////////////////////////////////////////////////////
-
-        const finalBox =
-            new THREE.Box3()
-                .setFromObject(model);
-
-
-        model.position.y -=
-            finalBox.min.y;
-
-
-        ////////////////////////////////////////////////////
-        // ДОБАВЛЯЕМ МОДЕЛЬ
-        ////////////////////////////////////////////////////
-
-        world.add(
-            model
-        );
-
-
-        ////////////////////////////////////////////////////
-        // ГОТОВО
-        ////////////////////////////////////////////////////
-
-        loading.classList.add(
-            "hidden"
-        );
-
-
-        status.innerHTML =
-            "Модель загружена.<br>" +
-            "Готово к запуску AR.";
-
-    },
-
-
-    function(progress) {
-
-        if (progress.total) {
-
-            const percent =
-                Math.round(
-
-                    progress.loaded /
-                    progress.total *
-                    100
-
+            const maxSize =
+                Math.max(
+                    size.x,
+                    size.y,
+                    size.z
                 );
 
 
-            loading.innerText =
-                "Загрузка 3D модели " +
-                percent +
-                "%";
+            if (maxSize > 0) {
 
-        }
+                currentModel.scale.setScalar(
+                    3 / maxSize
+                );
 
-    },
+            }
 
-
-    function(error) {
-
-        console.error(error);
-
-
-        loading.innerText =
-            "Ошибка загрузки модели";
-
-
-        status.innerHTML =
-            "Файл не найден:<br>" +
-            MODEL_PATH;
-
-    }
-
-);
-
-
-////////////////////////////////////////////////////////////
-// ПРОВЕРКА WEBXR
-////////////////////////////////////////////////////////////
-
-async function checkAR() {
-
-    if (!navigator.xr) {
-
-        status.innerHTML =
-            "Этот браузер не поддерживает WebXR.";
-
-        startAR.disabled = true;
-
-        return;
-
-    }
-
-
-    const supported =
-        await navigator.xr.isSessionSupported(
-            "immersive-ar"
-        );
-
-
-    if (!supported) {
-
-        status.innerHTML =
-            "AR не поддерживается этим устройством.";
-
-        startAR.disabled = true;
-
-        return;
-
-    }
-
-
-    status.innerHTML =
-        "AR поддерживается.<br>" +
-        "Можно запускать сцену.";
-
-}
-
-
-checkAR();
-
-
-////////////////////////////////////////////////////////////
-// AR SESSION
-////////////////////////////////////////////////////////////
-
-let xrSession = null;
-
-
-startAR.addEventListener(
-
-    "click",
-
-    async function() {
-
-        if (!navigator.xr) {
-
-            return;
-
-        }
-
-
-        try {
 
             //////////////////////////////////////////////////
-            // AR SESSION
+            // ОБРАБОТКА МАТЕРИАЛОВ
             //////////////////////////////////////////////////
 
-            xrSession =
-                await navigator.xr.requestSession(
+            currentModel.traverse(
+                function(object) {
 
-                    "immersive-ar",
+                    if (
+                        object.isMesh
+                    ) {
 
-                    {
+                        object.castShadow =
+                            true;
 
-                        requiredFeatures: [
-
-                            "local-floor"
-
-                        ],
-
-                        optionalFeatures: [
-
-                            "dom-overlay",
-                            "hit-test"
-
-                        ]
+                        object.receiveShadow =
+                            true;
 
                     }
 
-                );
-
-
-            //////////////////////////////////////////////////
-            // THREE.JS XR
-            //////////////////////////////////////////////////
-
-            renderer.xr.setReferenceSpaceType(
-                "local-floor"
-            );
-
-
-            await renderer.xr.setSession(
-                xrSession
+                }
             );
 
 
             //////////////////////////////////////////////////
-            // UI
+            // ДОБАВЛЯЕМ
             //////////////////////////////////////////////////
 
-            startAR.style.display =
-                "none";
+            world.add(
+                currentModel
+            );
 
 
-            status.innerHTML =
-                "AR запущен.<br>" +
-                "Перемещайтесь вокруг модели.";
+            //////////////////////////////////////////////////
+            // КАМЕРА
+            //////////////////////////////////////////////////
+
+            camera.position.set(
+                0,
+                1.5,
+                5
+            );
+
+
+            camera.lookAt(
+                0,
+                1,
+                0
+            );
+
+
+            status.innerText =
+                "Сцена загружена";
+
+        },
+
+
+        function(xhr) {
+
+            if (xhr.total) {
+
+                const percent =
+                    Math.round(
+                        xhr.loaded /
+                        xhr.total *
+                        100
+                    );
+
+
+                status.innerText =
+                    "Загрузка: " +
+                    percent +
+                    "%";
+
+            }
+
+        },
+
+
+        function(error) {
+
+            console.error(
+                error
+            );
+
+
+            status.innerText =
+                "Ошибка загрузки сцены";
 
         }
 
-        catch(error) {
-
-            console.error(error);
-
-
-            status.innerHTML =
-                "Не удалось запустить AR:<br>" +
-                error.message;
-
-        }
-
-    }
-
-);
-
-
-////////////////////////////////////////////////////////////
-// ПОЛОЖЕНИЕ ПОЛЬЗОВАТЕЛЯ
-////////////////////////////////////////////////////////////
-
-function updateUserPosition() {
-
-    if (!renderer.xr.isPresenting) {
-
-        return;
-
-    }
-
-
-    const xrCamera =
-        renderer.xr.getCamera();
-
-
-    const position =
-        xrCamera.position;
-
-
-    const rotation =
-        xrCamera.rotation;
-
-
-    coordinates.innerHTML =
-
-        "X: " +
-        position.x.toFixed(3) +
-        "<br>" +
-
-        "Y: " +
-        position.y.toFixed(3) +
-        "<br>" +
-
-        "Z: " +
-        position.z.toFixed(3) +
-        "<br>" +
-
-        "RX: " +
-        rotation.x.toFixed(3) +
-        "<br>" +
-
-        "RY: " +
-        rotation.y.toFixed(3) +
-        "<br>" +
-
-        "RZ: " +
-        rotation.z.toFixed(3);
+    );
 
 }
 
 
 ////////////////////////////////////////////////////////////
-// AR ANIMATION LOOP
+// НАЗАД
 ////////////////////////////////////////////////////////////
 
-renderer.setAnimationLoop(
-
+backButton.addEventListener(
+    "click",
     function() {
 
-        updateUserPosition();
-
-
-        renderer.render(
-
-            scene,
-
-            camera
-
+        showPage(
+            "gallery"
         );
 
     }
-
 );
+
+
+////////////////////////////////////////////////////////////
+// УПРАВЛЕНИЕ МЫШЬЮ
+////////////////////////////////////////////////////////////
+
+let mouseDown = false;
+
+let previousX = 0;
+let previousY = 0;
+
+let cameraRotationY = 0;
+let cameraRotationX = 0;
+
+
+canvas.addEventListener(
+    "mousedown",
+    function(event) {
+
+        mouseDown = true;
+
+        previousX =
+            event.clientX;
+
+        previousY =
+            event.clientY;
+
+    }
+);
+
+
+window.addEventListener(
+    "mouseup",
+    function() {
+
+        mouseDown = false;
+
+    }
+);
+
+
+window.addEventListener(
+    "mousemove",
+    function(event) {
+
+        if (!mouseDown) {
+            return;
+        }
+
+
+        const dx =
+            event.clientX -
+            previousX;
+
+
+        const dy =
+            event.clientY -
+            previousY;
+
+
+        cameraRotationY -=
+            dx * 0.005;
+
+
+        cameraRotationX -=
+            dy * 0.005;
+
+
+        cameraRotationX =
+            Math.max(
+                -1.5,
+                Math.min(
+                    1.5,
+                    cameraRotationX
+                )
+            );
+
+
+        previousX =
+            event.clientX;
+
+
+        previousY =
+            event.clientY;
+
+
+        updateCamera();
+
+    }
+);
+
+
+////////////////////////////////////////////////////////////
+// КАМЕРА
+////////////////////////////////////////////////////////////
+
+function updateCamera() {
+
+    const distance = 5;
+
+
+    camera.position.x =
+        Math.sin(
+            cameraRotationY
+        ) *
+        distance;
+
+
+    camera.position.z =
+        Math.cos(
+            cameraRotationY
+        ) *
+        distance;
+
+
+    camera.position.y =
+        1.5 +
+        cameraRotationX *
+        2;
+
+
+    camera.lookAt(
+        0,
+        1,
+        0
+    );
+
+}
 
 
 ////////////////////////////////////////////////////////////
@@ -747,9 +1088,7 @@ renderer.setAnimationLoop(
 ////////////////////////////////////////////////////////////
 
 window.addEventListener(
-
     "resize",
-
     function() {
 
         camera.aspect =
@@ -761,15 +1100,34 @@ window.addEventListener(
 
 
         renderer.setSize(
-
             window.innerWidth,
             window.innerHeight
-
         );
 
     }
-
 );
+
+
+////////////////////////////////////////////////////////////
+// RENDER
+////////////////////////////////////////////////////////////
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    renderer.render(
+        threeScene,
+        camera
+    );
+
+}
+
+
+animate();
 
 </script>
 
