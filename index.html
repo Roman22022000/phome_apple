@@ -1,76 +1,422 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
+<meta charset="UTF-8">
 
-    <title>AR Creature</title>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
 
-    <link rel="stylesheet" href="style.css">
+<meta
+    http-equiv="Permissions-Policy"
+    content="camera=(self), xr-spatial-tracking=(self)"
+>
+
+<title>AR CREATURE</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    background: #000;
+    color: #fff;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+canvas {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 1;
+}
+
+
+/* =========================
+   МЕНЮ
+========================= */
+
+#menu {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 22px;
+
+    background: rgba(0,0,0,.82);
+
+    border-bottom: 1px solid #252525;
+
+    z-index: 100;
+}
+
+.logo {
+    font-size: 12px;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+.menu-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-buttons button {
+    border: 0;
+
+    background: transparent;
+
+    color: #777;
+
+    font-size: 11px;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+}
+
+.menu-buttons button.active {
+    color: #fff;
+}
+
+
+/* =========================
+   ИНТЕРФЕЙС
+========================= */
+
+#interface {
+    position: fixed;
+
+    left: 15px;
+    bottom: 15px;
+
+    z-index: 50;
+
+    pointer-events: none;
+}
+
+#status {
+    padding: 9px 12px;
+
+    background: rgba(0,0,0,.75);
+
+    border: 1px solid #333;
+
+    font-size: 11px;
+
+    margin-bottom: 7px;
+}
+
+#phone-data {
+    padding: 9px 12px;
+
+    background: rgba(0,0,0,.75);
+
+    border: 1px solid #333;
+
+    font-family: monospace;
+
+    font-size: 9px;
+
+    line-height: 16px;
+}
+
+
+/* =========================
+   AR BUTTON
+========================= */
+
+#arButton {
+    position: fixed;
+
+    left: 50%;
+    bottom: 25px;
+
+    transform: translateX(-50%);
+
+    z-index: 200;
+
+    width: 210px;
+    height: 52px;
+
+    border: 1px solid #fff;
+
+    background: #000;
+
+    color: #fff;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+}
+
+#arButton:disabled {
+    opacity: .35;
+}
+
+
+/* =========================
+   ГАЛЕРЕЯ
+========================= */
+
+#gallery {
+    display: none;
+
+    position: fixed;
+
+    top: 58px;
+    left: 0;
+
+    width: 100%;
+    height: calc(100% - 58px);
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+    background: #050505;
+
+    z-index: 80;
+}
+
+#gallery h1 {
+    margin: 0 0 25px;
+
+    font-size: 20px;
+
+    letter-spacing: 3px;
+}
+
+.gallery-card {
+    width: 260px;
+
+    border: 1px solid #292929;
+
+    background: #0b0b0b;
+
+    padding: 15px;
+}
+
+.gallery-preview {
+    height: 220px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #111;
+
+    color: #555;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+}
+
+.gallery-name {
+    margin-top: 15px;
+
+    font-size: 12px;
+}
+
+.gallery-open {
+    margin-top: 12px;
+
+    width: 100%;
+    height: 38px;
+
+    border: 1px solid #555;
+
+    background: #000;
+
+    color: #fff;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px) {
+
+    #menu {
+        height: 52px;
+        padding: 0 14px;
+    }
+
+    .menu-buttons {
+        gap: 12px;
+    }
+
+    .menu-buttons button {
+        font-size: 9px;
+    }
+
+    #gallery {
+        top: 52px;
+        height: calc(100% - 52px);
+        padding: 18px;
+    }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-<!-- =========================
-     МЕНЮ
-========================= -->
 
-<header class="menu">
+<!-- ==================================================
+     МЕНЮ
+================================================== -->
+
+<header id="menu">
 
     <div class="logo">
         AR CREATURE
     </div>
 
-    <nav>
-        <a href="index.html" class="active">
-            Сцена
-        </a>
+    <div class="menu-buttons">
 
-        <a href="gallery.html">
-            Галерея
-        </a>
-    </nav>
+        <button
+            id="sceneButton"
+            class="active"
+        >
+            СЦЕНА
+        </button>
+
+        <button id="galleryButton">
+            ГАЛЕРЕЯ
+        </button>
+
+    </div>
 
 </header>
 
 
-<!-- =========================
-     3D СЦЕНА
-========================= -->
+<!-- ==================================================
+     ГАЛЕРЕЯ
+================================================== -->
 
-<main id="scene-container"></main>
+<section id="gallery">
 
+    <h1>ГАЛЕРЕЯ</h1>
 
-<!-- =========================
-     AR ИНТЕРФЕЙС
-========================= -->
+    <div class="gallery-card">
 
-<div class="interface">
+        <div class="gallery-preview">
+            CREATURE.GLB
+        </div>
 
-    <div id="status">
-        Загрузка 3D-модели...
+        <div class="gallery-name">
+            creature.glb
+        </div>
+
+        <button
+            class="gallery-open"
+            id="openCreature"
+        >
+            ОТКРЫТЬ AR
+        </button>
+
     </div>
 
-    <div id="ar-info">
-        AR: проверка устройства...
+</section>
+
+
+<!-- ==================================================
+     AR ИНФОРМАЦИЯ
+================================================== -->
+
+<div id="interface">
+
+    <div id="status">
+        Проверка AR...
+    </div>
+
+    <div id="phone-data">
+
+        POSITION<br>
+
+        X:
+        <span id="x">0.000</span>
+
+        Y:
+        <span id="y">0.000</span>
+
+        Z:
+        <span id="z">0.000</span>
+
+        <br><br>
+
+        ROTATION<br>
+
+        X:
+        <span id="rx">0.000</span>
+
+        Y:
+        <span id="ry">0.000</span>
+
+        Z:
+        <span id="rz">0.000</span>
+
     </div>
 
 </div>
 
 
-<!-- =========================
+<!-- ==================================================
+     AR
+================================================== -->
+
+<button
+    id="arButton"
+    disabled
+>
+    ПРОВЕРКА AR...
+</button>
+
+
+<!-- ==================================================
      THREE.JS
-========================= -->
+================================================== -->
 
 <script type="importmap">
 {
     "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+        "three":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+
+        "three/addons/":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
     }
 }
 </script>
@@ -80,85 +426,102 @@
 
 import * as THREE from "three";
 
-import { GLTFLoader } from
-"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/loaders/GLTFLoader.js";
-
-import { ARButton } from
-"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/webxr/ARButton.js";
+import {
+    GLTFLoader
+} from "three/addons/loaders/GLTFLoader.js";
 
 
-// =====================================================
-// НАСТРОЙКИ
-// =====================================================
+// ==================================================
+// MODEL
+// ==================================================
 
 const MODEL_URL =
 "https://raw.githubusercontent.com/Roman22022000/phome_apple/main/creature.glb";
 
 
-// =====================================================
-// ОСНОВНЫЕ ОБЪЕКТЫ
-// =====================================================
+// ==================================================
+// THREE VARIABLES
+// ==================================================
 
 let scene;
 let camera;
 let renderer;
-let creature;
+
+let creature = null;
+
+let xrSession = null;
+let xrReferenceSpace = null;
+
+let modelPlaced = false;
 
 
-// =====================================================
-// ИНИЦИАЛИЗАЦИЯ
-// =====================================================
+// ==================================================
+// DOM
+// ==================================================
+
+const status =
+document.getElementById("status");
+
+const arButton =
+document.getElementById("arButton");
+
+
+// ==================================================
+// INIT
+// ==================================================
 
 init();
 
 
-// =====================================================
-// INIT
-// =====================================================
+// ==================================================
+// THREE INITIALIZATION
+// ==================================================
 
 function init() {
 
-    const container =
-        document.getElementById("scene-container");
-
-
-    // ---------------------------------------------
+    // ----------------------------------------------
     // SCENE
-    // ---------------------------------------------
+    // ----------------------------------------------
 
-    scene = new THREE.Scene();
+    scene =
+        new THREE.Scene();
 
 
-    // ---------------------------------------------
+    // ----------------------------------------------
     // CAMERA
-    // ---------------------------------------------
+    // ----------------------------------------------
 
-    camera = new THREE.PerspectiveCamera(
-        70,
-        window.innerWidth / window.innerHeight,
-        0.01,
-        100
-    );
+    camera =
+        new THREE.PerspectiveCamera(
+            70,
+            window.innerWidth /
+            window.innerHeight,
+            0.01,
+            100
+        );
+
 
     camera.position.set(
         0,
-        1.5,
+        1.6,
         3
     );
 
 
-    // ---------------------------------------------
+    // ----------------------------------------------
     // LIGHT
-    // ---------------------------------------------
+    // ----------------------------------------------
 
-    const ambient =
+    const hemisphere =
         new THREE.HemisphereLight(
             0xffffff,
             0x444444,
             2
         );
 
-    scene.add(ambient);
+    scene.add(
+        hemisphere
+    );
 
 
     const directional =
@@ -173,125 +536,109 @@ function init() {
         3
     );
 
-    scene.add(directional);
+    scene.add(
+        directional
+    );
 
 
-    // ---------------------------------------------
+    // ----------------------------------------------
     // RENDERER
-    // ---------------------------------------------
+    // ----------------------------------------------
 
-    renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true
-    });
+    renderer =
+        new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true
+        });
+
 
     renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio, 2)
+        Math.min(
+            window.devicePixelRatio,
+            2
+        )
     );
+
 
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
 
+
     renderer.xr.enabled = true;
+
 
     renderer.outputColorSpace =
         THREE.SRGBColorSpace;
 
-    container.appendChild(
+
+    document.body.appendChild(
         renderer.domElement
     );
 
 
-    // ---------------------------------------------
-    // AR BUTTON
-    // ---------------------------------------------
+    // ----------------------------------------------
+    // LOAD MODEL
+    // ----------------------------------------------
 
-    const arButton =
-        ARButton.createButton(
-            renderer,
-            {
-
-                requiredFeatures: [
-                    "local-floor"
-                ],
-
-                optionalFeatures: [
-                    "hit-test",
-                    "dom-overlay"
-                ],
-
-                domOverlay: {
-                    root: document.body
-                }
-
-            }
-        );
+    loadModel();
 
 
-    arButton.style.position = "fixed";
-    arButton.style.bottom = "25px";
-    arButton.style.left = "50%";
-    arButton.style.transform =
-        "translateX(-50%)";
+    // ----------------------------------------------
+    // AR
+    // ----------------------------------------------
 
-    arButton.style.width = "180px";
-    arButton.style.height = "50px";
-
-    arButton.style.border = "1px solid white";
-    arButton.style.borderRadius = "4px";
-
-    arButton.style.background =
-        "rgba(0,0,0,0.75)";
-
-    arButton.style.color = "white";
-
-    arButton.style.fontSize = "14px";
-
-    document.body.appendChild(arButton);
+    checkAR();
 
 
-    // ---------------------------------------------
-    // ЗАГРУЗКА 3D
-    // ---------------------------------------------
+    // ----------------------------------------------
+    // BUTTON
+    // ----------------------------------------------
 
-    loadCreature();
-
-
-    // ---------------------------------------------
-    // RESIZE
-    // ---------------------------------------------
-
-    window.addEventListener(
-        "resize",
-        onResize
+    arButton.addEventListener(
+        "click",
+        startAR
     );
 
 
-    // ---------------------------------------------
-    // XR RENDER LOOP
-    // ---------------------------------------------
+    // ----------------------------------------------
+    // GALLERY
+    // ----------------------------------------------
+
+    setupGallery();
+
+
+    // ----------------------------------------------
+    // RESIZE
+    // ----------------------------------------------
+
+    window.addEventListener(
+        "resize",
+        resize
+    );
+
+
+    // ----------------------------------------------
+    // RENDER LOOP
+    // ----------------------------------------------
 
     renderer.setAnimationLoop(
         render
     );
 
-
-    // ---------------------------------------------
-    // ПРОВЕРКА AR
-    // ---------------------------------------------
-
-    checkAR();
-
 }
 
 
-// =====================================================
-// ЗАГРУЗКА CREATURE.GLB
-// =====================================================
+// ==================================================
+// LOAD GLB
+// ==================================================
 
-function loadCreature() {
+function loadModel() {
+
+    status.textContent =
+        "Загрузка creature.glb...";
+
 
     const loader =
         new GLTFLoader();
@@ -301,43 +648,32 @@ function loadCreature() {
 
         MODEL_URL,
 
+
+        // SUCCESS
         function(gltf) {
 
             creature =
                 gltf.scene;
 
 
-            // =========================================
-            // ЦЕНТР КООРДИНАТ
-            // =========================================
-
-            creature.position.set(
-                0,
-                0,
-                0
-            );
-
-
-            creature.rotation.set(
-                0,
-                0,
-                0
-            );
-
-
-            // =========================================
-            // АВТОМАСШТАБ
-            // =========================================
+            // --------------------------------------
+            // SCALE
+            // --------------------------------------
 
             const box =
                 new THREE.Box3()
-                    .setFromObject(creature);
+                    .setFromObject(
+                        creature
+                    );
 
 
             const size =
                 new THREE.Vector3();
 
-            box.getSize(size);
+
+            box.getSize(
+                size
+            );
 
 
             const maxSize =
@@ -348,83 +684,51 @@ function loadCreature() {
                 );
 
 
-            // Размер модели примерно 1 метр
-            const targetSize = 1.0;
-
-
             if (maxSize > 0) {
 
-                const scale =
-                    targetSize / maxSize;
-
                 creature.scale.setScalar(
-                    scale
+                    1 / maxSize
                 );
 
             }
 
 
-            // =========================================
-            // ЦЕНТРИРОВАНИЕ
-            // =========================================
+            // --------------------------------------
+            // CENTER
+            // --------------------------------------
 
-            const centeredBox =
-                new THREE.Box3()
-                    .setFromObject(creature);
+            centerModel();
 
 
-            const center =
-                new THREE.Vector3();
-
-            centeredBox.getCenter(center);
-
-
-            creature.position.x -=
-                center.x;
-
-            creature.position.z -=
-                center.z;
-
-
-            // Чтобы нижняя точка стояла на Y=0
-
-            const finalBox =
-                new THREE.Box3()
-                    .setFromObject(creature);
-
-
-            creature.position.y -=
-                finalBox.min.y;
-
-
-            // =========================================
-            // ДОБАВЛЯЕМ В СЦЕНУ
-            // =========================================
+            // --------------------------------------
+            // ADD SCENE
+            // --------------------------------------
 
             scene.add(
                 creature
             );
 
 
-            document.getElementById(
-                "status"
-            ).textContent =
-                "3D-модель загружена";
+            status.textContent =
+                "CREATURE загружен";
 
 
         },
 
+
+        // PROGRESS
         function(xhr) {
 
-            if (xhr.total) {
+            if (xhr.total > 0) {
 
                 const percent =
-                    (xhr.loaded / xhr.total) * 100;
+                    xhr.loaded /
+                    xhr.total *
+                    100;
 
-                document.getElementById(
-                    "status"
-                ).textContent =
-                    "Загрузка: " +
+
+                status.textContent =
+                    "Загрузка " +
                     percent.toFixed(0) +
                     "%";
 
@@ -432,17 +736,18 @@ function loadCreature() {
 
         },
 
+
+        // ERROR
         function(error) {
 
             console.error(
-                "Ошибка загрузки GLB:",
+                "GLB ERROR:",
                 error
             );
 
-            document.getElementById(
-                "status"
-            ).textContent =
-                "Ошибка загрузки 3D-модели";
+
+            status.textContent =
+                "Ошибка загрузки creature.glb";
 
         }
 
@@ -451,22 +756,66 @@ function loadCreature() {
 }
 
 
-// =====================================================
-// ПРОВЕРКА WEBXR
-// =====================================================
+// ==================================================
+// CENTER MODEL
+// ==================================================
+
+function centerModel() {
+
+    if (!creature)
+        return;
+
+
+    const box =
+        new THREE.Box3()
+            .setFromObject(
+                creature
+            );
+
+
+    const center =
+        new THREE.Vector3();
+
+
+    box.getCenter(
+        center
+    );
+
+
+    creature.position.x -=
+        center.x;
+
+
+    creature.position.z -=
+        center.z;
+
+
+    const box2 =
+        new THREE.Box3()
+            .setFromObject(
+                creature
+            );
+
+
+    creature.position.y -=
+        box2.min.y;
+
+}
+
+
+// ==================================================
+// CHECK AR
+// ==================================================
 
 async function checkAR() {
 
-    const info =
-        document.getElementById(
-            "ar-info"
-        );
-
-
     if (!navigator.xr) {
 
-        info.textContent =
-            "WebXR недоступен";
+        status.textContent =
+            "WebXR отсутствует";
+
+        arButton.textContent =
+            "AR НЕДОСТУПЕН";
 
         return;
 
@@ -476,64 +825,195 @@ async function checkAR() {
     try {
 
         const supported =
-            await navigator.xr.isSessionSupported(
-                "immersive-ar"
-            );
+            await navigator.xr
+                .isSessionSupported(
+                    "immersive-ar"
+                );
 
 
         if (supported) {
 
-            info.textContent =
-                "AR поддерживается";
+            status.textContent =
+                "AR готов";
 
-        } else {
+            arButton.disabled =
+                false;
 
-            info.textContent =
-                "AR не поддерживается этим устройством";
+            arButton.textContent =
+                "ЗАПУСТИТЬ AR";
+
+        }
+        else {
+
+            status.textContent =
+                "Immersive AR не поддерживается";
+
+            arButton.textContent =
+                "AR НЕДОСТУПЕН";
 
         }
 
-    } catch (error) {
+    }
+    catch(error) {
 
         console.error(error);
 
-        info.textContent =
-            "Ошибка проверки AR";
+        status.textContent =
+            "Ошибка WebXR";
 
     }
 
 }
 
 
-// =====================================================
+// ==================================================
+// START AR
+// ==================================================
+
+async function startAR() {
+
+    if (xrSession) {
+
+        await xrSession.end();
+
+        return;
+
+    }
+
+
+    try {
+
+        // ==========================================
+        // REQUEST AR SESSION
+        // ==========================================
+
+        xrSession =
+            await navigator.xr.requestSession(
+                "immersive-ar",
+                {
+
+                    requiredFeatures: [
+                        "local-floor"
+                    ],
+
+                    optionalFeatures: [
+                        "hit-test",
+                        "dom-overlay"
+                    ],
+
+                    domOverlay: {
+                        root: document.body
+                    }
+
+                }
+            );
+
+
+        // ==========================================
+        // END
+        // ==========================================
+
+        xrSession.addEventListener(
+            "end",
+            function() {
+
+                xrSession = null;
+
+                xrReferenceSpace = null;
+
+                modelPlaced = false;
+
+
+                arButton.style.display =
+                    "block";
+
+
+                arButton.textContent =
+                    "ЗАПУСТИТЬ AR";
+
+
+                status.textContent =
+                    "AR завершён";
+
+            }
+        );
+
+
+        // ==========================================
+        // THREE XR
+        // ==========================================
+
+        await renderer.xr.setSession(
+            xrSession
+        );
+
+
+        // ==========================================
+        // REFERENCE SPACE
+        // ==========================================
+
+        try {
+
+            xrReferenceSpace =
+                await xrSession
+                    .requestReferenceSpace(
+                        "local-floor"
+                    );
+
+        }
+        catch(error) {
+
+            xrReferenceSpace =
+                await xrSession
+                    .requestReferenceSpace(
+                        "local"
+                    );
+
+        }
+
+
+        arButton.style.display =
+            "none";
+
+
+        status.textContent =
+            "AR работает";
+
+
+    }
+    catch(error) {
+
+        console.error(
+            "AR SESSION ERROR:",
+            error
+        );
+
+
+        status.textContent =
+            "Ошибка запуска AR: " +
+            error.message;
+
+    }
+
+}
+
+
+// ==================================================
 // RENDER
-// =====================================================
+// ==================================================
 
 function render(
     time,
     frame
 ) {
 
-    /*
-        В обычном режиме:
-
-        camera =
-        виртуальная камера пользователя.
-
-        В AR:
-
-        WebXR автоматически обновляет
-        положение и ориентацию камеры
-        на основании tracking телефона.
-    */
-
-
     if (
-        renderer.xr.isPresenting &&
-        frame
+        frame &&
+        xrSession &&
+        xrReferenceSpace
     ) {
 
-        updatePhonePose(
+        processPhone(
             frame
         );
 
@@ -548,126 +1028,330 @@ function render(
 }
 
 
-// =====================================================
-// ПОЛУЧЕНИЕ ПОЗЫ ТЕЛЕФОНА
-// =====================================================
+// ==================================================
+// ПОЛУЧЕНИЕ ДАННЫХ ТЕЛЕФОНА
+// ==================================================
 
-function updatePhonePose(frame) {
-
-    const session =
-        renderer.xr.getSession();
-
-
-    const referenceSpace =
-        renderer.xr.getReferenceSpace();
-
-
-    if (
-        !session ||
-        !referenceSpace
-    ) {
-        return;
-    }
-
+function processPhone(frame) {
 
     /*
-        viewer space показывает,
-        где находится пользовательская
-        камера относительно AR-пространства.
-    */
+        XRViewerPose содержит:
 
-    const viewerSpace =
-        referenceSpace;
+        POSITION:
 
-
-    /*
-        Получаем viewer pose.
-
-        Здесь находятся:
-
-        position:
         X
         Y
         Z
 
-        orientation:
+        ORIENTATION:
+
         quaternion X
         quaternion Y
         quaternion Z
         quaternion W
     */
 
+
     const pose =
         frame.getViewerPose(
-            viewerSpace
+            xrReferenceSpace
         );
 
 
-    if (!pose) {
+    if (!pose)
         return;
+
+
+    const position =
+        pose.transform.position;
+
+
+    const orientation =
+        pose.transform.orientation;
+
+
+    // ==========================================
+    // POSITION
+    // ==========================================
+
+    document.getElementById("x")
+        .textContent =
+        position.x.toFixed(3);
+
+
+    document.getElementById("y")
+        .textContent =
+        position.y.toFixed(3);
+
+
+    document.getElementById("z")
+        .textContent =
+        position.z.toFixed(3);
+
+
+    // ==========================================
+    // QUATERNION
+    // ==========================================
+
+    const quaternion =
+        new THREE.Quaternion(
+
+            orientation.x,
+
+            orientation.y,
+
+            orientation.z,
+
+            orientation.w
+
+        );
+
+
+    // ==========================================
+    // EULER
+    // ==========================================
+
+    const euler =
+        new THREE.Euler()
+            .setFromQuaternion(
+                quaternion,
+                "YXZ"
+            );
+
+
+    document.getElementById("rx")
+        .textContent =
+        euler.x.toFixed(3);
+
+
+    document.getElementById("ry")
+        .textContent =
+        euler.y.toFixed(3);
+
+
+    document.getElementById("rz")
+        .textContent =
+        euler.z.toFixed(3);
+
+
+    // ==========================================
+    // PLACE MODEL
+    // ==========================================
+
+    if (
+        !modelPlaced &&
+        creature
+    ) {
+
+        placeCreature(
+            pose
+        );
+
     }
-
-
-    const transform =
-        pose.transform;
-
-
-    // ---------------------------------------------
-    // ПОЛОЖЕНИЕ ТЕЛЕФОНА
-    // ---------------------------------------------
-
-    const x =
-        transform.position.x;
-
-    const y =
-        transform.position.y;
-
-    const z =
-        transform.position.z;
-
-
-    // ---------------------------------------------
-    // ОРИЕНТАЦИЯ
-    // ---------------------------------------------
-
-    const q =
-        transform.orientation;
-
-
-    /*
-        q.x
-        q.y
-        q.z
-        q.w
-
-        представляют ориентацию
-        телефона в пространстве.
-    */
-
-
-    // Можно использовать эти данные
-    // для дополнительной логики сайта.
-
-    // Например:
-
-    // console.log({
-    //     position: {x, y, z},
-    //     orientation: {
-    //         x: q.x,
-    //         y: q.y,
-    //         z: q.z,
-    //         w: q.w
-    //     }
-    // });
 
 }
 
 
-// =====================================================
-// RESIZE
-// =====================================================
+// ==================================================
+// PLACE CREATURE
+// ==================================================
 
-function onResize() {
+function placeCreature(pose) {
+
+    if (!creature)
+        return;
+
+
+    const position =
+        pose.transform.position;
+
+
+    const orientation =
+        pose.transform.orientation;
+
+
+    const quaternion =
+        new THREE.Quaternion(
+
+            orientation.x,
+            orientation.y,
+            orientation.z,
+            orientation.w
+
+        );
+
+
+    // ==========================================
+    // НАПРАВЛЕНИЕ ВЗГЛЯДА
+    // ==========================================
+
+    const forward =
+        new THREE.Vector3(
+            0,
+            0,
+            -1
+        );
+
+
+    forward.applyQuaternion(
+        quaternion
+    );
+
+
+    // ==========================================
+    // 1.5 МЕТРА ПЕРЕД ПОЛЬЗОВАТЕЛЕМ
+    // ==========================================
+
+    const distance = 1.5;
+
+
+    creature.position.set(
+
+        position.x +
+        forward.x *
+        distance,
+
+        0,
+
+        position.z +
+        forward.z *
+        distance
+
+    );
+
+
+    // ==========================================
+    // МОДЕЛЬ НЕ ВРАЩАЕТСЯ ВМЕСТЕ
+    // С ТЕЛЕФОНОМ
+    // ==========================================
+
+    creature.rotation.set(
+        0,
+        0,
+        0
+    );
+
+
+    modelPlaced = true;
+
+
+    status.textContent =
+        "CREATURE зафиксирован";
+
+
+}
+
+
+// ==================================================
+// GALLERY
+// ==================================================
+
+function setupGallery() {
+
+    const gallery =
+        document.getElementById(
+            "gallery"
+        );
+
+
+    const galleryButton =
+        document.getElementById(
+            "galleryButton"
+        );
+
+
+    const sceneButton =
+        document.getElementById(
+            "sceneButton"
+        );
+
+
+    const openCreature =
+        document.getElementById(
+            "openCreature"
+        );
+
+
+    galleryButton.addEventListener(
+        "click",
+        function() {
+
+            gallery.style.display =
+                "block";
+
+            galleryButton.classList.add(
+                "active"
+            );
+
+            sceneButton.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    sceneButton.addEventListener(
+        "click",
+        function() {
+
+            gallery.style.display =
+                "none";
+
+            sceneButton.classList.add(
+                "active"
+            );
+
+            galleryButton.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    openCreature.addEventListener(
+        "click",
+        function() {
+
+            gallery.style.display =
+                "none";
+
+            sceneButton.classList.add(
+                "active"
+            );
+
+            galleryButton.classList.remove(
+                "active"
+            );
+
+
+            if (xrSession) {
+
+                return;
+
+            }
+
+
+            if (
+                !arButton.disabled
+            ) {
+
+                startAR();
+
+            }
+
+        }
+    );
+
+}
+
+
+// ==================================================
+// RESIZE
+// ==================================================
+
+function resize() {
 
     camera.aspect =
         window.innerWidth /
@@ -688,3 +1372,4 @@ function onResize() {
 
 </body>
 </html>
+```
