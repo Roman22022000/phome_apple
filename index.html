@@ -1,1074 +1,542 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+    <meta charset="UTF-8">
 
-<title>3D Creature AR</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
 
-<style>
-* {
-    box-sizing: border-box;
-}
+    <title>AR Creature</title>
 
-html,
-body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #080808;
-    font-family: Arial, sans-serif;
-}
-
-#app {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-#menu {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 20;
-
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-button {
-    border: 1px solid #444;
-    background: #111;
-    color: white;
-
-    padding: 10px 16px;
-
-    font-size: 13px;
-
-    cursor: pointer;
-}
-
-button:hover {
-    background: #222;
-}
-
-#sensorButton {
-    display: none;
-}
-
-#status {
-    position: absolute;
-    left: 20px;
-    bottom: 20px;
-
-    z-index: 20;
-
-    color: #aaa;
-    background: rgba(0,0,0,.7);
-
-    padding: 10px;
-
-    font-size: 12px;
-
-    max-width: 360px;
-}
-
-#phoneData {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-
-    z-index: 20;
-
-    color: #aaa;
-    background: rgba(0,0,0,.7);
-
-    padding: 10px;
-
-    font-family: monospace;
-    font-size: 11px;
-
-    line-height: 1.5;
-}
-</style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div id="app">
+<!-- =========================
+     МЕНЮ
+========================= -->
 
-    <div id="menu">
-        <button id="arButton">AR</button>
-        <button id="resetButton">Центр</button>
-        <button id="sensorButton">Включить датчики телефона</button>
+<header class="menu">
+
+    <div class="logo">
+        AR CREATURE
     </div>
+
+    <nav>
+        <a href="index.html" class="active">
+            Сцена
+        </a>
+
+        <a href="gallery.html">
+            Галерея
+        </a>
+    </nav>
+
+</header>
+
+
+<!-- =========================
+     3D СЦЕНА
+========================= -->
+
+<main id="scene-container"></main>
+
+
+<!-- =========================
+     AR ИНТЕРФЕЙС
+========================= -->
+
+<div class="interface">
 
     <div id="status">
-        Загрузка 3D модели...
+        Загрузка 3D-модели...
     </div>
 
-    <div id="phoneData">
-        alpha: --<br>
-        beta: --<br>
-        gamma: --<br>
-        camera: --
+    <div id="ar-info">
+        AR: проверка устройства...
     </div>
 
 </div>
 
+
+<!-- =========================
+     THREE.JS
+========================= -->
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+}
+</script>
+
+
 <script type="module">
 
-import * as THREE from
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+import * as THREE from "three";
 
 import { GLTFLoader } from
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/loaders/GLTFLoader.js";
+"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/loaders/GLTFLoader.js";
 
-import { DRACOLoader } from
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/loaders/DRACOLoader.js";
-
-import { MeshoptDecoder } from
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/libs/meshopt_decoder.module.js";
+import { ARButton } from
+"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/webxr/ARButton.js";
 
 
-/* =========================================================
-   ОСНОВНЫЕ ОБЪЕКТЫ
-========================================================= */
+// =====================================================
+// НАСТРОЙКИ
+// =====================================================
 
-const app =
-    document.getElementById("app");
-
-const status =
-    document.getElementById("status");
-
-const phoneData =
-    document.getElementById("phoneData");
-
-const arButton =
-    document.getElementById("arButton");
-
-const resetButton =
-    document.getElementById("resetButton");
-
-const sensorButton =
-    document.getElementById("sensorButton");
+const MODEL_URL =
+"https://raw.githubusercontent.com/Roman22022000/phome_apple/main/creature.glb";
 
 
-/* =========================================================
-   SCENE
-========================================================= */
+// =====================================================
+// ОСНОВНЫЕ ОБЪЕКТЫ
+// =====================================================
 
-const scene =
-    new THREE.Scene();
+let scene;
+let camera;
+let renderer;
+let creature;
 
-scene.background =
-    new THREE.Color(0x080808);
+
+// =====================================================
+// ИНИЦИАЛИЗАЦИЯ
+// =====================================================
+
+init();
 
 
-/* =========================================================
-   CAMERA
-========================================================= */
+// =====================================================
+// INIT
+// =====================================================
 
-const camera =
-    new THREE.PerspectiveCamera(
-        45,
+function init() {
+
+    const container =
+        document.getElementById("scene-container");
+
+
+    // ---------------------------------------------
+    // SCENE
+    // ---------------------------------------------
+
+    scene = new THREE.Scene();
+
+
+    // ---------------------------------------------
+    // CAMERA
+    // ---------------------------------------------
+
+    camera = new THREE.PerspectiveCamera(
+        70,
         window.innerWidth / window.innerHeight,
         0.01,
-        1000
+        100
+    );
+
+    camera.position.set(
+        0,
+        1.5,
+        3
     );
 
 
-/*
-    Камера смотрит на центр сцены.
-*/
+    // ---------------------------------------------
+    // LIGHT
+    // ---------------------------------------------
 
-const target =
-    new THREE.Vector3(0, 0, 0);
+    const ambient =
+        new THREE.HemisphereLight(
+            0xffffff,
+            0x444444,
+            2
+        );
 
-
-/*
-    Начальная позиция камеры.
-*/
-
-camera.position.set(
-    0,
-    1.5,
-    4
-);
-
-camera.lookAt(target);
+    scene.add(ambient);
 
 
-/* =========================================================
-   RENDERER
-========================================================= */
+    const directional =
+        new THREE.DirectionalLight(
+            0xffffff,
+            3
+        );
 
-const renderer =
-    new THREE.WebGLRenderer({
+    directional.position.set(
+        2,
+        5,
+        3
+    );
+
+    scene.add(directional);
+
+
+    // ---------------------------------------------
+    // RENDERER
+    // ---------------------------------------------
+
+    renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true
     });
 
-renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio, 2)
-);
-
-renderer.setSize(
-    window.innerWidth,
-    window.innerHeight
-);
-
-renderer.xr.enabled = true;
-
-app.appendChild(
-    renderer.domElement
-);
-
-
-/* =========================================================
-   LIGHT
-========================================================= */
-
-const ambient =
-    new THREE.HemisphereLight(
-        0xffffff,
-        0x444444,
-        2
+    renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio, 2)
     );
 
-scene.add(ambient);
-
-
-const light =
-    new THREE.DirectionalLight(
-        0xffffff,
-        3
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
     );
 
-light.position.set(
-    5,
-    10,
-    5
-);
+    renderer.xr.enabled = true;
 
-scene.add(light);
+    renderer.outputColorSpace =
+        THREE.SRGBColorSpace;
 
-
-/* =========================================================
-   WORLD
-========================================================= */
-
-const world =
-    new THREE.Group();
-
-scene.add(world);
-
-
-/* =========================================================
-   3D MODEL
-========================================================= */
-
-let model = null;
-
-
-/*
-    Если index.html находится в том же
-    GitHub репозитории, что и creature.glb:
-
-        ./creature.glb
-
-    Если модель лежит в другой папке:
-
-        ./models/creature.glb
-*/
-
-const MODEL_URL =
-    "https://raw.githubusercontent.com/Roman22022000/phome_apple/main/creature.glb";
-
-
-const loader =
-    new GLTFLoader();
-
-
-/*
-    Draco
-*/
-
-const dracoLoader =
-    new DRACOLoader();
-
-dracoLoader.setDecoderPath(
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/libs/draco/"
-);
-
-loader.setDRACOLoader(
-    dracoLoader
-);
-
-
-/*
-    Meshopt
-*/
-
-loader.setMeshoptDecoder(
-    MeshoptDecoder
-);
-
-
-/* =========================================================
-   ЗАГРУЗКА
-========================================================= */
-
-loader.load(
-
-    MODEL_URL,
-
-    function(gltf) {
-
-        model =
-            gltf.scene;
-
-        /*
-            Получаем bounding box.
-        */
-
-        const box =
-            new THREE.Box3()
-                .setFromObject(model);
-
-        const center =
-            new THREE.Vector3();
-
-        box.getCenter(center);
-
-        /*
-            Переносим модель
-            точно в 0,0,0.
-        */
-
-        model.position.sub(center);
-
-
-        /*
-            Масштабирование.
-        */
-
-        const size =
-            new THREE.Vector3();
-
-        box.getSize(size);
-
-        const maxSize =
-            Math.max(
-                size.x,
-                size.y,
-                size.z
-            );
-
-        if (maxSize > 0) {
-
-            const scale =
-                2 / maxSize;
-
-            model.scale.setScalar(
-                scale
-            );
-        }
-
-
-        world.add(model);
-
-
-        status.textContent =
-            "3D модель загружена";
-
-
-        console.log(
-            "MODEL LOADED",
-            model
-        );
-
-    },
-
-    function(xhr) {
-
-        if (xhr.total) {
-
-            const percent =
-                (xhr.loaded / xhr.total) * 100;
-
-            status.textContent =
-                "Загрузка: " +
-                percent.toFixed(0) +
-                "%";
-        }
-
-    },
-
-    function(error) {
-
-        console.error(
-            "MODEL ERROR:",
-            error
-        );
-
-        status.textContent =
-            "Ошибка загрузки 3D модели";
-    }
-
-);
-
-
-/* =========================================================
-   ОРБИТАЛЬНАЯ КАМЕРА
-========================================================= */
-
-/*
-    Эти параметры отвечают за вращение
-    вокруг модели.
-*/
-
-let orbitYaw = 0;
-
-let orbitPitch = 0;
-
-let orbitDistance = 4;
-
-
-/*
-    Начальное положение.
-*/
-
-orbitYaw = 0;
-
-orbitPitch = 0;
-
-
-/*
-    Обновление камеры.
-*/
-
-function updateOrbitCamera() {
-
-    /*
-        XR сейчас управляет камерой.
-        В таком случае обычную камеру
-        НЕ трогаем.
-    */
-
-    if (renderer.xr.isPresenting) {
-        return;
-    }
-
-
-    /*
-        Ограничиваем вертикальный угол.
-    */
-
-    orbitPitch =
-        Math.max(
-            -1.45,
-            Math.min(
-                1.45,
-                orbitPitch
-            )
-        );
-
-
-    /*
-        Сферические координаты.
-    */
-
-    const x =
-        Math.sin(orbitYaw) *
-        Math.cos(orbitPitch) *
-        orbitDistance;
-
-    const y =
-        Math.sin(orbitPitch) *
-        orbitDistance;
-
-    const z =
-        Math.cos(orbitYaw) *
-        Math.cos(orbitPitch) *
-        orbitDistance;
-
-
-    camera.position.set(
-        x,
-        y,
-        z
+    container.appendChild(
+        renderer.domElement
     );
 
 
-    camera.lookAt(
-        target
-    );
-}
+    // ---------------------------------------------
+    // AR BUTTON
+    // ---------------------------------------------
+
+    const arButton =
+        ARButton.createButton(
+            renderer,
+            {
+
+                requiredFeatures: [
+                    "local-floor"
+                ],
+
+                optionalFeatures: [
+                    "hit-test",
+                    "dom-overlay"
+                ],
+
+                domOverlay: {
+                    root: document.body
+                }
 
-
-/* =========================================================
-   MOUSE / TOUCH
-========================================================= */
-
-let dragging = false;
-
-let lastX = 0;
-let lastY = 0;
-
-
-renderer.domElement.addEventListener(
-    "pointerdown",
-    function(e) {
-
-        dragging = true;
-
-        lastX = e.clientX;
-        lastY = e.clientY;
-
-    }
-);
-
-
-renderer.domElement.addEventListener(
-    "pointermove",
-    function(e) {
-
-        if (!dragging) {
-            return;
-        }
-
-        const dx =
-            e.clientX - lastX;
-
-        const dy =
-            e.clientY - lastY;
-
-        lastX =
-            e.clientX;
-
-        lastY =
-            e.clientY;
-
-
-        /*
-            Горизонтальное движение:
-            вращение вокруг объекта.
-        */
-
-        orbitYaw -=
-            dx * 0.008;
-
-
-        /*
-            Вертикальное движение:
-            наклон камеры.
-        */
-
-        orbitPitch +=
-            dy * 0.008;
-
-
-        updateOrbitCamera();
-
-    }
-);
-
-
-window.addEventListener(
-    "pointerup",
-    function() {
-
-        dragging = false;
-
-    }
-);
-
-
-/* =========================================================
-   КОЛЕСО МЫШИ
-========================================================= */
-
-renderer.domElement.addEventListener(
-    "wheel",
-    function(e) {
-
-        orbitDistance +=
-            e.deltaY * 0.003;
-
-
-        orbitDistance =
-            Math.max(
-                1,
-                Math.min(
-                    15,
-                    orbitDistance
-                )
-            );
-
-
-        updateOrbitCamera();
-
-    }
-);
-
-
-/* =========================================================
-   ТЕЛЕФОН
-========================================================= */
-
-
-/*
-    Данные телефона.
-*/
-
-let phoneAlpha = 0;
-let phoneBeta = 0;
-let phoneGamma = 0;
-
-
-/*
-    Начальная ориентация.
-
-    Она нужна, чтобы при включении
-    датчиков модель не прыгала.
-*/
-
-let startAlpha = null;
-let startBeta = null;
-let startGamma = null;
-
-
-/*
-    Quaternion телефона.
-*/
-
-const phoneQuaternion =
-    new THREE.Quaternion();
-
-
-/*
-    Euler.
-*/
-
-const phoneEuler =
-    new THREE.Euler(
-        0,
-        0,
-        0,
-        "YXZ"
-    );
-
-
-/*
-    Для плавности.
-*/
-
-const phoneTargetQuaternion =
-    new THREE.Quaternion();
-
-
-/* =========================================================
-   DEVICE ORIENTATION
-========================================================= */
-
-function handleOrientation(event) {
-
-    if (
-        event.alpha === null ||
-        event.beta === null ||
-        event.gamma === null
-    ) {
-        return;
-    }
-
-
-    phoneAlpha =
-        THREE.MathUtils.degToRad(
-            event.alpha
-        );
-
-    phoneBeta =
-        THREE.MathUtils.degToRad(
-            event.beta
-        );
-
-    phoneGamma =
-        THREE.MathUtils.degToRad(
-            event.gamma
-        );
-
-
-    /*
-        Запоминаем положение телефона
-        в момент запуска.
-    */
-
-    if (startAlpha === null) {
-
-        startAlpha =
-            phoneAlpha;
-
-        startBeta =
-            phoneBeta;
-
-        startGamma =
-            phoneGamma;
-    }
-
-
-    /*
-        Относительное вращение.
-    */
-
-    const alpha =
-        phoneAlpha -
-        startAlpha;
-
-    const beta =
-        phoneBeta -
-        startBeta;
-
-    const gamma =
-        phoneGamma -
-        startGamma;
-
-
-    /*
-        Преобразование ориентации
-        телефона в Quaternion.
-
-        Это важная часть:
-        мы не просто вращаем модель
-        по одному углу, а используем
-        полную ориентацию устройства.
-    */
-
-    phoneEuler.set(
-        beta,
-        alpha,
-        -gamma,
-        "YXZ"
-    );
-
-    phoneTargetQuaternion
-        .setFromEuler(
-            phoneEuler
-        );
-
-
-    /*
-        Показываем реальные данные.
-    */
-
-    phoneData.innerHTML =
-        "alpha: " +
-        THREE.MathUtils.radToDeg(alpha).toFixed(1) +
-        "°<br>" +
-
-        "beta: " +
-        THREE.MathUtils.radToDeg(beta).toFixed(1) +
-        "°<br>" +
-
-        "gamma: " +
-        THREE.MathUtils.radToDeg(gamma).toFixed(1) +
-        "°<br>" +
-
-        "camera: " +
-        orbitYaw.toFixed(2);
-}
-
-
-/* =========================================================
-   ЗАПУСК ДАТЧИКОВ
-========================================================= */
-
-async function enablePhoneSensors() {
-
-    /*
-        iPhone требует разрешение
-        через пользовательский клик.
-    */
-
-    if (
-        typeof DeviceOrientationEvent !==
-        "undefined" &&
-
-        typeof DeviceOrientationEvent.requestPermission ===
-        "function"
-    ) {
-
-        try {
-
-            const permission =
-                await DeviceOrientationEvent
-                    .requestPermission();
-
-            if (
-                permission !==
-                "granted"
-            ) {
-
-                status.textContent =
-                    "Доступ к датчикам запрещен";
-
-                return;
             }
-
-        } catch(error) {
-
-            console.error(error);
-
-            return;
-        }
-    }
+        );
 
 
-    /*
-        Сбрасываем начальное положение.
-    */
+    arButton.style.position = "fixed";
+    arButton.style.bottom = "25px";
+    arButton.style.left = "50%";
+    arButton.style.transform =
+        "translateX(-50%)";
 
-    startAlpha = null;
-    startBeta = null;
-    startGamma = null;
+    arButton.style.width = "180px";
+    arButton.style.height = "50px";
 
+    arButton.style.border = "1px solid white";
+    arButton.style.borderRadius = "4px";
+
+    arButton.style.background =
+        "rgba(0,0,0,0.75)";
+
+    arButton.style.color = "white";
+
+    arButton.style.fontSize = "14px";
+
+    document.body.appendChild(arButton);
+
+
+    // ---------------------------------------------
+    // ЗАГРУЗКА 3D
+    // ---------------------------------------------
+
+    loadCreature();
+
+
+    // ---------------------------------------------
+    // RESIZE
+    // ---------------------------------------------
 
     window.addEventListener(
-        "deviceorientation",
-        handleOrientation,
-        true
+        "resize",
+        onResize
     );
 
 
-    status.textContent =
-        "Датчики телефона активны";
+    // ---------------------------------------------
+    // XR RENDER LOOP
+    // ---------------------------------------------
+
+    renderer.setAnimationLoop(
+        render
+    );
 
 
-    sensorButton.style.display =
-        "none";
+    // ---------------------------------------------
+    // ПРОВЕРКА AR
+    // ---------------------------------------------
+
+    checkAR();
+
 }
 
 
-/* =========================================================
-   КНОПКА ДАТЧИКОВ
-========================================================= */
+// =====================================================
+// ЗАГРУЗКА CREATURE.GLB
+// =====================================================
 
-sensorButton.addEventListener(
-    "click",
-    enablePhoneSensors
-);
+function loadCreature() {
 
-
-/*
-    На мобильном устройстве показываем
-    кнопку запуска датчиков.
-*/
-
-if (
-    /Android|iPhone|iPad|iPod/i.test(
-        navigator.userAgent
-    )
-) {
-
-    sensorButton.style.display =
-        "block";
-}
+    const loader =
+        new GLTFLoader();
 
 
-/* =========================================================
-   AR
-========================================================= */
+    loader.load(
 
-arButton.addEventListener(
-    "click",
-    async function() {
+        MODEL_URL,
 
-        if (!navigator.xr) {
+        function(gltf) {
 
-            status.textContent =
-                "WebXR не поддерживается этим браузером";
-
-            return;
-        }
+            creature =
+                gltf.scene;
 
 
-        try {
+            // =========================================
+            // ЦЕНТР КООРДИНАТ
+            // =========================================
 
-            const supported =
-                await navigator.xr.isSessionSupported(
-                    "immersive-ar"
+            creature.position.set(
+                0,
+                0,
+                0
+            );
+
+
+            creature.rotation.set(
+                0,
+                0,
+                0
+            );
+
+
+            // =========================================
+            // АВТОМАСШТАБ
+            // =========================================
+
+            const box =
+                new THREE.Box3()
+                    .setFromObject(creature);
+
+
+            const size =
+                new THREE.Vector3();
+
+            box.getSize(size);
+
+
+            const maxSize =
+                Math.max(
+                    size.x,
+                    size.y,
+                    size.z
                 );
 
-            if (!supported) {
 
-                status.textContent =
-                    "AR не поддерживается устройством";
+            // Размер модели примерно 1 метр
+            const targetSize = 1.0;
 
-                return;
+
+            if (maxSize > 0) {
+
+                const scale =
+                    targetSize / maxSize;
+
+                creature.scale.setScalar(
+                    scale
+                );
+
             }
 
 
-            const session =
-                await navigator.xr.requestSession(
-                    "immersive-ar",
-                    {
-                        requiredFeatures: [
-                            "local-floor"
-                        ]
-                    }
-                );
+            // =========================================
+            // ЦЕНТРИРОВАНИЕ
+            // =========================================
+
+            const centeredBox =
+                new THREE.Box3()
+                    .setFromObject(creature);
 
 
-            renderer.xr.setReferenceSpaceType(
-                "local-floor"
+            const center =
+                new THREE.Vector3();
+
+            centeredBox.getCenter(center);
+
+
+            creature.position.x -=
+                center.x;
+
+            creature.position.z -=
+                center.z;
+
+
+            // Чтобы нижняя точка стояла на Y=0
+
+            const finalBox =
+                new THREE.Box3()
+                    .setFromObject(creature);
+
+
+            creature.position.y -=
+                finalBox.min.y;
+
+
+            // =========================================
+            // ДОБАВЛЯЕМ В СЦЕНУ
+            // =========================================
+
+            scene.add(
+                creature
             );
 
 
-            await renderer.xr.setSession(
-                session
-            );
+            document.getElementById(
+                "status"
+            ).textContent =
+                "3D-модель загружена";
 
 
-            status.textContent =
-                "AR активен. Двигайтесь вокруг модели.";
+        },
 
+        function(xhr) {
 
-            session.addEventListener(
-                "end",
-                function() {
+            if (xhr.total) {
 
-                    status.textContent =
-                        "AR завершен";
+                const percent =
+                    (xhr.loaded / xhr.total) * 100;
 
-                    updateOrbitCamera();
+                document.getElementById(
+                    "status"
+                ).textContent =
+                    "Загрузка: " +
+                    percent.toFixed(0) +
+                    "%";
 
-                }
-            );
+            }
 
+        },
 
-        } catch(error) {
+        function(error) {
 
             console.error(
-                "AR ERROR:",
+                "Ошибка загрузки GLB:",
                 error
             );
 
-            status.textContent =
-                "Ошибка запуска AR: " +
-                error.message;
+            document.getElementById(
+                "status"
+            ).textContent =
+                "Ошибка загрузки 3D-модели";
+
         }
 
-    }
-);
+    );
+
+}
 
 
-/* =========================================================
-   ЦЕНТРИРОВАНИЕ
-========================================================= */
+// =====================================================
+// ПРОВЕРКА WEBXR
+// =====================================================
 
-resetButton.addEventListener(
-    "click",
-    function() {
+async function checkAR() {
 
-        orbitYaw = 0;
-
-        orbitPitch = 0;
-
-        orbitDistance = 4;
-
-
-        startAlpha = null;
-        startBeta = null;
-        startGamma = null;
-
-
-        updateOrbitCamera();
-
-    }
-);
-
-
-/* =========================================================
-   RESIZE
-========================================================= */
-
-window.addEventListener(
-    "resize",
-    function() {
-
-        camera.aspect =
-            window.innerWidth /
-            window.innerHeight;
-
-        camera.updateProjectionMatrix();
-
-
-        renderer.setSize(
-            window.innerWidth,
-            window.innerHeight
+    const info =
+        document.getElementById(
+            "ar-info"
         );
 
+
+    if (!navigator.xr) {
+
+        info.textContent =
+            "WebXR недоступен";
+
+        return;
+
     }
-);
 
 
-/* =========================================================
-   ANIMATION
-========================================================= */
+    try {
 
-function animate() {
+        const supported =
+            await navigator.xr.isSessionSupported(
+                "immersive-ar"
+            );
+
+
+        if (supported) {
+
+            info.textContent =
+                "AR поддерживается";
+
+        } else {
+
+            info.textContent =
+                "AR не поддерживается этим устройством";
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        info.textContent =
+            "Ошибка проверки AR";
+
+    }
+
+}
+
+
+// =====================================================
+// RENDER
+// =====================================================
+
+function render(
+    time,
+    frame
+) {
 
     /*
-        Плавно приближаем ориентацию
-        камеры к ориентации телефона.
+        В обычном режиме:
+
+        camera =
+        виртуальная камера пользователя.
+
+        В AR:
+
+        WebXR автоматически обновляет
+        положение и ориентацию камеры
+        на основании tracking телефона.
     */
 
+
     if (
-        !renderer.xr.isPresenting &&
-        startAlpha !== null
+        renderer.xr.isPresenting &&
+        frame
     ) {
 
-        phoneQuaternion.slerp(
-            phoneTargetQuaternion,
-            0.15
+        updatePhonePose(
+            frame
         );
 
-
-        /*
-            Ориентация телефона
-            управляет горизонтальным
-            вращением сцены.
-        */
-
-        const euler =
-            new THREE.Euler()
-                .setFromQuaternion(
-                    phoneQuaternion,
-                    "YXZ"
-                );
-
-
-        orbitYaw =
-            -euler.y;
-
-
-        orbitPitch =
-            -euler.x;
-
-
-        updateOrbitCamera();
     }
 
 
@@ -1076,19 +544,145 @@ function animate() {
         scene,
         camera
     );
+
 }
 
 
-renderer.setAnimationLoop(
-    animate
-);
+// =====================================================
+// ПОЛУЧЕНИЕ ПОЗЫ ТЕЛЕФОНА
+// =====================================================
+
+function updatePhonePose(frame) {
+
+    const session =
+        renderer.xr.getSession();
 
 
-/* =========================================================
-   START
-========================================================= */
+    const referenceSpace =
+        renderer.xr.getReferenceSpace();
 
-updateOrbitCamera();
+
+    if (
+        !session ||
+        !referenceSpace
+    ) {
+        return;
+    }
+
+
+    /*
+        viewer space показывает,
+        где находится пользовательская
+        камера относительно AR-пространства.
+    */
+
+    const viewerSpace =
+        referenceSpace;
+
+
+    /*
+        Получаем viewer pose.
+
+        Здесь находятся:
+
+        position:
+        X
+        Y
+        Z
+
+        orientation:
+        quaternion X
+        quaternion Y
+        quaternion Z
+        quaternion W
+    */
+
+    const pose =
+        frame.getViewerPose(
+            viewerSpace
+        );
+
+
+    if (!pose) {
+        return;
+    }
+
+
+    const transform =
+        pose.transform;
+
+
+    // ---------------------------------------------
+    // ПОЛОЖЕНИЕ ТЕЛЕФОНА
+    // ---------------------------------------------
+
+    const x =
+        transform.position.x;
+
+    const y =
+        transform.position.y;
+
+    const z =
+        transform.position.z;
+
+
+    // ---------------------------------------------
+    // ОРИЕНТАЦИЯ
+    // ---------------------------------------------
+
+    const q =
+        transform.orientation;
+
+
+    /*
+        q.x
+        q.y
+        q.z
+        q.w
+
+        представляют ориентацию
+        телефона в пространстве.
+    */
+
+
+    // Можно использовать эти данные
+    // для дополнительной логики сайта.
+
+    // Например:
+
+    // console.log({
+    //     position: {x, y, z},
+    //     orientation: {
+    //         x: q.x,
+    //         y: q.y,
+    //         z: q.z,
+    //         w: q.w
+    //     }
+    // });
+
+}
+
+
+// =====================================================
+// RESIZE
+// =====================================================
+
+function onResize() {
+
+    camera.aspect =
+        window.innerWidth /
+        window.innerHeight;
+
+
+    camera.updateProjectionMatrix();
+
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+}
 
 </script>
 
