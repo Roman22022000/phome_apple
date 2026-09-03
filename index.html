@@ -1,13 +1,17 @@
 ```html
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
 
 <meta charset="UTF-8">
 
 <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    content="width=device-width,
+             initial-scale=1,
+             maximum-scale=1,
+             user-scalable=no"
 >
 
 <meta
@@ -17,7 +21,12 @@
 
 <title>AR CREATURE</title>
 
+
 <style>
+
+/* =====================================================
+   RESET
+===================================================== */
 
 * {
     box-sizing: border-box;
@@ -25,66 +34,102 @@
 
 html,
 body {
+
     margin: 0;
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
 
     background: #000;
+
     color: #fff;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
 }
 
+
+/* =====================================================
+   THREE CANVAS
+===================================================== */
+
 canvas {
+
     position: fixed;
+
     inset: 0;
 
     width: 100%;
     height: 100%;
 
     z-index: 1;
+
+    display: block;
+
 }
 
 
-/* =========================
-   МЕНЮ
-========================= */
+/* =====================================================
+   MENU
+===================================================== */
 
 #menu {
+
     position: fixed;
 
     top: 0;
     left: 0;
 
     width: 100%;
+
     height: 58px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     padding: 0 22px;
 
-    background: rgba(0,0,0,.82);
+    background:
+        rgba(0,0,0,.82);
 
-    border-bottom: 1px solid #252525;
+    border-bottom:
+        1px solid #292929;
 
     z-index: 100;
+
 }
+
 
 .logo {
+
     font-size: 12px;
+
+    font-weight: 600;
+
     letter-spacing: 3px;
-    font-weight: bold;
+
 }
+
 
 .menu-buttons {
+
     display: flex;
+
     gap: 20px;
+
 }
 
+
 .menu-buttons button {
+
     border: 0;
 
     background: transparent;
@@ -92,76 +137,99 @@ canvas {
     color: #777;
 
     font-size: 11px;
+
     letter-spacing: 1px;
 
     cursor: pointer;
+
 }
+
 
 .menu-buttons button.active {
+
     color: #fff;
+
 }
 
 
-/* =========================
-   ИНТЕРФЕЙС
-========================= */
+/* =====================================================
+   INTERFACE
+===================================================== */
 
 #interface {
+
     position: fixed;
 
     left: 15px;
+
     bottom: 15px;
 
     z-index: 50;
 
     pointer-events: none;
+
 }
 
+
 #status {
+
     padding: 9px 12px;
 
-    background: rgba(0,0,0,.75);
+    margin-bottom: 7px;
 
-    border: 1px solid #333;
+    background:
+        rgba(0,0,0,.75);
+
+    border:
+        1px solid #333;
 
     font-size: 11px;
 
-    margin-bottom: 7px;
 }
 
+
 #phone-data {
+
     padding: 9px 12px;
 
-    background: rgba(0,0,0,.75);
+    background:
+        rgba(0,0,0,.72);
 
-    border: 1px solid #333;
+    border:
+        1px solid #333;
 
     font-family: monospace;
 
     font-size: 9px;
 
     line-height: 16px;
+
 }
 
 
-/* =========================
+/* =====================================================
    AR BUTTON
-========================= */
+===================================================== */
 
 #arButton {
+
     position: fixed;
 
     left: 50%;
+
     bottom: 25px;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     z-index: 200;
 
     width: 210px;
+
     height: 52px;
 
-    border: 1px solid #fff;
+    border:
+        1px solid #fff;
 
     background: #000;
 
@@ -172,27 +240,35 @@ canvas {
     letter-spacing: 2px;
 
     cursor: pointer;
+
 }
+
 
 #arButton:disabled {
+
     opacity: .35;
+
 }
 
 
-/* =========================
-   ГАЛЕРЕЯ
-========================= */
+/* =====================================================
+   GALLERY
+===================================================== */
 
 #gallery {
+
     display: none;
 
     position: fixed;
 
     top: 58px;
+
     left: 0;
 
     width: 100%;
-    height: calc(100% - 58px);
+
+    height:
+        calc(100% - 58px);
 
     overflow-y: auto;
 
@@ -201,31 +277,44 @@ canvas {
     background: #050505;
 
     z-index: 80;
+
 }
 
+
 #gallery h1 {
-    margin: 0 0 25px;
+
+    margin:
+        0 0 25px;
 
     font-size: 20px;
 
     letter-spacing: 3px;
+
 }
 
+
 .gallery-card {
+
     width: 260px;
 
-    border: 1px solid #292929;
+    border:
+        1px solid #292929;
 
     background: #0b0b0b;
 
     padding: 15px;
+
 }
 
+
 .gallery-preview {
+
     height: 220px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     background: #111;
@@ -235,53 +324,127 @@ canvas {
     font-size: 11px;
 
     letter-spacing: 2px;
+
 }
 
+
 .gallery-name {
+
     margin-top: 15px;
 
     font-size: 12px;
+
 }
 
+
 .gallery-open {
+
     margin-top: 12px;
 
     width: 100%;
+
     height: 38px;
 
-    border: 1px solid #555;
+    border:
+        1px solid #555;
 
     background: #000;
 
     color: #fff;
 
     cursor: pointer;
+
 }
 
 
-/* =========================
+/* =====================================================
+   TOUCH HINT
+===================================================== */
+
+#touch-help {
+
+    position: fixed;
+
+    right: 15px;
+
+    bottom: 15px;
+
+    z-index: 40;
+
+    padding: 9px 12px;
+
+    background:
+        rgba(0,0,0,.7);
+
+    border:
+        1px solid #333;
+
+    font-size: 9px;
+
+    line-height: 15px;
+
+    color: #aaa;
+
+    pointer-events: none;
+
+}
+
+
+/* =====================================================
    MOBILE
-========================= */
+===================================================== */
 
 @media(max-width:600px) {
 
     #menu {
+
         height: 52px;
-        padding: 0 14px;
+
+        padding:
+            0 14px;
+
     }
+
+
+    .logo {
+
+        font-size: 10px;
+
+        letter-spacing: 2px;
+
+    }
+
 
     .menu-buttons {
-        gap: 12px;
+
+        gap: 13px;
+
     }
+
 
     .menu-buttons button {
+
         font-size: 9px;
+
     }
 
+
     #gallery {
+
         top: 52px;
-        height: calc(100% - 52px);
+
+        height:
+            calc(100% - 52px);
+
         padding: 18px;
+
+    }
+
+
+    #touch-help {
+
+        font-size: 8px;
+
     }
 
 }
@@ -294,15 +457,16 @@ canvas {
 <body>
 
 
-<!-- ==================================================
-     МЕНЮ
-================================================== -->
+<!-- =====================================================
+     MENU
+===================================================== -->
 
 <header id="menu">
 
     <div class="logo">
         AR CREATURE
     </div>
+
 
     <div class="menu-buttons">
 
@@ -313,7 +477,10 @@ canvas {
             СЦЕНА
         </button>
 
-        <button id="galleryButton">
+
+        <button
+            id="galleryButton"
+        >
             ГАЛЕРЕЯ
         </button>
 
@@ -322,13 +489,16 @@ canvas {
 </header>
 
 
-<!-- ==================================================
-     ГАЛЕРЕЯ
-================================================== -->
+<!-- =====================================================
+     GALLERY
+===================================================== -->
 
 <section id="gallery">
 
-    <h1>ГАЛЕРЕЯ</h1>
+    <h1>
+        ГАЛЕРЕЯ
+    </h1>
+
 
     <div class="gallery-card">
 
@@ -336,9 +506,11 @@ canvas {
             CREATURE.GLB
         </div>
 
+
         <div class="gallery-name">
             creature.glb
         </div>
+
 
         <button
             class="gallery-open"
@@ -352,15 +524,16 @@ canvas {
 </section>
 
 
-<!-- ==================================================
-     AR ИНФОРМАЦИЯ
-================================================== -->
+<!-- =====================================================
+     STATUS
+===================================================== -->
 
 <div id="interface">
 
     <div id="status">
-        Проверка AR...
+        Инициализация...
     </div>
+
 
     <div id="phone-data">
 
@@ -375,7 +548,9 @@ canvas {
         Z:
         <span id="z">0.000</span>
 
+
         <br><br>
+
 
         ROTATION<br>
 
@@ -393,9 +568,21 @@ canvas {
 </div>
 
 
-<!-- ==================================================
-     AR
-================================================== -->
+<!-- =====================================================
+     TOUCH HELP
+===================================================== -->
+
+<div id="touch-help">
+
+    1 палец — вращение<br>
+    2 пальца — масштаб / перемещение
+
+</div>
+
+
+<!-- =====================================================
+     AR BUTTON
+===================================================== -->
 
 <button
     id="arButton"
@@ -405,119 +592,199 @@ canvas {
 </button>
 
 
-<!-- ==================================================
-     THREE.JS
-================================================== -->
+<!-- =====================================================
+     THREE IMPORT MAP
+===================================================== -->
 
 <script type="importmap">
+
 {
     "imports": {
+
         "three":
         "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
 
         "three/addons/":
         "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+
     }
 }
+
 </script>
 
 
 <script type="module">
 
-import * as THREE from "three";
+import * as THREE
+from "three";
+
 
 import {
     GLTFLoader
-} from "three/addons/loaders/GLTFLoader.js";
+}
+from "three/addons/loaders/GLTFLoader.js";
 
 
-// ==================================================
-// MODEL
-// ==================================================
+// =====================================================
+// MODEL URL
+// =====================================================
 
 const MODEL_URL =
 "https://raw.githubusercontent.com/Roman22022000/phome_apple/main/creature.glb";
 
 
-// ==================================================
+// =====================================================
 // THREE VARIABLES
-// ==================================================
+// =====================================================
 
 let scene;
+
 let camera;
+
 let renderer;
 
 let creature = null;
 
+
+// =====================================================
+// AR VARIABLES
+// =====================================================
+
 let xrSession = null;
+
 let xrReferenceSpace = null;
 
 let modelPlaced = false;
 
 
-// ==================================================
+// =====================================================
+// TOUCH CONTROL VARIABLES
+// =====================================================
+
+let touchMode = "none";
+
+let oneFingerStartX = 0;
+
+let oneFingerStartY = 0;
+
+let oneFingerLastX = 0;
+
+let oneFingerLastY = 0;
+
+
+let twoFingerStartDistance = 0;
+
+let twoFingerStartScale = 1;
+
+
+let twoFingerStartCenterX = 0;
+
+let twoFingerStartCenterY = 0;
+
+
+let twoFingerStartPositionX = 0;
+
+let twoFingerStartPositionY = 0;
+
+
+// =====================================================
+// SCENE CONTROL
+// =====================================================
+
+let sceneRotationY = 0;
+
+let sceneRotationX = 0;
+
+let sceneScale = 1;
+
+let sceneOffsetX = 0;
+
+let sceneOffsetY = 0;
+
+
+// =====================================================
 // DOM
-// ==================================================
+// =====================================================
 
 const status =
-document.getElementById("status");
+document.getElementById(
+    "status"
+);
+
 
 const arButton =
-document.getElementById("arButton");
+document.getElementById(
+    "arButton"
+);
 
 
-// ==================================================
+// =====================================================
 // INIT
-// ==================================================
+// =====================================================
 
 init();
 
 
-// ==================================================
-// THREE INITIALIZATION
-// ==================================================
+// =====================================================
+// INITIALIZATION
+// =====================================================
 
 function init() {
 
-    // ----------------------------------------------
+
+    // =================================================
     // SCENE
-    // ----------------------------------------------
+    // =================================================
 
     scene =
         new THREE.Scene();
 
 
-    // ----------------------------------------------
+    // =================================================
     // CAMERA
-    // ----------------------------------------------
+    // =================================================
 
     camera =
         new THREE.PerspectiveCamera(
-            70,
+
+            60,
+
             window.innerWidth /
             window.innerHeight,
+
             0.01,
+
             100
+
         );
 
 
     camera.position.set(
+
         0,
-        1.6,
+
+        1.5,
+
         3
+
     );
 
 
-    // ----------------------------------------------
+    // =================================================
     // LIGHT
-    // ----------------------------------------------
+    // =================================================
 
     const hemisphere =
         new THREE.HemisphereLight(
+
             0xffffff,
+
             0x444444,
+
             2
+
         );
+
 
     scene.add(
         hemisphere
@@ -526,47 +793,68 @@ function init() {
 
     const directional =
         new THREE.DirectionalLight(
+
             0xffffff,
+
             3
+
         );
 
+
     directional.position.set(
+
         2,
+
         5,
+
         3
+
     );
+
 
     scene.add(
         directional
     );
 
 
-    // ----------------------------------------------
+    // =================================================
     // RENDERER
-    // ----------------------------------------------
+    // =================================================
 
     renderer =
         new THREE.WebGLRenderer({
+
             antialias: true,
+
             alpha: true
+
         });
 
 
     renderer.setPixelRatio(
+
         Math.min(
+
             window.devicePixelRatio,
+
             2
+
         )
+
     );
 
 
     renderer.setSize(
+
         window.innerWidth,
+
         window.innerHeight
+
     );
 
 
-    renderer.xr.enabled = true;
+    renderer.xr.enabled =
+        true;
 
 
     renderer.outputColorSpace =
@@ -578,63 +866,79 @@ function init() {
     );
 
 
-    // ----------------------------------------------
-    // LOAD MODEL
-    // ----------------------------------------------
+    // =================================================
+    // TOUCH
+    // =================================================
+
+    setupTouchControls();
+
+
+    // =================================================
+    // MODEL
+    // =================================================
 
     loadModel();
 
 
-    // ----------------------------------------------
+    // =================================================
     // AR
-    // ----------------------------------------------
+    // =================================================
 
     checkAR();
 
 
-    // ----------------------------------------------
+    // =================================================
     // BUTTON
-    // ----------------------------------------------
+    // =================================================
 
     arButton.addEventListener(
+
         "click",
+
         startAR
+
     );
 
 
-    // ----------------------------------------------
+    // =================================================
     // GALLERY
-    // ----------------------------------------------
+    // =================================================
 
     setupGallery();
 
 
-    // ----------------------------------------------
+    // =================================================
     // RESIZE
-    // ----------------------------------------------
+    // =================================================
 
     window.addEventListener(
+
         "resize",
+
         resize
+
     );
 
 
-    // ----------------------------------------------
-    // RENDER LOOP
-    // ----------------------------------------------
+    // =================================================
+    // RENDER
+    // =================================================
 
     renderer.setAnimationLoop(
+
         render
+
     );
 
 }
 
 
-// ==================================================
-// LOAD GLB
-// ==================================================
+// =====================================================
+// LOAD MODEL
+// =====================================================
 
 function loadModel() {
+
 
     status.textContent =
         "Загрузка creature.glb...";
@@ -649,16 +953,16 @@ function loadModel() {
         MODEL_URL,
 
 
-        // SUCCESS
         function(gltf) {
+
 
             creature =
                 gltf.scene;
 
 
-            // --------------------------------------
-            // SCALE
-            // --------------------------------------
+            // =========================================
+            // SCALE MODEL
+            // =========================================
 
             const box =
                 new THREE.Box3()
@@ -678,31 +982,38 @@ function loadModel() {
 
             const maxSize =
                 Math.max(
+
                     size.x,
+
                     size.y,
+
                     size.z
+
                 );
 
 
             if (maxSize > 0) {
 
                 creature.scale.setScalar(
-                    1 / maxSize
+
+                    1 /
+                    maxSize
+
                 );
 
             }
 
 
-            // --------------------------------------
+            // =========================================
             // CENTER
-            // --------------------------------------
+            // =========================================
 
             centerModel();
 
 
-            // --------------------------------------
-            // ADD SCENE
-            // --------------------------------------
+            // =========================================
+            // ADD
+            // =========================================
 
             scene.add(
                 creature
@@ -716,10 +1027,11 @@ function loadModel() {
         },
 
 
-        // PROGRESS
         function(xhr) {
 
+
             if (xhr.total > 0) {
+
 
                 const percent =
                     xhr.loaded /
@@ -728,8 +1040,11 @@ function loadModel() {
 
 
                 status.textContent =
+
                     "Загрузка " +
+
                     percent.toFixed(0) +
+
                     "%";
 
             }
@@ -737,8 +1052,8 @@ function loadModel() {
         },
 
 
-        // ERROR
         function(error) {
+
 
             console.error(
                 "GLB ERROR:",
@@ -747,7 +1062,7 @@ function loadModel() {
 
 
             status.textContent =
-                "Ошибка загрузки creature.glb";
+                "Ошибка creature.glb";
 
         }
 
@@ -756,11 +1071,12 @@ function loadModel() {
 }
 
 
-// ==================================================
+// =====================================================
 // CENTER MODEL
-// ==================================================
+// =====================================================
 
 function centerModel() {
+
 
     if (!creature)
         return;
@@ -803,19 +1119,499 @@ function centerModel() {
 }
 
 
-// ==================================================
+// =====================================================
+// TOUCH CONTROLS
+// =====================================================
+
+function setupTouchControls() {
+
+
+    const canvas =
+        renderer.domElement;
+
+
+    canvas.addEventListener(
+
+        "touchstart",
+
+        function(event) {
+
+
+            if (
+                renderer.xr.isPresenting
+            ) {
+
+                return;
+
+            }
+
+
+            event.preventDefault();
+
+
+            // =========================================
+            // ONE FINGER
+            // =========================================
+
+            if (
+                event.touches.length === 1
+            ) {
+
+
+                touchMode =
+                    "one";
+
+
+                const touch =
+                    event.touches[0];
+
+
+                oneFingerStartX =
+                    touch.clientX;
+
+
+                oneFingerStartY =
+                    touch.clientY;
+
+
+                oneFingerLastX =
+                    touch.clientX;
+
+
+                oneFingerLastY =
+                    touch.clientY;
+
+            }
+
+
+            // =========================================
+            // TWO FINGERS
+            // =========================================
+
+            if (
+                event.touches.length >= 2
+            ) {
+
+
+                touchMode =
+                    "two";
+
+
+                const t1 =
+                    event.touches[0];
+
+
+                const t2 =
+                    event.touches[1];
+
+
+                twoFingerStartDistance =
+                    getTouchDistance(
+                        t1,
+                        t2
+                    );
+
+
+                twoFingerStartScale =
+                    sceneScale;
+
+
+                const center =
+                    getTouchCenter(
+                        t1,
+                        t2
+                    );
+
+
+                twoFingerStartCenterX =
+                    center.x;
+
+
+                twoFingerStartCenterY =
+                    center.y;
+
+
+                twoFingerStartPositionX =
+                    sceneOffsetX;
+
+
+                twoFingerStartPositionY =
+                    sceneOffsetY;
+
+            }
+
+        },
+
+        {
+            passive: false
+        }
+
+    );
+
+
+    // =================================================
+    // TOUCH MOVE
+    // =================================================
+
+    canvas.addEventListener(
+
+        "touchmove",
+
+        function(event) {
+
+
+            if (
+                renderer.xr.isPresenting
+            ) {
+
+                return;
+
+            }
+
+
+            event.preventDefault();
+
+
+            // =========================================
+            // ONE FINGER = ROTATION
+            // =========================================
+
+            if (
+
+                event.touches.length === 1 &&
+
+                touchMode === "one"
+
+            ) {
+
+
+                const touch =
+                    event.touches[0];
+
+
+                const dx =
+                    touch.clientX -
+                    oneFingerLastX;
+
+
+                const dy =
+                    touch.clientY -
+                    oneFingerLastY;
+
+
+                oneFingerLastX =
+                    touch.clientX;
+
+
+                oneFingerLastY =
+                    touch.clientY;
+
+
+                // Горизонтальное вращение
+
+                sceneRotationY +=
+                    dx * 0.01;
+
+
+                // Вертикальное вращение
+
+                sceneRotationX +=
+                    dy * 0.01;
+
+
+                // Ограничиваем наклон
+
+                sceneRotationX =
+                    THREE.MathUtils.clamp(
+
+                        sceneRotationX,
+
+                        -1.3,
+
+                        1.3
+
+                    );
+
+
+                applySceneControls();
+
+            }
+
+
+            // =========================================
+            // TWO FINGERS
+            // =========================================
+
+            if (
+
+                event.touches.length >= 2 &&
+
+                touchMode === "two"
+
+            ) {
+
+
+                const t1 =
+                    event.touches[0];
+
+
+                const t2 =
+                    event.touches[1];
+
+
+                // -------------------------------------
+                // PINCH
+                // -------------------------------------
+
+                const distance =
+                    getTouchDistance(
+                        t1,
+                        t2
+                    );
+
+
+                if (
+                    twoFingerStartDistance > 0
+                ) {
+
+
+                    const factor =
+                        distance /
+                        twoFingerStartDistance;
+
+
+                    sceneScale =
+                        twoFingerStartScale *
+                        factor;
+
+
+                    sceneScale =
+                        THREE.MathUtils.clamp(
+
+                            sceneScale,
+
+                            0.25,
+
+                            4
+
+                        );
+
+                }
+
+
+                // -------------------------------------
+                // TWO-FINGER MOVE
+                // -------------------------------------
+
+                const center =
+                    getTouchCenter(
+                        t1,
+                        t2
+                    );
+
+
+                const dx =
+                    center.x -
+                    twoFingerStartCenterX;
+
+
+                const dy =
+                    center.y -
+                    twoFingerStartCenterY;
+
+
+                sceneOffsetX =
+                    twoFingerStartPositionX +
+                    dx * 0.003;
+
+
+                sceneOffsetY =
+                    twoFingerStartPositionY -
+                    dy * 0.003;
+
+
+                applySceneControls();
+
+            }
+
+        },
+
+        {
+            passive: false
+        }
+
+    );
+
+
+    // =================================================
+    // TOUCH END
+    // =================================================
+
+    canvas.addEventListener(
+
+        "touchend",
+
+        function(event) {
+
+
+            if (
+                event.touches.length === 0
+            ) {
+
+                touchMode =
+                    "none";
+
+            }
+
+
+            if (
+                event.touches.length === 1
+            ) {
+
+                touchMode =
+                    "one";
+
+
+                const touch =
+                    event.touches[0];
+
+
+                oneFingerLastX =
+                    touch.clientX;
+
+
+                oneFingerLastY =
+                    touch.clientY;
+
+            }
+
+        },
+
+        {
+            passive: false
+        }
+
+    );
+
+}
+
+
+// =====================================================
+// TOUCH DISTANCE
+// =====================================================
+
+function getTouchDistance(
+    a,
+    b
+) {
+
+
+    const dx =
+        b.clientX -
+        a.clientX;
+
+
+    const dy =
+        b.clientY -
+        a.clientY;
+
+
+    return Math.sqrt(
+
+        dx * dx +
+        dy * dy
+
+    );
+
+}
+
+
+// =====================================================
+// TOUCH CENTER
+// =====================================================
+
+function getTouchCenter(
+    a,
+    b
+) {
+
+
+    return {
+
+        x:
+            (a.clientX +
+             b.clientX) / 2,
+
+        y:
+            (a.clientY +
+             b.clientY) / 2
+
+    };
+
+}
+
+
+// =====================================================
+// APPLY SCENE CONTROLS
+// =====================================================
+
+function applySceneControls() {
+
+
+    if (!creature)
+        return;
+
+
+    /*
+        Эти параметры используются
+        только в обычном 3D-просмотре.
+
+        В настоящем AR камера управляется
+        WebXR, а модель фиксируется
+        в AR-пространстве.
+    */
+
+
+    creature.rotation.y =
+        sceneRotationY;
+
+
+    creature.rotation.x =
+        sceneRotationX;
+
+
+    creature.scale.setScalar(
+        sceneScale
+    );
+
+
+    creature.position.x =
+        sceneOffsetX;
+
+
+    creature.position.y =
+        sceneOffsetY;
+
+}
+
+
+// =====================================================
 // CHECK AR
-// ==================================================
+// =====================================================
 
 async function checkAR() {
 
+
     if (!navigator.xr) {
+
 
         status.textContent =
             "WebXR отсутствует";
 
+
         arButton.textContent =
             "AR НЕДОСТУПЕН";
+
 
         return;
 
@@ -823,6 +1619,7 @@ async function checkAR() {
 
 
     try {
+
 
         const supported =
             await navigator.xr
@@ -833,48 +1630,61 @@ async function checkAR() {
 
         if (supported) {
 
+
             status.textContent =
                 "AR готов";
 
+
             arButton.disabled =
                 false;
+
 
             arButton.textContent =
                 "ЗАПУСТИТЬ AR";
 
         }
+
         else {
 
+
             status.textContent =
-                "Immersive AR не поддерживается";
+                "AR не поддерживается";
+
 
             arButton.textContent =
                 "AR НЕДОСТУПЕН";
 
         }
 
+
     }
+
     catch(error) {
+
 
         console.error(error);
 
+
         status.textContent =
-            "Ошибка WebXR";
+            "Ошибка проверки AR";
 
     }
 
 }
 
 
-// ==================================================
+// =====================================================
 // START AR
-// ==================================================
+// =====================================================
 
 async function startAR() {
 
+
     if (xrSession) {
 
+
         await xrSession.end();
+
 
         return;
 
@@ -883,39 +1693,54 @@ async function startAR() {
 
     try {
 
-        // ==========================================
-        // REQUEST AR SESSION
-        // ==========================================
+
+        // =============================================
+        // AR SESSION
+        // =============================================
 
         xrSession =
             await navigator.xr.requestSession(
+
                 "immersive-ar",
+
                 {
 
                     requiredFeatures: [
+
                         "local-floor"
+
                     ],
 
                     optionalFeatures: [
+
                         "hit-test",
+
                         "dom-overlay"
+
                     ],
 
                     domOverlay: {
-                        root: document.body
+
+                        root:
+                            document.body
+
                     }
 
                 }
+
             );
 
 
-        // ==========================================
+        // =============================================
         // END
-        // ==========================================
+        // =============================================
 
         xrSession.addEventListener(
+
             "end",
+
             function() {
+
 
                 xrSession = null;
 
@@ -936,37 +1761,45 @@ async function startAR() {
                     "AR завершён";
 
             }
+
         );
 
 
-        // ==========================================
-        // THREE XR
-        // ==========================================
+        // =============================================
+        // CONNECT THREE
+        // =============================================
 
         await renderer.xr.setSession(
             xrSession
         );
 
 
-        // ==========================================
+        // =============================================
         // REFERENCE SPACE
-        // ==========================================
+        // =============================================
 
         try {
 
+
             xrReferenceSpace =
                 await xrSession
                     .requestReferenceSpace(
+
                         "local-floor"
+
                     );
 
         }
+
         catch(error) {
+
 
             xrReferenceSpace =
                 await xrSession
                     .requestReferenceSpace(
+
                         "local"
+
                     );
 
         }
@@ -977,20 +1810,22 @@ async function startAR() {
 
 
         status.textContent =
-            "AR работает";
+            "AR активен";
 
 
     }
+
     catch(error) {
 
+
         console.error(
-            "AR SESSION ERROR:",
+            "AR ERROR:",
             error
         );
 
 
         status.textContent =
-            "Ошибка запуска AR: " +
+            "Ошибка AR: " +
             error.message;
 
     }
@@ -998,63 +1833,67 @@ async function startAR() {
 }
 
 
-// ==================================================
+// =====================================================
 // RENDER
-// ==================================================
+// =====================================================
 
 function render(
     time,
     frame
 ) {
 
+
+    // ================================================
+    // AR PHONE TRACKING
+    // ================================================
+
     if (
+
         frame &&
+
         xrSession &&
+
         xrReferenceSpace
+
     ) {
 
-        processPhone(
+
+        processPhoneData(
             frame
         );
 
     }
 
 
+    // ================================================
+    // RENDER
+    // ================================================
+
     renderer.render(
+
         scene,
+
         camera
+
     );
 
 }
 
 
-// ==================================================
-// ПОЛУЧЕНИЕ ДАННЫХ ТЕЛЕФОНА
-// ==================================================
+// =====================================================
+// PHONE POSITION + ROTATION
+// =====================================================
 
-function processPhone(frame) {
-
-    /*
-        XRViewerPose содержит:
-
-        POSITION:
-
-        X
-        Y
-        Z
-
-        ORIENTATION:
-
-        quaternion X
-        quaternion Y
-        quaternion Z
-        quaternion W
-    */
+function processPhoneData(
+    frame
+) {
 
 
     const pose =
         frame.getViewerPose(
+
             xrReferenceSpace
+
         );
 
 
@@ -1062,36 +1901,39 @@ function processPhone(frame) {
         return;
 
 
+    // ================================================
+    // POSITION
+    // ================================================
+
     const position =
         pose.transform.position;
 
 
-    const orientation =
-        pose.transform.orientation;
-
-
-    // ==========================================
-    // POSITION
-    // ==========================================
-
-    document.getElementById("x")
-        .textContent =
+    document.getElementById(
+        "x"
+    ).textContent =
         position.x.toFixed(3);
 
 
-    document.getElementById("y")
-        .textContent =
+    document.getElementById(
+        "y"
+    ).textContent =
         position.y.toFixed(3);
 
 
-    document.getElementById("z")
-        .textContent =
+    document.getElementById(
+        "z"
+    ).textContent =
         position.z.toFixed(3);
 
 
-    // ==========================================
-    // QUATERNION
-    // ==========================================
+    // ================================================
+    // ORIENTATION
+    // ================================================
+
+    const orientation =
+        pose.transform.orientation;
+
 
     const quaternion =
         new THREE.Quaternion(
@@ -1107,41 +1949,49 @@ function processPhone(frame) {
         );
 
 
-    // ==========================================
-    // EULER
-    // ==========================================
-
     const euler =
-        new THREE.Euler()
-            .setFromQuaternion(
-                quaternion,
-                "YXZ"
-            );
+        new THREE.Euler();
 
 
-    document.getElementById("rx")
-        .textContent =
+    euler.setFromQuaternion(
+
+        quaternion,
+
+        "YXZ"
+
+    );
+
+
+    document.getElementById(
+        "rx"
+    ).textContent =
         euler.x.toFixed(3);
 
 
-    document.getElementById("ry")
-        .textContent =
+    document.getElementById(
+        "ry"
+    ).textContent =
         euler.y.toFixed(3);
 
 
-    document.getElementById("rz")
-        .textContent =
+    document.getElementById(
+        "rz"
+    ).textContent =
         euler.z.toFixed(3);
 
 
-    // ==========================================
-    // PLACE MODEL
-    // ==========================================
+    // ================================================
+    // FIRST PLACEMENT
+    // ================================================
 
     if (
+
         !modelPlaced &&
+
         creature
+
     ) {
+
 
         placeCreature(
             pose
@@ -1152,11 +2002,14 @@ function processPhone(frame) {
 }
 
 
-// ==================================================
-// PLACE CREATURE
-// ==================================================
+// =====================================================
+// PLACE CREATURE IN AR
+// =====================================================
 
-function placeCreature(pose) {
+function placeCreature(
+    pose
+) {
+
 
     if (!creature)
         return;
@@ -1174,22 +2027,29 @@ function placeCreature(pose) {
         new THREE.Quaternion(
 
             orientation.x,
+
             orientation.y,
+
             orientation.z,
+
             orientation.w
 
         );
 
 
-    // ==========================================
-    // НАПРАВЛЕНИЕ ВЗГЛЯДА
-    // ==========================================
+    // ================================================
+    // FORWARD
+    // ================================================
 
     const forward =
         new THREE.Vector3(
+
             0,
+
             0,
+
             -1
+
         );
 
 
@@ -1198,12 +2058,17 @@ function placeCreature(pose) {
     );
 
 
-    // ==========================================
-    // 1.5 МЕТРА ПЕРЕД ПОЛЬЗОВАТЕЛЕМ
-    // ==========================================
+    // ================================================
+    // DISTANCE
+    // ================================================
 
-    const distance = 1.5;
+    const distance =
+        1.5;
 
+
+    // ================================================
+    // POSITION
+    // ================================================
 
     creature.position.set(
 
@@ -1220,43 +2085,61 @@ function placeCreature(pose) {
     );
 
 
-    // ==========================================
-    // МОДЕЛЬ НЕ ВРАЩАЕТСЯ ВМЕСТЕ
-    // С ТЕЛЕФОНОМ
-    // ==========================================
+    // ================================================
+    // RESET TOUCH TRANSFORM
+    // ================================================
 
     creature.rotation.set(
+
         0,
+
         0,
+
         0
+
     );
 
 
-    modelPlaced = true;
+    creature.scale.setScalar(
+        1
+    );
+
+
+    sceneRotationX = 0;
+
+    sceneRotationY = 0;
+
+    sceneScale = 1;
+
+    sceneOffsetX = 0;
+
+    sceneOffsetY = 0;
+
+
+    // ================================================
+    // FIX
+    // ================================================
+
+    modelPlaced =
+        true;
 
 
     status.textContent =
-        "CREATURE зафиксирован";
-
+        "CREATURE зафиксирован в пространстве";
 
 }
 
 
-// ==================================================
+// =====================================================
 // GALLERY
-// ==================================================
+// =====================================================
 
 function setupGallery() {
+
 
     const gallery =
         document.getElementById(
             "gallery"
-        );
-
-
-    const galleryButton =
-        document.getElementById(
-            "galleryButton"
         );
 
 
@@ -1266,94 +2149,127 @@ function setupGallery() {
         );
 
 
+    const galleryButton =
+        document.getElementById(
+            "galleryButton"
+        );
+
+
     const openCreature =
         document.getElementById(
             "openCreature"
         );
 
 
+    // ================================================
+    // GALLERY OPEN
+    // ================================================
+
     galleryButton.addEventListener(
+
         "click",
+
         function() {
+
 
             gallery.style.display =
                 "block";
 
+
             galleryButton.classList.add(
                 "active"
             );
+
 
             sceneButton.classList.remove(
                 "active"
             );
 
         }
+
     );
 
 
+    // ================================================
+    // SCENE
+    // ================================================
+
     sceneButton.addEventListener(
+
         "click",
+
         function() {
+
 
             gallery.style.display =
                 "none";
 
+
             sceneButton.classList.add(
                 "active"
             );
+
 
             galleryButton.classList.remove(
                 "active"
             );
 
         }
+
     );
 
 
+    // ================================================
+    // OPEN AR
+    // ================================================
+
     openCreature.addEventListener(
+
         "click",
+
         function() {
+
 
             gallery.style.display =
                 "none";
 
+
             sceneButton.classList.add(
                 "active"
             );
+
 
             galleryButton.classList.remove(
                 "active"
             );
 
 
-            if (xrSession) {
-
-                return;
-
-            }
-
-
             if (
+                !xrSession &&
                 !arButton.disabled
             ) {
+
 
                 startAR();
 
             }
 
         }
+
     );
 
 }
 
 
-// ==================================================
+// =====================================================
 // RESIZE
-// ==================================================
+// =====================================================
 
 function resize() {
 
+
     camera.aspect =
+
         window.innerWidth /
         window.innerHeight;
 
@@ -1362,8 +2278,11 @@ function resize() {
 
 
     renderer.setSize(
+
         window.innerWidth,
+
         window.innerHeight
+
     );
 
 }
@@ -1371,5 +2290,6 @@ function resize() {
 </script>
 
 </body>
+
 </html>
 ```
